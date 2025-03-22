@@ -17,7 +17,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     authServiceMock = {
-      signUp: jasmine.createSpy('signUp'),
+      signIn: jasmine.createSpy('signIn'),
       saveCredential: jasmine.createSpy('saveCredential')
     };
 
@@ -66,12 +66,12 @@ describe('LoginComponent', () => {
       refreshToken: 'refresh123'
     };
 
-    authServiceMock.signUp.and.returnValue(of(mockResponse));
+    authServiceMock.signIn.and.returnValue(of(mockResponse));
     component.loginForm.setValue({ login: 'user', password: 'pass' });
 
     component.onSubmit();
 
-    expect(authServiceMock.signUp).toHaveBeenCalledWith({ login: 'user', password: 'pass' });
+    expect(authServiceMock.signIn).toHaveBeenCalledWith({ login: 'user', password: 'pass' });
     expect(authServiceMock.saveCredential).toHaveBeenCalledWith(mockResponse);
     expect(routerMock.navigate).toHaveBeenCalledWith(['']);
   });
@@ -81,7 +81,7 @@ describe('LoginComponent', () => {
       error: { message: 'Invalid credentials' } as ErrorMessage
     };
 
-    authServiceMock.signUp.and.returnValue(throwError(() => mockError));
+    authServiceMock.signIn.and.returnValue(throwError(() => mockError));
     component.loginForm.setValue({ login: 'user', password: 'wrongpass' });
 
     component.onSubmit();
@@ -99,7 +99,7 @@ describe('LoginComponent', () => {
 
     component.onSubmit();
 
-    expect(authServiceMock.signUp).not.toHaveBeenCalled();
+    expect(authServiceMock.signIn).not.toHaveBeenCalled();
   });
 
   it('isInvalidField should return true for touched and invalid fields', () => {
