@@ -44,7 +44,7 @@ export class LoginComponent {
     });
   }
 
-  protected onSubmit() {
+  onSubmit() {
     if (this.loginForm.valid) {
       const credentials: AuthRequest = this.loginForm.value;
       
@@ -63,7 +63,7 @@ export class LoginComponent {
     }
   }
 
-  protected isInvalidField(key: string): boolean {
+  isInvalidField(key: string): boolean {
     return this.loginForm.controls[key].invalid && 
         this.loginForm.controls[key].touched;
   }
