@@ -20,7 +20,7 @@ export class AuthService {
     private env: EnvironmentDev
   ) {}
 
-  public signUp(authRequest: AuthRequest): Observable<AuthDetails> {
+  public signIn(authRequest: AuthRequest): Observable<AuthDetails> {
       return this.http.post<AuthDetails>(this.env.apiUrl + '/api/auth/sign-up', authRequest);
   }
 

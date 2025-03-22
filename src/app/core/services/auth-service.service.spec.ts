@@ -27,7 +27,7 @@ describe('AuthServiceService', () => {
     const expectedValue = {token: 'token', tokenType: 'tokenType', refreshToken: 'refreshToken'};
     
     
-    service.signUp({login: 'login', password: 'password'})
+    service.signIn({login: 'login', password: 'password'})
     .subscribe({
       next: details => {
         expect(details).toBe(expectedValue)

@@ -48,7 +48,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const credentials: AuthRequest = this.loginForm.value;
       
-      this.authService.signUp(credentials)
+      this.authService.signIn(credentials)
       .subscribe({
         next: details => {
           this.authService.saveCredential(details);
