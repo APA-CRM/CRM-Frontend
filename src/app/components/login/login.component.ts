@@ -9,7 +9,6 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { AuthService } from '../../core/services/auth-service.service';
 import { AuthRequest } from '../../core/models/auth-request';
 import { MessageService } from 'primeng/api';
-import { AuthDetails } from '../../core/models/auth-response';
 import { Router } from '@angular/router';
 import { ErrorMessage } from '../../core/models/error-message';
 
@@ -57,7 +56,7 @@ export class LoginComponent {
         error: err => {
           const error: ErrorMessage = err.error; 
           
-          this.messageService.add({closable: true, summary: 'Something went wrong', detail: error.message, severity: 'error'})
+          this.messageService.add({closable: true, summary: error.message, severity: 'error'})
         }
       });
     }

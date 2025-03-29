@@ -34,7 +34,7 @@ describe('AuthServiceService', () => {
       }
     });
     
-    const request = controller.expectOne(env.apiUrl + '/api/auth/sign-up');
+    const request = controller.expectOne(env.apiUrl + '/api/auth/sign-in');
     
     request.flush(expectedValue);
   })
