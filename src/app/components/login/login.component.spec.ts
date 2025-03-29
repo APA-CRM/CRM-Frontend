@@ -88,8 +88,7 @@ describe('LoginComponent', () => {
 
     expect(messageServiceMock.add).toHaveBeenCalledWith({
       closable: true,
-      summary: 'Something went wrong',
-      detail: 'Invalid credentials',
+      summary: 'Invalid credentials',
       severity: 'error'
     });
   });

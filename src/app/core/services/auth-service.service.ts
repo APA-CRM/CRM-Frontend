@@ -4,6 +4,7 @@ import { AuthRequest } from '../models/auth-request';
 import { AuthDetails } from '../models/auth-response';
 import { EnvironmentDev } from '../environment/environment.dev';
 import { Observable } from 'rxjs';
+import { SignUpRequest } from '../models/sign-up-request';
 
 
 @Injectable({
@@ -21,7 +22,11 @@ export class AuthService {
   ) {}
 
   public signIn(authRequest: AuthRequest): Observable<AuthDetails> {
-      return this.http.post<AuthDetails>(this.env.apiUrl + '/api/auth/sign-up', authRequest);
+    return this.http.post<AuthDetails>(this.env.apiUrl + '/api/auth/sign-in', authRequest);
+  }
+
+  public signUp(signUpRequest: SignUpRequest): Observable<AuthDetails> {
+    return this.http.post<AuthDetails>(this.env.apiUrl + '/api/auth/sign-up', signUpRequest);
   }
 
   public saveCredential(authResponse: AuthDetails): void {
