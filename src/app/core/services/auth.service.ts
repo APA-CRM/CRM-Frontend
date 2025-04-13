@@ -5,6 +5,7 @@ import { AuthDetails } from '../models/auth-response';
 import { EnvironmentDev } from '../environment/environment.dev';
 import { Observable } from 'rxjs';
 import { SignUpRequest } from '../models/sign-up-request';
+import { AuthStorageService } from './auth-storage.service';
 
 
 @Injectable({
@@ -12,27 +13,26 @@ import { SignUpRequest } from '../models/sign-up-request';
 })
 export class AuthService {
 
-  private readonly TOKEN_KEY = 'token';
-  private readonly TOKEN_TYPE_KEY = 'tokenType';
-  private readonly REFRESH_TOKEN_KEY = 'refreshToken'
+  private readonly BASE_URI = '/api/auth'
 
   constructor(
     private http: HttpClient,
-    private env: EnvironmentDev
+    private env: EnvironmentDev,
+    private authStorage: AuthStorageService
   ) {}
 
   public signIn(authRequest: AuthRequest): Observable<AuthDetails> {
-    return this.http.post<AuthDetails>(this.env.apiUrl + '/api/auth/sign-in', authRequest);
+    return this.http.post<AuthDetails>(this.env.apiUrl + this.BASE_URI + '/sign-in', authRequest);
   }
 
   public signUp(signUpRequest: SignUpRequest): Observable<AuthDetails> {
-    return this.http.post<AuthDetails>(this.env.apiUrl + '/api/auth/sign-up', signUpRequest);
+    return this.http.post<AuthDetails>(this.env.apiUrl + this.BASE_URI + '/sign-up', signUpRequest);
   }
 
-  public saveCredential(authResponse: AuthDetails): void {
-    localStorage.setItem(this.TOKEN_KEY, authResponse.token);
-    localStorage.setItem(this.TOKEN_TYPE_KEY, authResponse.tokenType);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, authResponse.refreshToken);
+  public refreshToken(): Observable<AuthDetails>{
+    const body = {refreshToken: this.authStorage.getRefreshToken()};
+
+    return this.http.post<AuthDetails>(this.env.apiUrl + this.BASE_URI + '/refresh', body);
   }
 
 }

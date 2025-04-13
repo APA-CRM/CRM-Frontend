@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { AuthService } from '../../core/services/auth-service.service';
+import { AuthService } from '../../core/services/auth.service';
 import { AuthRequest } from '../../core/models/auth-request';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ErrorMessage } from '../../core/models/error-message';
+import { AuthStorageService } from '../../core/services/auth-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private authStorage: AuthStorageService,
     private messageService: MessageService,
     private router: Router
   ) {}
@@ -50,7 +52,7 @@ export class LoginComponent {
       this.authService.signIn(credentials)
       .subscribe({
         next: details => {
-          this.authService.saveCredential(details);
+          this.authStorage.saveCredential(details);
           this.router.navigate(['']);
         },
         error: err => {

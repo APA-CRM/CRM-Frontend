@@ -8,7 +8,7 @@ import { OrganizationCreate } from '../models/organization-create';
 @Injectable({
   providedIn: 'root'
 })
-export class OrganizationServiceService {
+export class OrganizationService {
 
   private readonly BASE_URI = '/api/organizations'
 
