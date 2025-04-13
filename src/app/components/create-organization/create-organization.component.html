@@ -1,0 +1,29 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">Create Organization</h2>
+  
+      <form [formGroup]="organizationForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div *ngFor="let field of fields">
+          <p-inputgroup>
+            <p-inputgroup-addon>
+              <i class="pi" [ngClass]="field.icon"></i>
+            </p-inputgroup-addon>
+            <p-floatlabel>
+              <label [for]="field.name">{{ field.label }}</label>
+              <input pInputText
+                [id]="field.name"
+                [formControlName]="field.name"
+                class="w-full"
+                [type]="field.type || 'text'"/>
+            </p-floatlabel>
+          </p-inputgroup>
+          <div *ngIf="isInvalidField(field.name)" class="text-red-500 text-sm mt-1">
+            {{ field.label }} is required.
+          </div>
+        </div>
+  
+        <button pButton type="submit" label="Create" class="w-full" [disabled]="organizationForm.invalid"></button>
+      </form>
+    </div>
+  </div>
+  
