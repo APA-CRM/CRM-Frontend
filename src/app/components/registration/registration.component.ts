@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { AuthService } from '../../core/services/auth-service.service';
+import { AuthService } from '../../core/services/auth.service';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { SignUpRequest } from '../../core/models/sign-up-request';
 import { ErrorMessage } from '../../core/models/error-message';
 import { CheckboxModule } from 'primeng/checkbox';
+import { AuthStorageService } from '../../core/services/auth-storage.service';
 
 @Component({
   selector: 'app-registration',
@@ -35,6 +36,7 @@ export class RegistrationComponent {
     private messageService: MessageService,
     private router: Router,
     private authService: AuthService,
+    private authStorage: AuthStorageService,
     private fb: FormBuilder
   ){
     this.registerForm = this.fb.group({
@@ -84,7 +86,7 @@ export class RegistrationComponent {
     
       this.authService.signUp(signUpRequest).subscribe({
         next: userDetails => {
-          this.authService.saveCredential(userDetails);
+          this.authStorage.saveCredential(userDetails);
           this.router.navigate([""]);
         },
         error: err => {
