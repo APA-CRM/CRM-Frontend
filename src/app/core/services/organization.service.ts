@@ -4,6 +4,7 @@ import { EnvironmentDev } from '../environment/environment.dev';
 import { Observable } from 'rxjs';
 import { OrganizationModel } from '../models/organization-model';
 import { OrganizationCreate } from '../models/organization-create';
+import { OrganizationPreview } from '../models/organization-preview';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class OrganizationService {
 
   public createOrganization(body: OrganizationCreate): Observable<OrganizationModel> {
     return this.http.post<OrganizationModel>(this.env.apiUrl + this.BASE_URI, body);
+  }
+
+  public getOrganizationOfUser(): Observable<OrganizationPreview[]> {
+    return this.http.get<OrganizationPreview[]>(this.env.apiUrl + this.BASE_URI);
   }
 }
