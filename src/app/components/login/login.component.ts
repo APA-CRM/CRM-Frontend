@@ -53,7 +53,7 @@ export class LoginComponent {
       .subscribe({
         next: details => {
           this.authStorage.saveCredential(details);
-          this.router.navigate(['']);
+          this.router.navigate(['/organization/choose']);
         },
         error: err => {
           const error: ErrorMessage = err.error; 
@@ -62,6 +62,10 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  goToRegistrationPage(): void {
+    this.router.navigate(['registration'])
   }
 
   isInvalidField(key: string): boolean {
