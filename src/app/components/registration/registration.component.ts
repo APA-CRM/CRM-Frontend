@@ -87,7 +87,7 @@ export class RegistrationComponent {
       this.authService.signUp(signUpRequest).subscribe({
         next: userDetails => {
           this.authStorage.saveCredential(userDetails);
-          this.router.navigate([""]);
+          this.router.navigate(['/organization/choose']);
         },
         error: err => {
           const error: ErrorMessage = err.error;
