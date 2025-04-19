@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthRequest } from '../models/auth-request';
-import { AuthDetails } from '../models/auth-response';
+import { AuthRequest } from '../../models/auth-request';
+import { AuthDetails } from '../../models/auth-response';
 import { EnvironmentDev } from '../environment/environment.dev';
 import { Observable } from 'rxjs';
-import { SignUpRequest } from '../models/sign-up-request';
+import { SignUpRequest } from '../../models/sign-up-request';
 import { AuthStorageService } from './auth-storage.service';
 
 
