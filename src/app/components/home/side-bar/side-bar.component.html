@@ -1,0 +1,51 @@
+<div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-gray-900">
+    <div class="text-gray-100 text-xl">
+        <div class="p-2.5 mt-1 flex items-center">
+            <p-avatar label="U" styleClass="cursor-default" size="large"
+                [style]="{ 'background-color': '#00a63e', color: 'white' }" />
+            <button class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline">User</button>
+        </div>
+    </div>
+    <div class="my-2 bg-gray-600 h-[1px]"></div>
+    <div class="mb-3">
+        <div
+            class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="pi pi-building"></i>
+            <span class="text-[18px] ml-4 text-gray-200 font-bold">My Organization</span>
+        </div>
+    </div>
+    <div class="my-2 bg-gray-600 h-[1px]"></div>
+    <div>
+        <div
+            class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="pi pi-home"></i>
+            <span class="text-[18px] ml-4 text-gray-200 font-bold">Home</span>
+        </div>
+        <div
+            class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="pi pi-user"></i>
+            <span class="text-[18px] ml-4 text-gray-200 font-bold">Users</span>
+        </div>
+        <div
+            class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="pi pi-file-o"></i>
+            <span class="text-[18px] ml-4 text-gray-200 font-bold">Documents</span>
+        </div>
+    </div>
+    <div class="organizations mt-9">
+        <div class="mb-2 ml-1 flex items-center text-white">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span class="text-[13px] ml-2 text-gray-200 font-bold cursor-default">Your Organizations</span>
+        </div>
+        <div class="mb-2 flex flex-col">
+            <div class="mt-2 p-1.5 pl-4 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600">
+                <p-avatar label="O" [style]="{ 'background-color': '#00a63e', color: 'white' }" />
+                <span class="text-white text-[14px] pl-2 font-sans">Oracle</span>
+            </div>
+            <div class="mt-2 p-1.5 pl-4 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600">
+                <p-avatar label="S" [style]="{ 'background-color': '#00a63e', color: 'white' }" />
+                <span class="text-white text-[14px] pl-2 font-sans">Steam</span>
+            </div>
+        </div>
+    </div>
+</div>
