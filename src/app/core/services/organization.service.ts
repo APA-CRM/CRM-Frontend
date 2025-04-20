@@ -22,6 +22,10 @@ export class OrganizationService {
     return this.http.post<OrganizationModel>(this.env.apiUrl + this.BASE_URI, body);
   }
 
+  public getOrganizationPreview(organizationId: number): Observable<OrganizationPreview> {
+    return this.http.get<OrganizationPreview>(this.env.apiUrl + this.BASE_URI + `/${organizationId}/preview`);
+  }
+
   public getOrganizationOfUser(): Observable<OrganizationPreview[]> {
     return this.http.get<OrganizationPreview[]>(this.env.apiUrl + this.BASE_URI);
   }

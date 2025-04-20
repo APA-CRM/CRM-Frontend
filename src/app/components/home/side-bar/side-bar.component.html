@@ -1,9 +1,16 @@
 <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-gray-900">
     <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
-            <p-avatar label="U" styleClass="cursor-default" size="large"
-                [style]="{ 'background-color': '#00a63e', color: 'white' }" />
-            <button class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline">User</button>
+            @if (currentUser) {
+                <p-avatar [label]="getLabelForAvatar(currentUser.fullName)" styleClass="cursor-default" size="large"
+                    [style]="{ 'background-color': '#00a63e', color: 'white' }" />
+                <button
+                    class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline">{{currentUser.fullName}}</button>
+            }
+            @else {
+                <p-skeleton size="3rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }" />
+                <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }" />
+            }
         </div>
     </div>
     <div class="my-2 bg-gray-600 h-[1px]"></div>
@@ -38,14 +45,23 @@
             <span class="text-[13px] ml-2 text-gray-200 font-bold cursor-default">Your Organizations</span>
         </div>
         <div class="mb-2 flex flex-col">
+            @for (organization of organizationOfUser; track $index) {
             <div class="mt-2 p-1.5 pl-4 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600">
-                <p-avatar label="O" [style]="{ 'background-color': '#00a63e', color: 'white' }" />
-                <span class="text-white text-[14px] pl-2 font-sans">Oracle</span>
+                <p-avatar [label]="getLabelForAvatar(organization.name)"
+                    [style]="{ 'background-color': '#00a63e', color: 'white' }" />
+                <span class="text-white text-[14px] pl-2 font-sans">{{organization.name}}</span>
             </div>
-            <div class="mt-2 p-1.5 pl-4 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600">
-                <p-avatar label="S" [style]="{ 'background-color': '#00a63e', color: 'white' }" />
-                <span class="text-white text-[14px] pl-2 font-sans">Steam</span>
-            </div>
+            }
+            @empty {
+                <div class="mt-2 p-1.5 pl-4 flex items-center">
+                    <p-skeleton size="2rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
+                    <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
+                </div>
+                <div class="mt-2 p-1.5 pl-4 flex items-center">
+                    <p-skeleton size="2rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
+                    <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
+                </div>
+            }
         </div>
     </div>
 </div>
