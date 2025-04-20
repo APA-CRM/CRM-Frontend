@@ -42,17 +42,22 @@ export class RegistrationComponent {
     this.registerForm = this.fb.group({
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      firstName: [''],
+      lastName: [''],
       generatePassword: [true],
       password: [''],
       confirmPassword: ['']
     },
     {
-      validators: this.matchValidator('password', 'confirmPassword')
+      validators: [
+        this.matchPasswordValidator('password', 'confirmPassword'), 
+        this.matchFirstNameAndLastName('firstName', 'lastName')
+      ]
     }
     );
   }
 
-  matchValidator(controlName: string, matchingControlName: string): ValidatorFn {
+  matchPasswordValidator(controlName: string, matchingControlName: string): ValidatorFn {
     return (abstractControl: AbstractControl) => {
         const control = abstractControl.get(controlName);
         const matchingControl = abstractControl.get(matchingControlName);
@@ -69,6 +74,19 @@ export class RegistrationComponent {
           matchingControl!.setErrors(null);
           return null;
         }
+    }
+  }
+
+  matchFirstNameAndLastName(controlName: string, matchingControlName: string): ValidatorFn {
+    return (abstractControl: AbstractControl) => {
+      const control = abstractControl.get(controlName);
+      const matchingControl = abstractControl.get(matchingControlName);
+
+      if(control?.value || matchingControl?.value){
+        return null
+      }
+
+      return { confirmedValidator: "First name and last name can't be null." };
     }
   }
 

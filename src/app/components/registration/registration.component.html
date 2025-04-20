@@ -33,6 +33,30 @@
                 </div>
             </div>
 
+            <div>
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-id-card"></i>
+                    </p-inputgroup-addon>
+                    <p-floatlabel>
+                        <label for="firstName">First name</label>
+                        <input pInputText type="text" id="firstName" formControlName="firstName" class="w-full" />
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+
+            <div>
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-id-card"></i>
+                    </p-inputgroup-addon>
+                    <p-floatlabel>
+                        <label for="lastName">Last name</label>
+                        <input pInputText type="text" id="lastName" formControlName="lastName" class="w-full" />
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+
 
             <div *ngIf="!registerForm.get('generatePassword')?.value" class="space-y-7">
                 <div>
