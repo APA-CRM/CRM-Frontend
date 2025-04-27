@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from '../../core/services/organization.service';
 import { MessageService } from 'primeng/api';
-import { OrganizationPreview } from '../../models/organization-preview';
-import { ErrorMessage } from '../../models/error-message';
+import { OrganizationPreviewModel } from '../../models/organization-preview-model';
+import { ErrorMessageModel } from '../../models/error-message-model';
 import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CardModule } from 'primeng/card';
@@ -24,7 +24,7 @@ import { OrganizationHolderService } from '../../core/services/organization-hold
   styleUrl: './choose-organization.component.css'
 })
 export class ChooseOrganizationComponent implements OnInit{
-  organizations: OrganizationPreview[] = [];
+  organizations: OrganizationPreviewModel[] = [];
   loading = true;
 
   constructor(
@@ -41,7 +41,7 @@ export class ChooseOrganizationComponent implements OnInit{
         this.loading = false;
       },
       error: (err) => {
-        const error: ErrorMessage = err.error;
+        const error: ErrorMessageModel = err.error;
 
         this.messageService.add(
           {
@@ -56,7 +56,7 @@ export class ChooseOrganizationComponent implements OnInit{
     });
   }
 
-  selectOrganization(org: OrganizationPreview) {
+  selectOrganization(org: OrganizationPreviewModel) {
     this.organizationHolder.setOrganizationId(org.id);
     this.router.navigate(['']);
   }

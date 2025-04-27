@@ -1,4 +1,4 @@
-export interface OrganizationCreate {
+export interface OrganizationCreateRequest {
     name: string
     email: string
     address: string

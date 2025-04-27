@@ -3,11 +3,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { UserService } from '../../../core/services/user.service';
 import { OrganizationService } from '../../../core/services/organization.service';
-import { OrganizationPreview } from '../../../models/organization-preview';
+import { OrganizationPreviewModel } from '../../../models/organization-preview-model';
 import { UserModel } from '../../../models/user-model';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { ErrorMessage } from '../../../models/error-message';
+import { ErrorMessageModel } from '../../../models/error-message-model';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,7 @@ export class SideBarComponent implements OnInit{
   
   protected currentUser!: UserModel;
 
-  protected organizationOfUser: OrganizationPreview[] = [];
+  protected organizationOfUser: OrganizationPreviewModel[] = [];
 
   constructor(
     private userService: UserService,
@@ -56,7 +56,7 @@ export class SideBarComponent implements OnInit{
           this.currentUser = value;
       },
       error: (err) => {
-        const error: ErrorMessage = err.error;
+        const error: ErrorMessageModel = err.error;
 
         this.messageService.add({closable: true, summary: error.message, severity: 'error'})
       }
@@ -69,7 +69,7 @@ export class SideBarComponent implements OnInit{
         this.organizationOfUser = value;
       },
       error: (err) => {
-        const error: ErrorMessage = err.error;
+        const error: ErrorMessageModel = err.error;
 
         this.messageService.add({closable: true, summary: error.message, severity: 'error'})
       }

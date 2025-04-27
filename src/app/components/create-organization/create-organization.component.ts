@@ -6,11 +6,11 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { OrganizationCreate } from '../../models/organization-create';
+import { OrganizationCreateRequest } from '../../models/organization-create-request';
 import { OrganizationService as OrganizationService } from '../../core/services/organization.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { ErrorMessage } from '../../models/error-message';
+import { ErrorMessageModel } from '../../models/error-message-model';
 
 @Component({
   selector: 'app-create-organization',
@@ -59,12 +59,12 @@ export class CreateOrganizationComponent {
 
   onSubmit(): void {
     if (this.organizationForm.valid) {
-      const orgData: OrganizationCreate = this.organizationForm.value;
+      const orgData: OrganizationCreateRequest = this.organizationForm.value;
       this.organizationService.createOrganization(orgData)
       .subscribe({
         next: () => this.router.navigate(['']),
         error: err => {
-          const error: ErrorMessage = err.error; 
+          const error: ErrorMessageModel = err.error; 
           
           this.messageService.add({closable: true, summary: error.message, severity: 'error'})
         }
