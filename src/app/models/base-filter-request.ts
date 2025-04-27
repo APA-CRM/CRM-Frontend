@@ -4,5 +4,5 @@ export interface BaseFilterRequest {
     page: number
     size: number
     sortDirection: SortDirection
-    sortBy: string
+    sortBy: string | null
 }

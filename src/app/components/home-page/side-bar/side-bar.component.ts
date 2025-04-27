@@ -76,4 +76,8 @@ export class SideBarComponent implements OnInit{
     })
   }
 
+  navigateTo(uri: string) {
+    this.router.navigate([uri]);
+  }
+
 }

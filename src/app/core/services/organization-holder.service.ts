@@ -5,16 +5,16 @@ import { Injectable } from '@angular/core';
 })
 export class OrganizationHolderService {
 
-  private organizationId!: number;
+  private readonly ORGANIZATION_ID_NAME: string = 'organizationId';
 
   constructor() {}
 
   public setOrganizationId(organizationId: number): void {
-    this.organizationId = organizationId;
+    localStorage.setItem(this.ORGANIZATION_ID_NAME, organizationId.toString());
   }
 
   public getOrganizationId(): number {
-    return this.organizationId;
+    return Number.parseInt(localStorage.getItem(this.ORGANIZATION_ID_NAME)!);
   }
 
 }
