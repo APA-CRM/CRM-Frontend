@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { PageModel } from '../../../models/page-model';
 import { UserWithRolesModel } from '../../../models/user-with-roles-model';
 import { CommonModule } from '@angular/common';
 import { UsersFilterRequest } from '../../../models/users-filter-request';
@@ -10,13 +9,19 @@ import { TagModule } from 'primeng/tag';
 import { UserService } from '../../../core/services/user.service';
 import { MessageService } from 'primeng/api';
 import { ErrorMessageModel } from '../../../models/error-message-model';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-users-table',
   imports: [
     TableModule,
     TagModule,
-    CommonModule
+    InputTextModule,
+    ButtonModule,
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './users-table.component.html',
   styleUrl: './users-table.component.css'
@@ -31,14 +36,18 @@ export class UsersTableComponent implements OnInit{
 
   size: number = 10
 
-  filter: UsersFilterRequest;
+  filter!: UsersFilterRequest;
 
   constructor(
     private organizationHolder: OrganizationHolderService,
     private userService: UserService,
     private messageService: MessageService
   ) {
-    this.filter = {
+    this.filter = this.defaultValueOfFilter();
+  }
+
+  private defaultValueOfFilter(): UsersFilterRequest {
+    return {
       page: 0,
       size: 10,
       sortDirection: SortDirection.ASC,
@@ -49,8 +58,14 @@ export class UsersTableComponent implements OnInit{
       lastName: null,
       createDate: null,
       updatedDate: null,
-      organizationId: organizationHolder.getOrganizationId()
+      organizationId: this.organizationHolder.getOrganizationId()
     };
+  }
+
+  resetFilter(): void {
+    this.filter = this.defaultValueOfFilter();
+
+    this.fetchUsers();
   }
 
   ngOnInit(): void {
@@ -60,6 +75,8 @@ export class UsersTableComponent implements OnInit{
   onLazeLoadUsers(event: any) {
     this.filter.page = event.first / event.rows;
     this.filter.size = event.rows;
+    this.filter.sortBy = event.sortField;
+    this.filter.sortDirection = event.sortOrder === 1 ? SortDirection.ASC : SortDirection.DESC;
     
     this.fetchUsers();
   }
@@ -84,6 +101,11 @@ export class UsersTableComponent implements OnInit{
       }
     });
 
+  }
+
+  applyFilter() {
+    this.filter.page = 0;
+    this.fetchUsers();
   }
  
 }

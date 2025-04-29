@@ -1,6 +1,10 @@
 <div class="main-content ml-[250px] p-6">
-    <p-table [value]="users" [paginator]="true" [totalRecords]="totalElements" [rows]="size"
-    [loading]="loading" (onLazyLoad)="onLazeLoadUsers($event)">
+    <div>
+        <button pButton type="button" icon="pi pi-filter" class="mr-3 p-2" (click)="applyFilter()">Apply Filter</button>
+        <span class="pi pi-filter-slash cursor-pointer" title="Reset Filter" (click)="resetFilter()"></span>
+    </div>
+    <p-table [value]="users" [paginator]="true" [totalRecords]="totalElements" [rows]="size" [loading]="loading"
+        (onLazyLoad)="onLazeLoadUsers($event)">
         <ng-template #header>
             <tr>
                 <th>Login</th>
@@ -11,41 +15,37 @@
             </tr>
             <tr>
                 <th>
-                    <p-columnFilter type="text" field="login" placeholder="Search by login"
-                        ariaLabel="Filter Login"></p-columnFilter>
+                    <input pInputText type="text" [(ngModel)]="filter.login"  placeholder="Search by login" class="w-full" />
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="email" placeholder="Search by email"
-                        ariaLabel="Filter Email"></p-columnFilter>
+                    <input pInputText type="text" [(ngModel)]="filter.email"  placeholder="Search by email" class="w-full" />
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="firstName" placeholder="Search by first name"
-                        ariaLabel="Filter First Name"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="lastName" placeholder="Search by last name"
-                        ariaLabel="Filter Last Name"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="roles" placeholder="Search by roles"
-                        ariaLabel="Filter roles"></p-columnFilter>
-                </th>
-            </tr>
+                    <input pInputText type="text" [(ngModel)]="filter.firstName" placeholder="Search by first" class="w-full"/>
+                    <th>
+                        <input pInputText type="text" [(ngModel)]="filter.lastName"  placeholder="Search by last name" class="w-full" />
+                    </th>
+                    <th>
+                        <input pInputText type="text" placeholder="Search by role" class="w-full" />
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="6" >
+                    </td>
+                </tr>
         </ng-template>
-        <ng-template #body>
-            @for (user of users; track $index) {
+        <ng-template #body let-user>
             <tr>
                 <td>{{ user.login }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
+                <td>{{ user.firstName || 'Not specified' }}</td>
+                <td>{{ user.lastName || 'Not specified' }}</td>
                 <td>
-                    @for (role of user.roles; track $index) {
-                    <p-tag severity="success" [value]="role.name" class="mr-2" />
-                    }
+                    <span *ngFor="let role of user.roles">
+                        <p-tag severity="success" [value]="role.name" class="mr-2" />
+                    </span>
                 </td>
             </tr>
-            }
         </ng-template>
     </p-table>
 </div>
