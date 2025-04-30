@@ -1,38 +1,42 @@
 <div class="main-content ml-[250px] p-6">
-    <div>
-        <button pButton type="button" icon="pi pi-filter" class="mr-3 p-2" (click)="applyFilter()">Apply Filter</button>
-        <span class="pi pi-filter-slash cursor-pointer" title="Reset Filter" (click)="resetFilter()"></span>
+    <div class="flex flex-row-reverse">
+        <button pButton type="button" icon="pi pi-filter" class="ml-3 p-2" (click)="applyFilter()">Apply Filter</button>
+        <span class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2"
+            title="Reset Filter" (click)="resetFilter()"></span>
     </div>
-    <p-table [value]="users" [paginator]="true" [totalRecords]="totalElements" [rows]="size" [loading]="loading"
-        (onLazyLoad)="onLazeLoadUsers($event)">
+    <p-table #userTable [value]="users" [loading]="loading" [customSort]="true" (sortFunction)="onSort($event)">
         <ng-template #header>
             <tr>
-                <th>Login</th>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th pSortableColumn="login">Login<p-sortIcon class="ml-2" field="login" /></th>
+                <th pSortableColumn="email">Email<p-sortIcon class="ml-2" field="email" /></th>
+                <th pSortableColumn="firstName">First Name<p-sortIcon class="ml-2" field="firstName" /></th>
+                <th pSortableColumn="lastName">Last Name<p-sortIcon class="ml-2" field="lastName" /></th>
                 <th>Roles</th>
             </tr>
             <tr>
                 <th>
-                    <input pInputText type="text" [(ngModel)]="filter.login"  placeholder="Search by login" class="w-full" />
+                    <input pInputText type="text" [(ngModel)]="filter.login" placeholder="Search by login"
+                        class="w-full" />
                 </th>
                 <th>
-                    <input pInputText type="text" [(ngModel)]="filter.email"  placeholder="Search by email" class="w-full" />
+                    <input pInputText type="text" [(ngModel)]="filter.email" placeholder="Search by email"
+                        class="w-full" />
                 </th>
                 <th>
-                    <input pInputText type="text" [(ngModel)]="filter.firstName" placeholder="Search by first" class="w-full"/>
-                    <th>
-                        <input pInputText type="text" [(ngModel)]="filter.lastName"  placeholder="Search by last name" class="w-full" />
-                    </th>
-                    <th>
-                        <input pInputText type="text" placeholder="Search by role" class="w-full" />
-                    </th>
-                </tr>
-                <tr>
-                    <td colspan="6" >
-                    </td>
-                </tr>
+                    <input pInputText type="text" [(ngModel)]="filter.firstName" placeholder="Search by first"
+                        class="w-full" />
+                <th>
+                    <input pInputText type="text" [(ngModel)]="filter.lastName" placeholder="Search by last name"
+                        class="w-full" />
+                </th>
+                <th>
+                    <input pInputText type="text" placeholder="Search by role" class="w-full" />
+                </th>
+            </tr>
+            <tr>
+                <td colspan="6">
+                </td>
+            </tr>
         </ng-template>
         <ng-template #body let-user>
             <tr>
@@ -48,4 +52,7 @@
             </tr>
         </ng-template>
     </p-table>
+    <p-paginator (onPageChange)="onPageChanged($event)" [first]="first" [rows]="size" [totalRecords]="totalElements" />
+
+
 </div>

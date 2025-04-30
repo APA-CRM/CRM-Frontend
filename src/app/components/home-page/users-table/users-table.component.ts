@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { TableModule } from 'primeng/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Table, TableModule } from 'primeng/table';
 import { UserWithRolesModel } from '../../../models/user-with-roles-model';
 import { CommonModule } from '@angular/common';
 import { UsersFilterRequest } from '../../../models/users-filter-request';
@@ -7,11 +7,12 @@ import { SortDirection } from '../../../core/enums/sort-direction';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { TagModule } from 'primeng/tag';
 import { UserService } from '../../../core/services/user.service';
-import { MessageService } from 'primeng/api';
+import { MessageService, SortEvent } from 'primeng/api';
 import { ErrorMessageModel } from '../../../models/error-message-model';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-users-table',
@@ -20,23 +21,29 @@ import { ButtonModule } from 'primeng/button';
     TagModule,
     InputTextModule,
     ButtonModule,
+    PaginatorModule,
     CommonModule,
     FormsModule
   ],
   templateUrl: './users-table.component.html',
   styleUrl: './users-table.component.css'
 })
-export class UsersTableComponent implements OnInit{
+export class UsersTableComponent implements OnInit {
+  [x: string]: any;
 
   users: UserWithRolesModel[] = [];
 
-  loading: boolean = false;
+  loading: boolean = true;
 
-  totalElements: number = 0; 
+  totalElements: number = 0;
 
   size: number = 10
 
+  first: number = 0;
+
   filter!: UsersFilterRequest;
+
+  @ViewChild('userTable') userTable!: Table;
 
   constructor(
     private organizationHolder: OrganizationHolderService,
@@ -65,6 +72,8 @@ export class UsersTableComponent implements OnInit{
   resetFilter(): void {
     this.filter = this.defaultValueOfFilter();
 
+    this.userTable.reset()
+
     this.fetchUsers();
   }
 
@@ -72,32 +81,31 @@ export class UsersTableComponent implements OnInit{
     this.fetchUsers();
   }
 
-  onLazeLoadUsers(event: any) {
-    this.filter.page = event.first / event.rows;
-    this.filter.size = event.rows;
-    this.filter.sortBy = event.sortField;
-    this.filter.sortDirection = event.sortOrder === 1 ? SortDirection.ASC : SortDirection.DESC;
-    
+  onPageChanged(event: PaginatorState) {
+    this.filter.page = event.page!;
+
     this.fetchUsers();
   }
-  
+
   fetchUsers(): void {
     this.loading = true;
 
     this.userService.getFilterUsers(this.filter).subscribe({
       next: (value) => {
-          this.loading = false;
+        this.loading = false;
 
-          this.totalElements = value.page.totalElements;
+        this.totalElements = value.page.totalElements;
 
-          this.size = value.page.size;
+        this.size = value.page.size;
 
-          this.users = value.content;
+        this.first = value.page.number;
+
+        this.users = value.content;
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error'});
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
       }
     });
 
@@ -107,5 +115,10 @@ export class UsersTableComponent implements OnInit{
     this.filter.page = 0;
     this.fetchUsers();
   }
- 
+
+  onSort(event: SortEvent): void {
+    this.filter.sortBy = event.field!;
+    this.filter.sortDirection = event.order === 1 ? SortDirection.ASC : SortDirection.DESC;
+  }
+
 }
