@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { AuthService } from '../../core/services/auth.service';
 import { of, throwError } from 'rxjs';
 import { AuthDetails } from '../../models/auth-response';
-import { ErrorMessage } from '../../models/error-message';
+import { ErrorMessageModel } from '../../models/error-message-model';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -78,7 +78,7 @@ describe('LoginComponent', () => {
 
   it('should show error message on failed login', () => {
     const mockError = {
-      error: { message: 'Invalid credentials' } as ErrorMessage
+      error: { message: 'Invalid credentials' } as ErrorMessageModel
     };
 
     authServiceMock.signIn.and.returnValue(throwError(() => mockError));

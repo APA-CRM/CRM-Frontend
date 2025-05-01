@@ -10,7 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { AuthRequest } from '../../models/auth-request';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { ErrorMessage } from '../../models/error-message';
+import { ErrorMessageModel } from '../../models/error-message-model';
 import { AuthStorageService } from '../../core/services/auth-storage.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class LoginComponent {
           this.router.navigate(['/organization/choose']);
         },
         error: err => {
-          const error: ErrorMessage = err.error; 
+          const error: ErrorMessageModel = err.error; 
           
           this.messageService.add({closable: true, summary: error.message, severity: 'error'})
         }

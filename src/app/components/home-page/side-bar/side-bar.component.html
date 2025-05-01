@@ -4,8 +4,8 @@
             @if (currentUser) {
                 <p-avatar [label]="getLabelForAvatar(currentUser.fullName)" styleClass="cursor-default" size="large"
                     [style]="{ 'background-color': '#00a63e', color: 'white' }" />
-                <button
-                    class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline">{{currentUser.fullName}}</button>
+                <span
+                    class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline">{{currentUser.fullName}}</span>
             }
             @else {
                 <p-skeleton size="3rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }" />
@@ -29,7 +29,8 @@
             <span class="text-[18px] ml-4 text-gray-200 font-bold">Home</span>
         </div>
         <div
-            class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+            (click)="navigateTo('users')">
             <i class="pi pi-user"></i>
             <span class="text-[18px] ml-4 text-gray-200 font-bold">Users</span>
         </div>

@@ -10,7 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { SignUpRequest } from '../../models/sign-up-request';
-import { ErrorMessage } from '../../models/error-message';
+import { ErrorMessageModel } from '../../models/error-message-model';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AuthStorageService } from '../../core/services/auth-storage.service';
 
@@ -108,7 +108,7 @@ export class RegistrationComponent {
           this.router.navigate(['/organization/choose']);
         },
         error: err => {
-          const error: ErrorMessage = err.error;
+          const error: ErrorMessageModel = err.error;
 
           this.messageService.add({closable: true, summary: error.message, severity: 'error'})
         }

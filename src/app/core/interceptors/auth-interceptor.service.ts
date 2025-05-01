@@ -1,7 +1,7 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { AuthStorageService } from '../services/auth-storage.service';
 
@@ -12,6 +12,8 @@ export class AuthInterceptorService implements HttpInterceptor{
 
   private isRefreshing = false;
 
+  private refreshTokenSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(
     private authService: AuthService,
     private authStorage: AuthStorageService,
@@ -19,41 +21,61 @@ export class AuthInterceptorService implements HttpInterceptor{
   ) { }
   
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authReq = this.modifyRequestIfAuthorized(req);
+    let request = req;
     
-    return next.handle(authReq).pipe(
+    request = this.addTokenHeader(req);
+    
+
+    return next.handle(request).pipe(
       catchError((err) => {
-        if(err.status == 401 && !this.isRefreshing){
-          this.isRefreshing = true;
-
-          this.authService.refreshToken().subscribe({
-            next: (val) => {
-              this.isRefreshing = false;
-              this.authStorage.saveCredential(val);
-              
-              const authReq = this.modifyRequestIfAuthorized(req);
-
-              return next.handle(authReq);
-            },
-            error: (err) => {
-              this.router.navigate(['login'])
-            }
-          })
+        if (err instanceof HttpErrorResponse && err.status == 401) {
+          return this.handle401Error(request, next);
         }
         return throwError(() => err);
-      })
+      }))
+  }
+
+  private addTokenHeader(request: HttpRequest<any>) {
+    let token = this.authStorage.getTokenWithType();
+
+    if (token)
+      return request.clone({
+        setHeaders: {
+          Authorization: token
+        }
+      });
+    else
+      return request;
+  }
+
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.refreshTokenSubject.next(false);
+
+      return this.authService.refreshToken().pipe(
+        switchMap((tokenResp) => {
+            this.isRefreshing = false;
+            this.authStorage.saveCredential(tokenResp);
+
+
+            this.refreshTokenSubject.next(true);
+            return next.handle(this.addTokenHeader(request));
+        }),
+        catchError((err) => {
+            this.isRefreshing = false;
+            this.router.navigate(['login']);
+            return throwError(() => err); 
+        })
     );
-  }
-
-  private modifyRequestIfAuthorized(req: HttpRequest<any>): HttpRequest<any> {
-    const token: string | null = this.authStorage.getTokenWithType();
-  
-    if(token) {
-      return req.clone({
-        setHeaders: {Authorization: token}
-      })
     }
-
-    return req;
+    else {
+      return this.refreshTokenSubject.pipe(
+        filter((bool: boolean) => bool),
+        take(1),
+        switchMap(() => next.handle(this.addTokenHeader(request)))
+      );
+    }
   }
+
 }
