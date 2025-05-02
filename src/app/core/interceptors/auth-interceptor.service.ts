@@ -1,7 +1,7 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, filter, Observable, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { AuthStorageService } from '../services/auth-storage.service';
 
@@ -28,7 +28,12 @@ export class AuthInterceptorService implements HttpInterceptor{
 
     return next.handle(request).pipe(
       catchError((err) => {
-        if (err instanceof HttpErrorResponse && err.status == 401) {
+        if (err.status == 401) {
+          
+          if(req.url.includes('refresh')) {
+            return throwError(() => err);
+          }
+        
           return this.handle401Error(request, next);
         }
         return throwError(() => err);
@@ -65,7 +70,7 @@ export class AuthInterceptorService implements HttpInterceptor{
         catchError((err) => {
             this.isRefreshing = false;
             this.router.navigate(['login']);
-            return throwError(() => err); 
+            return EMPTY; 
         })
     );
     }
@@ -77,5 +82,6 @@ export class AuthInterceptorService implements HttpInterceptor{
       );
     }
   }
+  
 
 }
