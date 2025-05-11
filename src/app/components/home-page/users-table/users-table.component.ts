@@ -63,7 +63,7 @@ export class UsersTableComponent implements OnInit {
       email: null,
       firstName: null,
       lastName: null,
-      createDate: null,
+      createdDate: null,
       updatedDate: null,
       organizationId: this.organizationHolder.getOrganizationId()
     };

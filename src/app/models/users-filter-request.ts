@@ -6,7 +6,7 @@ export interface UsersFilterRequest extends BaseFilterRequest{
     email: string | null
     firstName: string | null
     lastName: string | null
-    createDate: DateRange | null
+    createdDate: DateRange | null
     updatedDate: DateRange | null
     organizationId: number | null
 }
