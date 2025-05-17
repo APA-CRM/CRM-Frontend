@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { UserWithRolesModel } from '../../../models/user-with-roles-model';
 import { CommonModule } from '@angular/common';
 import { UsersFilterRequest } from '../../../models/users-filter-request';
@@ -13,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { OrganizationUsersService } from '../../../core/services/organization-users.service';
+import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
+import { RoleModel } from '../../../models/role-model';
 
 @Component({
   selector: 'app-users-table',
@@ -22,6 +25,7 @@ import { OrganizationUsersService } from '../../../core/services/organization-us
     InputTextModule,
     ButtonModule,
     PaginatorModule,
+    MultiSelectModule,
     CommonModule,
     FormsModule
   ],
@@ -29,9 +33,9 @@ import { OrganizationUsersService } from '../../../core/services/organization-us
   styleUrl: './users-table.component.css'
 })
 export class UsersTableComponent implements OnInit {
-  [x: string]: any;
-
   users: UserWithRolesModel[] = [];
+
+  roles: RoleModel[] = [];
 
   loading: boolean = true;
 
@@ -48,6 +52,7 @@ export class UsersTableComponent implements OnInit {
   constructor(
     private organizationHolder: OrganizationHolderService,
     private organizationUserService: OrganizationUsersService,
+    private organizationRolesService: OrganizationRolesService,
     private messageService: MessageService
   ) {
     this.filter = this.defaultValueOfFilter();
@@ -64,7 +69,8 @@ export class UsersTableComponent implements OnInit {
       firstName: null,
       lastName: null,
       createdDate: null,
-      updatedDate: null
+      updatedDate: null,
+      rolesId: []
     };
   }
 
@@ -78,6 +84,7 @@ export class UsersTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.fetchOrganizationRoles();
   }
 
   onPageChanged(event: PaginatorState) {
@@ -111,6 +118,19 @@ export class UsersTableComponent implements OnInit {
       }
     });
 
+  }
+
+  fetchOrganizationRoles(): void {
+    this.organizationRolesService.getOrganizationUsers(
+      this.organizationHolder.getOrganizationId()
+    ).subscribe({
+      next: (roles) => this.roles = roles,
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    })
   }
 
   applyFilter() {

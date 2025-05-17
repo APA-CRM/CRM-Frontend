@@ -8,4 +8,5 @@ export interface UsersFilterRequest extends BaseFilterRequest{
     lastName: string | null
     createdDate: DateRange | null
     updatedDate: DateRange | null
+    rolesId: number[]
 }
