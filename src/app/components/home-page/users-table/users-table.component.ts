@@ -6,13 +6,13 @@ import { UsersFilterRequest } from '../../../models/users-filter-request';
 import { SortDirection } from '../../../core/enums/sort-direction';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { TagModule } from 'primeng/tag';
-import { UserService } from '../../../core/services/user.service';
 import { MessageService, SortEvent } from 'primeng/api';
 import { ErrorMessageModel } from '../../../models/error-message-model';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { OrganizationUsersService } from '../../../core/services/organization-users.service';
 
 @Component({
   selector: 'app-users-table',
@@ -47,7 +47,7 @@ export class UsersTableComponent implements OnInit {
 
   constructor(
     private organizationHolder: OrganizationHolderService,
-    private userService: UserService,
+    private organizationUserService: OrganizationUsersService,
     private messageService: MessageService
   ) {
     this.filter = this.defaultValueOfFilter();
@@ -64,8 +64,7 @@ export class UsersTableComponent implements OnInit {
       firstName: null,
       lastName: null,
       createdDate: null,
-      updatedDate: null,
-      organizationId: this.organizationHolder.getOrganizationId()
+      updatedDate: null
     };
   }
 
@@ -90,7 +89,10 @@ export class UsersTableComponent implements OnInit {
   fetchUsers(): void {
     this.loading = true;
 
-    this.userService.getFilterUsers(this.filter).subscribe({
+    this.organizationUserService.getFilterUsers(
+      this.filter, 
+      this.organizationHolder.getOrganizationId()
+    ).subscribe({
       next: (value) => {
         this.loading = false;
 
