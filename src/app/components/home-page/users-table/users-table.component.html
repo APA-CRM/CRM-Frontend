@@ -30,7 +30,8 @@
                         class="w-full" />
                 </th>
                 <th>
-                    <input pInputText type="text" placeholder="Search by role" class="w-full" />
+                    <p-multiselect [options]="roles" [(ngModel)]="filter.rolesId" optionLabel="name" [filter]="false"
+                        optionLabel="name" optionValue="id" [showHeader]="false" placeholder="Select Roles" styleClass="w-full" />
                 </th>
             </tr>
             <tr>
