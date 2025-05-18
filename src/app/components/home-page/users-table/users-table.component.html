@@ -1,8 +1,18 @@
 <div class="main-content ml-[250px] p-6">
-    <div class="flex flex-row-reverse">
-        <button pButton type="button" icon="pi pi-filter" class="ml-3 p-2" (click)="applyFilter()">Apply Filter</button>
-        <span class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2"
-            title="Reset Filter" (click)="resetFilter()"></span>
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            <p-select [options]="usersToAdd" [(ngModel)]="selectedUser" [filter]="true"
+                [showClear]="true" (onFilter)="findUsersToAddToOrganization($event)" optionLabel="fullName"
+                placeholder="Select an User" filterPlaceholder="Find by login" class="w-full md:w-56" />
+            <button pButton type="button" icon="pi pi-plus" class="ml-3 p-2" [disabled]="selectedUser === null"
+            (click)="addUserToOrganization()">Add user</button>
+        </div>
+        <div class="flex items-center">
+            <span class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2"
+                title="Reset Filter" (click)="resetFilter()"></span>
+            <button pButton type="button" icon="pi pi-filter" class="ml-3 p-2" (click)="applyFilter()">Apply
+                Filter</button>
+        </div>
     </div>
     <p-table #userTable [value]="users" [loading]="loading" [customSort]="true" (sortFunction)="onSort($event)">
         <ng-template #header>
@@ -31,7 +41,8 @@
                 </th>
                 <th>
                     <p-multiselect [options]="roles" [(ngModel)]="filter.rolesId" optionLabel="name" [filter]="false"
-                        optionLabel="name" optionValue="id" [showHeader]="false" placeholder="Select Roles" styleClass="w-full" />
+                        optionLabel="name" optionValue="id" [showHeader]="false" placeholder="Select Roles"
+                        styleClass="w-full" />
                 </th>
             </tr>
             <tr>
