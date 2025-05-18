@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { PageModel } from '../../models/page-model';
 import { UsersFilterRequest } from '../../models/users-filter-request';
 import { EnvironmentDev } from '../environment/environment.dev';
+import { UserModel } from '../../models/user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,12 @@ export class OrganizationUsersService {
     return this.http.post<PageModel<UserWithRolesModel>>(
       this.env.apiUrl + this.BASE_URI + `/${organizationId}/users`, 
       filter
+    );
+  }
+
+  public addUserToOrganization(organizationId: number, userId: number): Observable<UserModel> {
+    return this.http.put<UserModel>(
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`, null
     );
   }
 

@@ -20,6 +20,8 @@ export class UserService {
     return this.http.get<UserModel>(this.env.apiUrl + this.BASE_URI + '/me');
   }
 
-  
+  public getUsersByLogin(login: string): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(this.env.apiUrl + this.BASE_URI, {params: {"login": login}});
+  }
 
 }

@@ -12,10 +12,13 @@ import { ErrorMessageModel } from '../../../models/error-message-model';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { SelectFilterEvent, SelectModule } from 'primeng/select';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { OrganizationUsersService } from '../../../core/services/organization-users.service';
 import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
 import { RoleModel } from '../../../models/role-model';
+import { UserModel } from '../../../models/user-model';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-users-table',
@@ -26,6 +29,7 @@ import { RoleModel } from '../../../models/role-model';
     ButtonModule,
     PaginatorModule,
     MultiSelectModule,
+    SelectModule,
     CommonModule,
     FormsModule
   ],
@@ -38,6 +42,10 @@ export class UsersTableComponent implements OnInit {
   roles: RoleModel[] = [];
 
   loading: boolean = true;
+
+  usersToAdd: UserModel[] = [];
+
+  selectedUser: UserModel | null = null;
 
   totalElements: number = 0;
 
@@ -53,6 +61,7 @@ export class UsersTableComponent implements OnInit {
     private organizationHolder: OrganizationHolderService,
     private organizationUserService: OrganizationUsersService,
     private organizationRolesService: OrganizationRolesService,
+    private userService: UserService,
     private messageService: MessageService
   ) {
     this.filter = this.defaultValueOfFilter();
@@ -91,6 +100,35 @@ export class UsersTableComponent implements OnInit {
     this.filter.page = event.page!;
 
     this.fetchUsers();
+  }
+
+  findUsersToAddToOrganization($event: SelectFilterEvent) {
+    this.userService.getUsersByLogin($event.filter)
+    .subscribe({
+      next: (value) => this.usersToAdd = value,
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    });
+  }
+
+  addUserToOrganization(): void{
+    this.organizationUserService.addUserToOrganization(
+      this.organizationHolder.getOrganizationId(),
+      this.selectedUser!.id
+    ).subscribe({
+      next: (user) => {
+        this.messageService.add({closable: true, summary: `${user.fullName} added to organization`, severity: 'success'});
+        this.fetchUsers();
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    })
   }
 
   fetchUsers(): void {
