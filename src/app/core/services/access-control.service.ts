@@ -15,12 +15,12 @@ export class AccessControlService {
     private env: EnvironmentDev
   ){}
 
-  public getAllResources(): Observable<String[]> {
-    return this.http.get<String[]>(this.env.apiUrl + this.BASE_URI + '/resources');
+  public getAllResources(): Observable<string[]> {
+    return this.http.get<string[]>(this.env.apiUrl + this.BASE_URI + '/resources');
   }
 
-  public getAllActions(): Observable<String[]> {
-    return this.http.get<String[]>(this.env.apiUrl + this.BASE_URI + '/actions');
+  public getAllActions(): Observable<string[]> {
+    return this.http.get<string[]>(this.env.apiUrl + this.BASE_URI + '/actions');
   }
 
 }

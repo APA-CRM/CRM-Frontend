@@ -1,0 +1,20 @@
+<!-- Кнопка запуска -->
+<button type="button" pButton icon="pi pi-plus" label="Add Role" class="mb-1" (click)="roleFormTemplate.toggle($event)"
+  [style]="{ width: 'auto' }" appendTo="body" trigger="click" position="right">
+</button>
+
+<p-popover #roleFormTemplate>
+  <div class="w-[320px] sm:w-[400px] p-4 space-y-4">
+    <input pInputText [(ngModel)]="roleName" placeholder="Role name"
+      class="w-full border border-gray-300 p-2 rounded-md" />
+
+    <div *ngFor="let resource of resources" class="space-y-1">
+      <label class="font-medium text-sm">{{ resource }}</label>
+      <p-multiSelect [options]="availableActions" [(ngModel)]="selectedActionsPerResource[resource]"
+        (onChange)="onActionChange(resource)" [disabled]="disableResourceIfNotAll(resource)"
+        defaultLabel="Select actions" display="chip" class="w-full"></p-multiSelect>
+    </div>
+
+    <button pButton type="button" label="Create Role" class="w-full" (click)="onSubmit()"></button>
+  </div>
+</p-popover>

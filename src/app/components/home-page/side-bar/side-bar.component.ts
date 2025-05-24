@@ -4,7 +4,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { UserService } from '../../../core/services/user.service';
 import { OrganizationService } from '../../../core/services/organization.service';
 import { OrganizationPreviewModel } from '../../../models/organizations/organization-preview-model';
-import { UserModel } from '../../../models/user-model';
+import { UserModel } from '../../../models/users/user-model';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ErrorMessageModel } from '../../../models/error/error-message-model';
