@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { UserWithRolesModel } from '../../../models/user-with-roles-model';
+import { UserWithRolesModel } from '../../../models/users/user-with-roles-model';
 import { CommonModule } from '@angular/common';
-import { UsersFilterRequest } from '../../../models/users-filter-request';
+import { UsersFilterRequest } from '../../../models/users/users-filter-request';
 import { SortDirection } from '../../../core/enums/sort-direction';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { TagModule } from 'primeng/tag';
@@ -16,8 +16,8 @@ import { SelectFilterEvent, SelectModule } from 'primeng/select';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { OrganizationUsersService } from '../../../core/services/organization-users.service';
 import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
-import { RoleModel } from '../../../models/role-model';
-import { UserModel } from '../../../models/user-model';
+import { RoleModel } from '../../../models/roles/role-model';
+import { UserModel } from '../../../models/users/user-model';
 import { UserService } from '../../../core/services/user.service';
 
 @Component({
