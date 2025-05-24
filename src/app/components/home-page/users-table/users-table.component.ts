@@ -8,7 +8,7 @@ import { SortDirection } from '../../../core/enums/sort-direction';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { TagModule } from 'primeng/tag';
 import { MessageService, SortEvent } from 'primeng/api';
-import { ErrorMessageModel } from '../../../models/error-message-model';
+import { ErrorMessageModel } from '../../../models/error/error-message-model';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from '../../core/services/organization.service';
 import { MessageService } from 'primeng/api';
-import { OrganizationPreviewModel } from '../../models/organization-preview-model';
-import { ErrorMessageModel } from '../../models/error-message-model';
+import { OrganizationPreviewModel } from '../../models/organizations/organization-preview-model';
+import { ErrorMessageModel } from '../../models/error/error-message-model';
 import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CardModule } from 'primeng/card';

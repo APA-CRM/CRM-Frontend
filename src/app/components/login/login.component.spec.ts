@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../core/services/auth.service';
 import { of, throwError } from 'rxjs';
-import { AuthDetails } from '../../models/auth-response';
-import { ErrorMessageModel } from '../../models/error-message-model';
+import { AuthDetails } from '../../models/auth/auth-response';
+import { ErrorMessageModel } from '../../models/error/error-message-model';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
