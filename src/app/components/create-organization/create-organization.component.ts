@@ -6,11 +6,11 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { OrganizationCreateRequest } from '../../models/organization-create-request';
+import { OrganizationCreateRequest } from '../../models/organizations/organization-create-request';
 import { OrganizationService as OrganizationService } from '../../core/services/organization.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { ErrorMessageModel } from '../../models/error-message-model';
+import { ErrorMessageModel } from '../../models/error/error-message-model';
 
 @Component({
   selector: 'app-create-organization',

@@ -1,5 +1,5 @@
-import { BaseFilterRequest } from "./base-filter-request";
-import { DateRange } from "./date-range";
+import { BaseFilterRequest } from "../filter/base-filter-request";
+import { DateRange } from "../filter/date-range";
 
 export interface UsersFilterRequest extends BaseFilterRequest{
     login: string | null

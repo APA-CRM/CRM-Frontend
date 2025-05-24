@@ -5,6 +5,7 @@ import { CreateOrganizationComponent } from './components/create-organization/cr
 import { ChooseOrganizationComponent } from './components/choose-organization/choose-organization.component';
 import { UsersTableComponent } from './components/home-page/users-table/users-table.component';
 import { HomeComponent } from './components/home-page/home/home.component';
+import { RolesComponent } from './components/home-page/roles/roles.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -12,7 +13,8 @@ export const routes: Routes = [
     {path: 'organization/create', component: CreateOrganizationComponent},
     {path: 'organization/choose', component: ChooseOrganizationComponent},
     {path: '', component: HomeComponent, children: [
-            {path: 'users', component: UsersTableComponent}
+            {path: 'users', component: UsersTableComponent},
+            {path: 'roles', component: RolesComponent}
         ]
     }
 ];

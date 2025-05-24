@@ -7,10 +7,10 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { AuthService } from '../../core/services/auth.service';
-import { AuthRequest } from '../../models/auth-request';
+import { AuthRequest } from '../../models/auth/auth-request';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { ErrorMessageModel } from '../../models/error-message-model';
+import { ErrorMessageModel } from '../../models/error/error-message-model';
 import { AuthStorageService } from '../../core/services/auth-storage.service';
 
 @Component({

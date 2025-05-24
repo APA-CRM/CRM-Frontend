@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvironmentDev } from '../environment/environment.dev';
-import { UserRolePreview } from '../../models/user-role-preview';
-import { RoleModel } from '../../models/role-model';
+import { RoleModel } from '../../models/roles/role-model';
 import { Observable } from 'rxjs';
+import { CreateRoleRequest } from '../../models/roles/create-role-request';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,12 @@ export class OrganizationRolesService {
   public getOrganizationUsers(organizationId: number): Observable<RoleModel[]> {
     return this.http.get<RoleModel[]>(
       this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles` 
+    );
+  }
+
+  public createRoleForOrgnization(request: CreateRoleRequest, organizationId: number): Observable<RoleModel> {
+    return this.http.post<RoleModel>(
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles`, request
     );
   }
 

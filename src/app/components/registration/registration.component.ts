@@ -9,8 +9,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
-import { SignUpRequest } from '../../models/sign-up-request';
-import { ErrorMessageModel } from '../../models/error-message-model';
+import { SignUpRequest } from '../../models/auth/sign-up-request';
+import { ErrorMessageModel } from '../../models/error/error-message-model';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AuthStorageService } from '../../core/services/auth-storage.service';
 
