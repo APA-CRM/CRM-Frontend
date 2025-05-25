@@ -14,11 +14,13 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { SelectFilterEvent, SelectModule } from 'primeng/select';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { PopoverModule } from 'primeng/popover';
 import { OrganizationUsersService } from '../../../core/services/organization-users.service';
 import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
 import { RoleModel } from '../../../models/roles/role-model';
 import { UserModel } from '../../../models/users/user-model';
 import { UserService } from '../../../core/services/user.service';
+import { OrganizationUsersRolesService } from '../../../core/services/organization-users-roles.service';
 
 @Component({
   selector: 'app-users-table',
@@ -29,6 +31,7 @@ import { UserService } from '../../../core/services/user.service';
     ButtonModule,
     PaginatorModule,
     MultiSelectModule,
+    PopoverModule,
     SelectModule,
     CommonModule,
     FormsModule
@@ -61,6 +64,7 @@ export class UsersTableComponent implements OnInit {
     private organizationHolder: OrganizationHolderService,
     private organizationUserService: OrganizationUsersService,
     private organizationRolesService: OrganizationRolesService,
+    private organizationUsersRolesService: OrganizationUsersRolesService,
     private userService: UserService,
     private messageService: MessageService
   ) {
@@ -112,6 +116,38 @@ export class UsersTableComponent implements OnInit {
         this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
       }
     });
+  }
+
+  addRoleToUser(userId: number, roleId: number): void {
+    this.organizationUsersRolesService.addRoleForOrganizationUser(
+      this.organizationHolder.getOrganizationId(), userId, roleId
+    ).subscribe({
+      next: value => {
+        this.messageService.add({closable: true, summary: `Role has been assign to user`, severity: 'success'});
+        this.fetchUsers();
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    })
+  }
+
+  removeRoleFromUser(userId: number, roleId: number): void {
+    this.organizationUsersRolesService.removeRoleForUserOrganization(
+      this.organizationHolder.getOrganizationId(), userId, roleId
+    ).subscribe({
+      next: value => {
+        this.messageService.add({closable: true, summary: `Role has been unassign for user`, severity: 'success'});
+        this.fetchUsers();
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    })
   }
 
   addUserToOrganization(): void{
