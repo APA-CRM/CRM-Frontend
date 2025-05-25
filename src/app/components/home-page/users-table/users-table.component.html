@@ -56,33 +56,36 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.firstName || 'Not specified' }}</td>
                 <td>{{ user.lastName || 'Not specified' }}</td>
-                <td>
-                    <div class="flex flex-wrap justify-between items-center">
-                        <span>
-                            <span *ngFor="let role of user.roles">
-                                <p-tag severity="success" class="mr-2">
-                                    <span>{{role.name}}</span>
-                                    <i class="pi pi-times hover:text-red-500 duration-300"
-                                        (click)="removeRoleFromUser(user.id, role.id)"></i>
-                                </p-tag>
-                            </span>
-                        </span>
-                        <p-popover #rolesToAdd>
-                            <div>
-                                <div class="p-2">
-                                    <h4 class="mb-2 font-semibold text-center">Add Role</h4>
-                                    <div *ngFor="let role of roles"
-                                        class="flex items-center justify-between border-b-1 border-dotted pb-2 last:mb-0 mb-2 ">
-                                        <span class="pr-2">{{ role.name }}</span>
-                                        <span
-                                            class="pi pi-plus p-1 bg-green-400 hover:bg-gray-200 hover:text-green-400 text-center rounded-lg duration-300"
-                                            (click)="addRoleToUser(user.id, role.id)"></span>
+                <td class="w-[325px] max-w-[325px] align-top">
+                    <div class="flex justify-between items-center gap-2">
+                        <div class="flex flex-wrap gap-2">
+                            <p-tag *ngFor="let role of user.roles" severity="success" class="flex items-center gap-1">
+                                <span>{{ role.name }}</span>
+                                <i class="pi pi-times cursor-pointer hover:text-red-500 duration-200"
+                                    (click)="removeRoleFromUser(user.id, role.id)"></i>
+                            </p-tag>
+                        </div>
+
+                        <div class="flex-shrink-0 self-center">
+                            <p-popover #rolesToAdd>
+                                <div class="w-48">
+                                    <div class="p-4">
+                                        <h4 class="text-lg font-bold text-center text-gray-800 mb-4">Assign Role</h4>
+                                        <div *ngFor="let role of roles"
+                                            class="flex items-center justify-between mb-3 last:mb-0">
+                                            <span class="text-gray-700 font-medium">{{ role.name }}</span>
+                                            <button
+                                                class="flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-full shadow transition duration-200"
+                                                (click)="addRoleToUser(user.id, role.id)">
+                                                <i class="pi pi-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </p-popover>
-                        <i class="pi pi-plus-circle p-2 hover:text-green-600 hover:bg-gray-200 hover:rounded-full duration-300"
-                            (click)="rolesToAdd.toggle($event)"></i>
+                            </p-popover>
+                            <i class="pi pi-plus-circle cursor-pointer text-gray-700 hover:text-green-600 hover:bg-gray-200 rounded-full p-2 transition duration-300"
+                                (click)="rolesToAdd.toggle($event)"></i>
+                        </div>
                     </div>
                 </td>
             </tr>
