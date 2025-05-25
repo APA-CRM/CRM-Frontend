@@ -1,11 +1,11 @@
 <div class="main-content ml-[250px] p-6">
     <div class="flex justify-between items-center mb-4">
         <div>
-            <p-select [options]="usersToAdd" [(ngModel)]="selectedUser" [filter]="true"
-                [showClear]="true" (onFilter)="findUsersToAddToOrganization($event)" optionLabel="fullName"
-                placeholder="Select an User" filterPlaceholder="Find by login" class="w-full md:w-56" />
+            <p-select [options]="usersToAdd" [(ngModel)]="selectedUser" [filter]="true" [showClear]="true"
+                (onFilter)="findUsersToAddToOrganization($event)" optionLabel="fullName" placeholder="Select an User"
+                filterPlaceholder="Find by login" class="w-full md:w-56" />
             <button pButton type="button" icon="pi pi-plus" class="ml-3 p-2" [disabled]="selectedUser === null"
-            (click)="addUserToOrganization()">Add user</button>
+                (click)="addUserToOrganization()">Add user</button>
         </div>
         <div class="flex items-center">
             <span class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2"
@@ -57,9 +57,33 @@
                 <td>{{ user.firstName || 'Not specified' }}</td>
                 <td>{{ user.lastName || 'Not specified' }}</td>
                 <td>
-                    <span *ngFor="let role of user.roles">
-                        <p-tag severity="success" [value]="role.name" class="mr-2" />
-                    </span>
+                    <div class="flex flex-wrap justify-between items-center">
+                        <span>
+                            <span *ngFor="let role of user.roles">
+                                <p-tag severity="success" class="mr-2">
+                                    <span>{{role.name}}</span>
+                                    <i class="pi pi-times hover:text-red-500 duration-300"
+                                        (click)="removeRoleFromUser(user.id, role.id)"></i>
+                                </p-tag>
+                            </span>
+                        </span>
+                        <p-popover #rolesToAdd>
+                            <div>
+                                <div class="p-2">
+                                    <h4 class="mb-2 font-semibold text-center">Add Role</h4>
+                                    <div *ngFor="let role of roles"
+                                        class="flex items-center justify-between border-b-1 border-dotted pb-2 last:mb-0 mb-2 ">
+                                        <span class="pr-2">{{ role.name }}</span>
+                                        <span
+                                            class="pi pi-plus p-1 bg-green-400 hover:bg-gray-200 hover:text-green-400 text-center rounded-lg duration-300"
+                                            (click)="addRoleToUser(user.id, role.id)"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-popover>
+                        <i class="pi pi-plus-circle p-2 hover:text-green-600 hover:bg-gray-200 hover:rounded-full duration-300"
+                            (click)="rolesToAdd.toggle($event)"></i>
+                    </div>
                 </td>
             </tr>
         </ng-template>
