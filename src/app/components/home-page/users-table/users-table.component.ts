@@ -7,7 +7,7 @@ import { UsersFilterRequest } from '../../../models/users/users-filter-request';
 import { SortDirection } from '../../../core/enums/sort-direction';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { TagModule } from 'primeng/tag';
-import { MessageService, SortEvent } from 'primeng/api';
+import { ConfirmationService, MessageService, SortEvent } from 'primeng/api';
 import { ErrorMessageModel } from '../../../models/error/error-message-model';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
@@ -66,7 +66,8 @@ export class UsersTableComponent implements OnInit {
     private organizationRolesService: OrganizationRolesService,
     private organizationUsersRolesService: OrganizationUsersRolesService,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.filter = this.defaultValueOfFilter();
   }
@@ -191,6 +192,37 @@ export class UsersTableComponent implements OnInit {
         this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
       }
     });
+
+  }
+
+  confirmDeletationOfUserFromOrganization(userId: number) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to remove this user from the organization?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        this.removeUser(userId);
+      }
+    });
+  }
+
+  removeUser(userId: number) {
+
+    this.organizationUserService.removeUserFromOrganization(
+      this.organizationHolder.getOrganizationId(), userId
+    ).subscribe({
+      next: () => {
+        this.messageService.add({closable: true, summary: `User removed from organization`, severity: 'success'});
+        this.fetchUsers();
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    })
 
   }
 
