@@ -22,6 +22,7 @@
                 <th pSortableColumn="firstName">First Name<p-sortIcon class="ml-2" field="firstName" /></th>
                 <th pSortableColumn="lastName">Last Name<p-sortIcon class="ml-2" field="lastName" /></th>
                 <th>Roles</th>
+                <th class="w-12 text-center"></th>
             </tr>
             <tr>
                 <th>
@@ -44,6 +45,7 @@
                         optionLabel="name" optionValue="id" [showHeader]="false" placeholder="Select Roles"
                         styleClass="w-full" />
                 </th>
+                <th></th>
             </tr>
             <tr>
                 <td colspan="6">
@@ -65,7 +67,6 @@
                                     (click)="removeRoleFromUser(user.id, role.id)"></i>
                             </p-tag>
                         </div>
-
                         <div class="flex-shrink-0 self-center">
                             <p-popover #rolesToAdd>
                                 <div class="w-48">
@@ -87,6 +88,19 @@
                                 (click)="rolesToAdd.toggle($event)"></i>
                         </div>
                     </div>
+                </td>
+                <td class="text-center align-middle w-6">
+                    <p-popover #actionsPopover>
+                        <div class="p-2 w-40">
+                            <button class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-100 rounded transition"
+                                (click)="confirmDeletationOfUserFromOrganization(user.id); actionsPopover.hide()">
+                                <i class="pi pi-trash"></i> Remove User
+                            </button>
+                        </div>
+                    </p-popover>
+                    <i class="pi pi-ellipsis-v text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition duration-200 text-lg"
+                        (click)="actionsPopover.toggle($event)" title="Actions">
+                    </i>
                 </td>
             </tr>
         </ng-template>

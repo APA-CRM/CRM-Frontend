@@ -32,4 +32,8 @@ export class OrganizationUsersService {
     );
   }
 
+  public removeUserFromOrganization(organizationId: number, userId: number): Observable<Object> {
+    return this.http.delete(this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`);
+  }
+
 }
