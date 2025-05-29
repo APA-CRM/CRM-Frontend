@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -13,7 +13,7 @@ import { OrganizationRolesService } from '../../../core/services/organization-ro
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 
 @Component({
-  selector: 'app-create-update-role',
+  selector: 'app-create-role',
   imports: [
     MultiSelect,
     ButtonModule,
@@ -26,6 +26,10 @@ import { OrganizationHolderService } from '../../../core/services/organization-h
   styleUrl: './create-role.component.css'
 })
 export class CreateRoleComponent{
+
+  @Output()
+  roleCreated: EventEmitter<void> = new EventEmitter<void>();
+
   roleName: string = '';
 
   resources: string[] = [];
@@ -102,6 +106,8 @@ export class CreateRoleComponent{
       this.organizationHolder.getOrganizationId()
     ).subscribe({
       next: role => {
+        this.roleCreated.emit();
+        
         this.messageService.add({closable: true, summary: `${role.name} created`, severity: 'success'});
       },
       error: (err) => {
