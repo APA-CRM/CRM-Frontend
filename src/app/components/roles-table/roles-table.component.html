@@ -2,13 +2,24 @@
     <ng-template #header>
         <tr class="bg-gray-100 text-left text-lg font-semibold text-gray-800">
             <th class="px-6 py-4 border-b border-gray-300">Name</th>
+            <th class="px-6 py-4 border-b border-gray-300">Access Controls</th>
             <th class="px-6 py-4 border-b border-gray-300">Created At</th>
             <th class="px-6 py-4 border-b border-gray-300">Updated At</th>
         </tr>
     </ng-template>
     <ng-template #body let-role>
         <tr class="hover:bg-gray-50 text-base text-gray-900">
-            <td class="px-6 py-4 border-b border-gray-200"><p-tag severity="success" [value]="role.name" /></td>
+            <td class="px-6 py-4 border-b border-gray-200">
+                <p-tag severity="success" [value]="role.name" />
+            </td>
+            <td class="px-6 py-4 border-b border-gray-200 space-y-1">
+                <div *ngFor="let ac of role.accessControls" class="flex flex-wrap items-center gap-2 text-sm">
+                    <span class="font-semibold text-gray-700">{{ ac.resource }}:</span>
+                    <ng-container *ngFor="let action of ac.actions">
+                        <p-tag [value]="action" severity="info" class="text-xs m-0"></p-tag>
+                    </ng-container>
+                </div>
+            </td>
             <td class="px-6 py-4 border-b border-gray-200">
                 {{ role.createdAt | date: 'dd MMM yyyy h:mm:ss a' }}
             </td>
