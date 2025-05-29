@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizationHolderService } from '../../core/services/organization-holder.service';
 import { OrganizationRolesService } from '../../core/services/organization-roles.service';
 import { MessageService } from 'primeng/api';
@@ -23,11 +23,17 @@ import { TagModule } from 'primeng/tag';
   templateUrl: './roles-table.component.html',
   styleUrl: './roles-table.component.css'
 })
-export class RolesTableComponent implements OnInit {
+export class RolesTableComponent implements OnInit, OnChanges {
 
   roles: RoleModel[] = [];
 
   loading: boolean = true;
+
+  @Input()
+  searchRoleName!: string | null;
+
+  @Input() 
+  refreshTrigger: boolean = false;
 
   page: Page = {
     number: 0,
@@ -41,7 +47,7 @@ export class RolesTableComponent implements OnInit {
     page: 0,
     size: 10,
     sortDirection: SortDirection.ASC,
-    sortBy: null
+    sortBy: 'name'
   };
 
   constructor(
@@ -49,6 +55,12 @@ export class RolesTableComponent implements OnInit {
     private organizationRolesService: OrganizationRolesService,
     private messageService: MessageService
   ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.request.name = this.searchRoleName;
+
+    this.fetchRoles();
+  }
 
   ngOnInit(): void {
     this.fetchRoles()
