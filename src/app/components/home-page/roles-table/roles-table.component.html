@@ -28,7 +28,11 @@
                 {{ role.updateAt | date: 'dd MMM yyyy h:mm:ss a' }}
             </td>
             <td>
-                <i class="pi pi-pencil cursor-pointer" (click)="openSidebar(role)"></i>
+                <i class="pi pi-pencil cursor-pointer text-blue-500 hover:text-blue-700 transition duration-300"
+                    (click)="openSidebar(role)"></i>
+                <i class="ml-4 pi pi-trash cursor-pointer text-red-500 hover:text-red-700 transition duration-300"
+                    (click)="onDeleteRole(role.id)"></i>
+
             </td>
         </tr>
     </ng-template>
@@ -48,8 +52,8 @@
     <div *ngFor="let resource of availableResources" class="mb-3">
         <label class="font-semibold text-sm text-gray-700 block mb-1">{{ resource }}:</label>
         <p-multiSelect [(ngModel)]="selectedActionsPerResource[resource]" [options]="availableActions"
-            (onChange)="onActionChange(resource)" [disabled]="disableResourceIfNotAll(resource)"
-            [maxSelectedLabels]="2" defaultLabel="Select actions" class="w-full" />
+            (onChange)="onActionChange(resource)" [disabled]="disableResourceIfNotAll(resource)" [maxSelectedLabels]="2"
+            defaultLabel="Select actions" class="w-full" />
     </div>
 
     <div class="flex justify-end gap-2 mt-6">

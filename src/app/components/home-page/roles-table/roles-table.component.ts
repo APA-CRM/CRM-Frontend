@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { DrawerModule } from 'primeng/drawer';
@@ -83,7 +83,8 @@ export class RolesTableComponent implements OnInit, OnChanges {
     private organizationHolder: OrganizationHolderService,
     private organizationRolesService: OrganizationRolesService,
     private accessControlService: AccessControlService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -172,7 +173,7 @@ export class RolesTableComponent implements OnInit, OnChanges {
     this.selectedActionsPerResource = {};
 
     for (const ac of role.accessControls) {
-      if(ac.resource === 'All' && ac.actions.length > 0) {
+      if (ac.resource === 'All' && ac.actions.length > 0) {
         this.isAllResourceSelected = true;
       }
 
@@ -204,7 +205,7 @@ export class RolesTableComponent implements OnInit, OnChanges {
       next: (role) => {
         this.updateRoleInTable(role);
 
-        this.messageService.add({closable: true, summary: `Role is updated`, severity: 'success'});
+        this.messageService.add({ closable: true, summary: `Role is updated`, severity: 'success' });
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;
@@ -216,17 +217,47 @@ export class RolesTableComponent implements OnInit, OnChanges {
     this.cancelEdit();
   }
 
-  
+
   disableResourceIfNotAll(resource: string) {
     return resource !== 'All' && this.isAllResourceSelected;
   }
-  
+
   onActionChange(resource: string) {
     if (resource === 'All' && this.selectedActionsPerResource[resource].length > 0) {
       this.isAllResourceSelected = true;
     } else {
       this.isAllResourceSelected = false;
     }
+  }
+
+  onDeleteRole(roleId: number): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to remove this role from the organization?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        this.removeRole(roleId);
+      }
+    });
+  }
+
+  removeRole(roleId: number): void {
+    this.organizationRolesService.deleteOrganizationRole(
+      this.organizationHolder.getOrganizationId(), roleId
+    ).subscribe({
+      next: (val) => {
+
+        this.messageService.add({ closable: true, summary: `Role removed from organization`, severity: 'success' });
+        this.fetchRoles();
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+      }
+    })
   }
 
   private updateRoleInTable(newRole: RoleModel) {

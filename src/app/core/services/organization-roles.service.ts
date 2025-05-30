@@ -44,4 +44,10 @@ export class OrganizationRolesService {
     );
   }
 
+  public deleteOrganizationRole(organizationId: number, roleId: number): Observable<Object> {
+    return this.http.delete(
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles/${roleId}`
+    );
+  }
+
 }
