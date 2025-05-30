@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
 import { CreateRoleComponent } from "../create-role/create-role.component";
-import { RolesTableComponent } from "../../roles-table/roles-table.component";
+import { RolesTableComponent } from "../roles-table/roles-table.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
