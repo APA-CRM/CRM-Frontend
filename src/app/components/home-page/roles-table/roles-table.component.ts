@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { OrganizationHolderService } from '../../core/services/organization-holder.service';
-import { OrganizationRolesService } from '../../core/services/organization-roles.service';
+import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
+import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,15 +8,15 @@ import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
-import { RoleFilterRequest } from '../../models/roles/role-filter-request';
-import { SortDirection } from '../../core/enums/sort-direction';
-import { RoleModel } from '../../models/roles/role-model';
-import { Page } from '../../models/page/page';
-import { ErrorMessageModel } from '../../models/error/error-message-model';
+import { RoleFilterRequest } from '../../../models/roles/role-filter-request';
+import { SortDirection } from '../../../core/enums/sort-direction';
+import { RoleModel } from '../../../models/roles/role-model';
+import { Page } from '../../../models/page/page';
+import { ErrorMessageModel } from '../../../models/error/error-message-model';
 import { TagModule } from 'primeng/tag';
-import { RoleRequest } from '../../models/roles/create-role-request';
+import { RoleRequest } from '../../../models/roles/create-role-request';
 import { FormsModule } from '@angular/forms';
-import { AccessControlService } from '../../core/services/access-control.service';
+import { AccessControlService } from '../../../core/services/access-control.service';
 import { MultiSelect } from 'primeng/multiselect';
 
 @Component({
