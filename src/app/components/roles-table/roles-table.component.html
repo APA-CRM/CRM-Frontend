@@ -5,6 +5,7 @@
             <th class="px-6 py-4 border-b border-gray-300">Access Controls</th>
             <th class="px-6 py-4 border-b border-gray-300">Created At</th>
             <th class="px-6 py-4 border-b border-gray-300">Updated At</th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template #body let-role>
@@ -26,6 +27,9 @@
             <td class="px-6 py-4 border-b border-gray-200">
                 {{ role.updateAt | date: 'dd MMM yyyy h:mm:ss a' }}
             </td>
+            <td>
+                <i class="pi pi-pencil cursor-pointer" (click)="openSidebar(role)"></i>
+            </td>
         </tr>
     </ng-template>
 </p-table>
@@ -33,3 +37,23 @@
 <div class="mt-6">
     <p-paginator (onPageChange)="onPageChanged($event)" [first]="page.number" [rows]="page.size"
         [totalRecords]="page.totalElements" class="w-full text-base"></p-paginator>
+</div>
+
+<p-drawer [(visible)]="showSidebar" position="right" [baseZIndex]="100" header="Edit Role">
+    <div class="mb-4">
+        <label class="font-semibold">Role Name</label>
+        <input pInputText [(ngModel)]="updatedRole.name" class="w-full mt-2" />
+    </div>
+
+    <div *ngFor="let resource of availableResources" class="mb-3">
+        <label class="font-semibold text-sm text-gray-700 block mb-1">{{ resource }}:</label>
+        <p-multiSelect [(ngModel)]="selectedActionsPerResource[resource]" [options]="availableActions"
+            (onChange)="onActionChange(resource)" [disabled]="disableResourceIfNotAll(resource)"
+            [maxSelectedLabels]="2" defaultLabel="Select actions" class="w-full" />
+    </div>
+
+    <div class="flex justify-end gap-2 mt-6">
+        <button pButton type="button" label="Cancel" class="p-button-secondary" (click)="cancelEdit()"></button>
+        <button pButton type="button" label="Save" (click)="updateRole()"></button>
+    </div>
+</p-drawer>
