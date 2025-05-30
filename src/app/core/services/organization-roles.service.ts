@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { EnvironmentDev } from '../environment/environment.dev';
 import { RoleModel } from '../../models/roles/role-model';
 import { Observable } from 'rxjs';
-import { CreateRoleRequest } from '../../models/roles/create-role-request';
+import { RoleRequest } from '../../models/roles/create-role-request';
 import { RoleFilterRequest } from '../../models/roles/role-filter-request';
 import { PageModel } from '../../models/page/page-model';
 
@@ -26,7 +26,7 @@ export class OrganizationRolesService {
     );
   }
 
-  public createRoleForOrgnization(request: CreateRoleRequest, organizationId: number): Observable<RoleModel> {
+  public createRoleForOrgnization(request: RoleRequest, organizationId: number): Observable<RoleModel> {
     return this.http.post<RoleModel>(
       this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles`, request
     );
@@ -35,6 +35,12 @@ export class OrganizationRolesService {
   public filterOrganizationRoles(request: RoleFilterRequest, organizationId: number): Observable<PageModel<RoleModel>> {
     return this.http.post<PageModel<RoleModel>>(
       this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles/filter`, request
+    );
+  }
+
+  public updateOrganizationRole(request: RoleRequest, organizationId: number, roleId: number): Observable<RoleModel> {
+    return this.http.put<RoleModel>(
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles/${roleId}`, request
     );
   }
 

@@ -8,7 +8,7 @@ import { PopoverModule } from 'primeng/popover';
 import { AccessControlService } from '../../../core/services/access-control.service';
 import { MessageService } from 'primeng/api';
 import { ErrorMessageModel } from '../../../models/error/error-message-model';
-import { CreateRoleRequest } from '../../../models/roles/create-role-request';
+import { RoleRequest } from '../../../models/roles/create-role-request';
 import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
 import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
 
@@ -96,7 +96,7 @@ export class CreateRoleComponent{
         actions,
       }));
 
-    const role: CreateRoleRequest = {
+    const role: RoleRequest = {
       name: this.roleName,
       resources: permissions,
     };

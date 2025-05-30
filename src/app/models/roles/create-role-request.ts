@@ -1,6 +1,6 @@
 import { ResourceWithActions } from "./resource-with-actions"
 
-export interface CreateRoleRequest {
+export interface RoleRequest {
     name: string
     resources: ResourceWithActions[]
 }
