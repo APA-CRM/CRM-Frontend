@@ -21,7 +21,7 @@ export class OrganizationUsersService {
 
   public getFilterUsers(filter: UsersFilterRequest, organizationId: number): Observable<PageModel<UserWithRolesModel>> {
     return this.http.post<PageModel<UserWithRolesModel>>(
-      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users`, 
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`, 
       filter
     );
   }
