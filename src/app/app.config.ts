@@ -6,7 +6,8 @@ import Aura from '@primeng/themes/aura';
 
 import {routes} from './app.routes';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {AuthInterceptorService} from './core/interceptors/auth-interceptor.service';
+import {AuthInterceptor} from './core/interceptors/auth-interceptor.service';
+import {OrganizationInterceptor} from './core/interceptors/organization-interceptor.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,13 +16,14 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptorsFromDi()
     ),
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: OrganizationInterceptor, multi: true},
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: false || 'none'
+          darkModeSelector: 'none'
         }
       }
     })
