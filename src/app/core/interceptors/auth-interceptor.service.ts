@@ -8,7 +8,7 @@ import {AuthStorageService} from '../services/auth-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthInterceptorService implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
 
   private isRefreshing = false;
 
