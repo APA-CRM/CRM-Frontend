@@ -7,19 +7,24 @@ import {AuthService} from '../../core/services/auth.service';
 import {of, throwError} from 'rxjs';
 import {AuthDetails} from '../../models/auth/auth-response';
 import {ErrorMessageModel} from '../../models/error/error-message-model';
+import {AuthStorageService} from '../../core/services/auth-storage.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authServiceMock: any;
+  let authStorageMock: any;
   let messageServiceMock: any;
   let routerMock: any;
 
   beforeEach(async () => {
     authServiceMock = {
       signIn: jasmine.createSpy('signIn'),
-      saveCredential: jasmine.createSpy('saveCredential')
     };
+
+    authStorageMock = {
+      saveCredential: jasmine.createSpy('saveCredential')
+    }
 
     messageServiceMock = {
       add: jasmine.createSpy('add')
@@ -34,7 +39,8 @@ describe('LoginComponent', () => {
       providers: [
         {provide: AuthService, useValue: authServiceMock},
         {provide: MessageService, useValue: messageServiceMock},
-        {provide: Router, useValue: routerMock}
+        {provide: Router, useValue: routerMock},
+        {provide: AuthStorageService, useValue: authStorageMock}
       ]
     }).compileComponents();
 
@@ -72,8 +78,8 @@ describe('LoginComponent', () => {
     component.onSubmit();
 
     expect(authServiceMock.signIn).toHaveBeenCalledWith({login: 'user', password: 'pass'});
-    expect(authServiceMock.saveCredential).toHaveBeenCalledWith(mockResponse);
-    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
+    expect(authStorageMock.saveCredential).toHaveBeenCalledWith(mockResponse);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/organization/choose']);
   });
 
   it('should show error message on failed login', () => {
