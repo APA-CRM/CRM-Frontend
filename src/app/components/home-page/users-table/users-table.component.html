@@ -1,16 +1,19 @@
 <div class="main-content ml-[250px] p-6">
   <div class="flex justify-between items-center mb-4">
     <div>
-      <p-select (onFilter)="findUsersToAddToOrganization($event)" [(ngModel)]="selectedUser" [filter]="true" [options]="usersToAdd"
+      <p-select (onFilter)="findUsersToAddToOrganization($event)" [(ngModel)]="selectedUser" [filter]="true"
+                [options]="usersToAdd"
                 [showClear]="true" class="w-full md:w-56" filterPlaceholder="Find by full name"
                 optionLabel="fullName" placeholder="Select an User"/>
-      <button (click)="addUserToOrganization()" [disabled]="selectedUser === null" class="ml-3 p-2" icon="pi pi-plus" pButton
+      <button (click)="addUserToOrganization()" [disabled]="selectedUser === null" class="ml-3 p-2" icon="pi pi-plus"
+              pButton
               type="button">Add user
       </button>
     </div>
     <div class="flex items-center">
             <span (click)="resetFilter()"
-                  class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2" title="Reset Filter"></span>
+                  class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2"
+                  title="Reset Filter"></span>
       <button (click)="applyFilter()" class="ml-3 p-2" icon="pi pi-filter" pButton type="button">Apply
         Filter
       </button>
@@ -111,7 +114,8 @@
           </p-popover>
           <i
             (click)="actionsPopover.toggle($event)"
-            class="pi pi-ellipsis-v text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition duration-200 text-lg" title="Actions">
+            class="pi pi-ellipsis-v text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition duration-200 text-lg"
+            title="Actions">
           </i>
         </td>
       </tr>

@@ -99,5 +99,10 @@
 
       <button [disabled]="registerForm.invalid" class="w-full" label="Register" pButton type="submit"></button>
     </form>
+    <div class="text-center mt-2">
+      <span class="text-sm text-gray-600">Already have an account?</span>
+      <a (click)="goToLoginPage()"
+         class="text-blue-600 hover:underline ml-1 cursor-pointer transition-all duration-300">Sign in</a>
+    </div>
   </div>
 </div>

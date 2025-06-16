@@ -42,8 +42,8 @@ export class RegistrationComponent {
     this.registerForm = this.fb.group({
         login: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        firstName: [''],
-        lastName: [''],
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
         generatePassword: [true],
         password: [''],
         confirmPassword: ['']
@@ -115,6 +115,10 @@ export class RegistrationComponent {
 
     this.registerForm.get('password')?.updateValueAndValidity();
     this.registerForm.get('confirmPassword')?.updateValueAndValidity();
+  }
+
+  goToLoginPage(): void {
+    this.router.navigate(['/login']);
   }
 
 }
