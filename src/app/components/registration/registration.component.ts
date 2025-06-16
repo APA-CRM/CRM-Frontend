@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { AuthService } from '../../core/services/auth.service';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { CommonModule } from '@angular/common';
-import { SignUpRequest } from '../../models/auth/sign-up-request';
-import { ErrorMessageModel } from '../../models/error/error-message-model';
-import { CheckboxModule } from 'primeng/checkbox';
-import { AuthStorageService } from '../../core/services/auth-storage.service';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
+import {AuthService} from '../../core/services/auth.service';
+import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {CommonModule} from '@angular/common';
+import {SignUpRequest} from '../../models/auth/sign-up-request';
+import {ErrorMessageModel} from '../../models/error/error-message-model';
+import {CheckboxModule} from 'primeng/checkbox';
+import {AuthStorageService} from '../../core/services/auth-storage.service';
 
 @Component({
   selector: 'app-registration',
@@ -38,60 +38,46 @@ export class RegistrationComponent {
     private authService: AuthService,
     private authStorage: AuthStorageService,
     private fb: FormBuilder
-  ){
+  ) {
     this.registerForm = this.fb.group({
-      login: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      firstName: [''],
-      lastName: [''],
-      generatePassword: [true],
-      password: [''],
-      confirmPassword: ['']
-    },
-    {
-      validators: [
-        this.matchPasswordValidator('password', 'confirmPassword'), 
-        this.matchFirstNameAndLastName('firstName', 'lastName')
-      ]
-    }
+        login: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        firstName: [''],
+        lastName: [''],
+        generatePassword: [true],
+        password: [''],
+        confirmPassword: ['']
+      },
+      {
+        validators: [
+          this.matchPasswordValidator('password', 'confirmPassword'),
+        ]
+      }
     );
   }
 
   matchPasswordValidator(controlName: string, matchingControlName: string): ValidatorFn {
     return (abstractControl: AbstractControl) => {
-        const control = abstractControl.get(controlName);
-        const matchingControl = abstractControl.get(matchingControlName);
-
-        if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
-            return null;
-        }
-
-        if (control!.value !== matchingControl!.value) {
-          const error = { confirmedValidator: 'Passwords do not match.' };
-          matchingControl!.setErrors(error);
-          return error;
-        } else {
-          matchingControl!.setErrors(null);
-          return null;
-        }
-    }
-  }
-
-  matchFirstNameAndLastName(controlName: string, matchingControlName: string): ValidatorFn {
-    return (abstractControl: AbstractControl) => {
       const control = abstractControl.get(controlName);
       const matchingControl = abstractControl.get(matchingControlName);
 
-      if(control?.value || matchingControl?.value){
-        return null
+      if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
+        return null;
       }
 
-      return { confirmedValidator: "First name and last name can't be null." };
+      if (control!.value !== matchingControl!.value) {
+        const error = {confirmedValidator: 'Passwords do not match.'};
+        matchingControl!.setErrors(error);
+        return error;
+      } else {
+        matchingControl!.setErrors(null);
+        return null;
+      }
     }
   }
 
   isInvalidField(field: string): boolean {
-    return this.registerForm.controls[field].invalid && 
+    return this.registerForm.controls[field].invalid &&
       this.registerForm.controls[field].touched;
   }
 
@@ -101,7 +87,7 @@ export class RegistrationComponent {
       var signUpRequest: SignUpRequest = this.registerForm.value;
 
       console.log(signUpRequest);
-    
+
       this.authService.signUp(signUpRequest).subscribe({
         next: userDetails => {
           this.authStorage.saveCredential(userDetails);
