@@ -1,6 +1,6 @@
-import { Page } from "./page"
+import {Page} from "./page"
 
 export interface PageModel<Type> {
-    content: Type[]
-    page: Page
+  content: Type[]
+  page: Page
 }

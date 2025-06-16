@@ -1,19 +1,19 @@
-<button type="button" pButton icon="pi pi-plus" label="Add Role" class="mb-1" (click)="roleFormTemplate.toggle($event)"
-  [style]="{ width: 'auto' }" appendTo="body" trigger="click" position="right">
+<button (click)="roleFormTemplate.toggle($event)" [style]="{ width: 'auto' }" appendTo="body" class="mb-1" icon="pi pi-plus" label="Add Role"
+        pButton position="right" trigger="click" type="button">
 </button>
 
 <p-popover #roleFormTemplate>
   <div class="w-[320px] sm:w-[400px] p-4 space-y-4">
-    <input pInputText [(ngModel)]="roleName" placeholder="Role name"
-      class="w-full border border-gray-300 p-2 rounded-md" />
+    <input [(ngModel)]="roleName" class="w-full border border-gray-300 p-2 rounded-md" pInputText
+           placeholder="Role name"/>
 
     <div *ngFor="let resource of resources" class="space-y-1">
       <label class="font-medium text-sm">{{ resource }}</label>
-      <p-multiSelect [options]="availableActions" [(ngModel)]="selectedActionsPerResource[resource]"
-        (onChange)="onActionChange(resource)" [disabled]="disableResourceIfNotAll(resource)"
-        defaultLabel="Select actions" display="chip" class="w-full"></p-multiSelect>
+      <p-multiSelect (onChange)="onActionChange(resource)" [(ngModel)]="selectedActionsPerResource[resource]"
+                     [disabled]="disableResourceIfNotAll(resource)" [options]="availableActions"
+                     class="w-full" defaultLabel="Select actions" display="chip"></p-multiSelect>
     </div>
 
-    <button pButton type="button" label="Create Role" class="w-full" (click)="onSubmit()"></button>
+    <button (click)="onSubmit()" class="w-full" label="Create Role" pButton type="button"></button>
   </div>
 </p-popover>

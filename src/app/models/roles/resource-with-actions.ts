@@ -1,4 +1,4 @@
 export interface ResourceWithActions {
-    resource: string
-    actions: string[]
+  resource: string
+  actions: string[]
 }

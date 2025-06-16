@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { CommonModule } from '@angular/common';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { OrganizationCreateRequest } from '../../models/organizations/organization-create-request';
-import { OrganizationService as OrganizationService } from '../../core/services/organization.service';
-import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { ErrorMessageModel } from '../../models/error/error-message-model';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {CommonModule} from '@angular/common';
+import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {OrganizationCreateRequest} from '../../models/organizations/organization-create-request';
+import {OrganizationService as OrganizationService} from '../../core/services/organization.service';
+import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
+import {ErrorMessageModel} from '../../models/error/error-message-model';
 
 @Component({
   selector: 'app-create-organization',
@@ -30,11 +30,11 @@ export class CreateOrganizationComponent {
   organizationForm: FormGroup;
 
   fields = [
-    { name: 'name', label: 'Name', icon: 'pi-users'},
-    { name: 'email', label: 'Email', type: 'email', icon: 'pi-envelope'},
-    { name: 'address', label: 'Address', icon: 'pi-building'},
-    { name: 'city', label: 'City', icon: 'pi-building'},
-    { name: 'country', label: 'Country', icon: 'pi-building'}
+    {name: 'name', label: 'Name', icon: 'pi-users'},
+    {name: 'email', label: 'Email', type: 'email', icon: 'pi-envelope'},
+    {name: 'address', label: 'Address', icon: 'pi-building'},
+    {name: 'city', label: 'City', icon: 'pi-building'},
+    {name: 'country', label: 'Country', icon: 'pi-building'}
   ];
 
   constructor(
@@ -61,14 +61,14 @@ export class CreateOrganizationComponent {
     if (this.organizationForm.valid) {
       const orgData: OrganizationCreateRequest = this.organizationForm.value;
       this.organizationService.createOrganization(orgData)
-      .subscribe({
-        next: () => this.router.navigate(['']),
-        error: err => {
-          const error: ErrorMessageModel = err.error; 
-          
-          this.messageService.add({closable: true, summary: error.message, severity: 'error'})
-        }
-      });
+        .subscribe({
+          next: () => this.router.navigate(['']),
+          error: err => {
+            const error: ErrorMessageModel = err.error;
+
+            this.messageService.add({closable: true, summary: error.message, severity: 'error'})
+          }
+        });
     }
   }
 }

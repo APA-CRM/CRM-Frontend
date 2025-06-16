@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { OrganizationService } from '../../core/services/organization.service';
-import { MessageService } from 'primeng/api';
-import { OrganizationPreviewModel } from '../../models/organizations/organization-preview-model';
-import { ErrorMessageModel } from '../../models/error/error-message-model';
-import { Router } from '@angular/router';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { CardModule } from 'primeng/card';
-import { CommonModule } from '@angular/common';
-import { MessageModule } from 'primeng/message';
-import { ButtonModule } from 'primeng/button';
-import { OrganizationHolderService } from '../../core/services/organization-holder.service';
+import {Component, OnInit} from '@angular/core';
+import {OrganizationService} from '../../core/services/organization.service';
+import {MessageService} from 'primeng/api';
+import {OrganizationPreviewModel} from '../../models/organizations/organization-preview-model';
+import {ErrorMessageModel} from '../../models/error/error-message-model';
+import {Router} from '@angular/router';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {CardModule} from 'primeng/card';
+import {CommonModule} from '@angular/common';
+import {MessageModule} from 'primeng/message';
+import {ButtonModule} from 'primeng/button';
+import {OrganizationHolderService} from '../../core/services/organization-holder.service';
 
 @Component({
   selector: 'app-choose-organization',
@@ -23,7 +23,7 @@ import { OrganizationHolderService } from '../../core/services/organization-hold
   templateUrl: './choose-organization.component.html',
   styleUrl: './choose-organization.component.css'
 })
-export class ChooseOrganizationComponent implements OnInit{
+export class ChooseOrganizationComponent implements OnInit {
   organizations: OrganizationPreviewModel[] = [];
   loading = true;
 
@@ -32,7 +32,8 @@ export class ChooseOrganizationComponent implements OnInit{
     private messageService: MessageService,
     private router: Router,
     private organizationHolder: OrganizationHolderService
-  ){}
+  ) {
+  }
 
   async ngOnInit() {
     this.organizationService.getOrganizationOfUser().subscribe({
@@ -45,9 +46,9 @@ export class ChooseOrganizationComponent implements OnInit{
 
         this.messageService.add(
           {
-            closable: true, 
-            detail: error.message, 
-            summary: "Something went wrong", 
+            closable: true,
+            detail: error.message,
+            summary: "Something went wrong",
             severity: 'error'
           }
         );

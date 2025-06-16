@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { DividerModule } from 'primeng/divider';
-import { InputTextModule } from 'primeng/inputtext';
-import { CreateRoleComponent } from "../create-role/create-role.component";
-import { RolesTableComponent } from "../roles-table/roles-table.component";
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component} from '@angular/core';
+import {DividerModule} from 'primeng/divider';
+import {InputTextModule} from 'primeng/inputtext';
+import {CreateRoleComponent} from "../create-role/create-role.component";
+import {RolesTableComponent} from "../roles-table/roles-table.component";
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
     RolesTableComponent,
     CommonModule,
     FormsModule
-],
+  ],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.css'
 })

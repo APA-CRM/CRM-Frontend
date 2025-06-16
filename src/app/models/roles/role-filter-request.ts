@@ -1,5 +1,5 @@
-import { BaseFilterRequest } from "../filter/base-filter-request";
+import {BaseFilterRequest} from "../filter/base-filter-request";
 
-export interface RoleFilterRequest extends BaseFilterRequest{
-    name: string | null
+export interface RoleFilterRequest extends BaseFilterRequest {
+  name: string | null
 }

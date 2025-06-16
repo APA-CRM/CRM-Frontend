@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
-import { MultiSelect } from 'primeng/multiselect';
-import { PopoverModule } from 'primeng/popover';
-import { AccessControlService } from '../../../core/services/access-control.service';
-import { MessageService } from 'primeng/api';
-import { ErrorMessageModel } from '../../../models/error/error-message-model';
-import { RoleRequest } from '../../../models/roles/create-role-request';
-import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
-import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
+import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, Output} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ButtonModule} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
+import {MultiSelect} from 'primeng/multiselect';
+import {PopoverModule} from 'primeng/popover';
+import {AccessControlService} from '../../../core/services/access-control.service';
+import {MessageService} from 'primeng/api';
+import {ErrorMessageModel} from '../../../models/error/error-message-model';
+import {RoleRequest} from '../../../models/roles/create-role-request';
+import {OrganizationRolesService} from '../../../core/services/organization-roles.service';
+import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
 
 @Component({
   selector: 'app-create-role',
@@ -25,7 +25,7 @@ import { OrganizationHolderService } from '../../../core/services/organization-h
   templateUrl: './create-role.component.html',
   styleUrl: './create-role.component.css'
 })
-export class CreateRoleComponent{
+export class CreateRoleComponent {
 
   @Output()
   roleCreated: EventEmitter<void> = new EventEmitter<void>();
@@ -36,7 +36,7 @@ export class CreateRoleComponent{
 
   availableActions: string[] = [];
 
-  isAllResourceSelected:boolean = false;
+  isAllResourceSelected: boolean = false;
 
   selectedActionsPerResource: { [resource: string]: string[] } = {};
 
@@ -49,39 +49,12 @@ export class CreateRoleComponent{
     this.fetchResourcesAndActions();
   }
 
-  private fetchResourcesAndActions() {
-    this.accessControlService.getAllActions().subscribe({
-      next: value => {
-        this.availableActions = value;
-
-        this.availableActions.map(a => ({ label: a, value: a }))
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
-      }
-    });
-
-    this.accessControlService.getAllResources().subscribe({
-      next: value => {
-        this.resources = value;
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
-      }
-    });
-  }
-
-
   disableResourceIfNotAll(resource: string) {
     return resource !== 'All' && this.isAllResourceSelected;
   }
 
   onActionChange(resource: string) {
-    if(resource === 'All' && this.selectedActionsPerResource[resource].length > 0) {
+    if (resource === 'All' && this.selectedActionsPerResource[resource].length > 0) {
       this.isAllResourceSelected = true;
     } else {
       this.isAllResourceSelected = false;
@@ -102,19 +75,45 @@ export class CreateRoleComponent{
     };
 
     this.organizationRoleService.createRoleForOrgnization(
-      role, 
+      role,
       this.organizationHolder.getOrganizationId()
     ).subscribe({
       next: role => {
         this.roleCreated.emit();
-        
+
         this.messageService.add({closable: true, summary: `${role.name} created`, severity: 'success'});
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
+  }
+
+  private fetchResourcesAndActions() {
+    this.accessControlService.getAllActions().subscribe({
+      next: value => {
+        this.availableActions = value;
+
+        this.availableActions.map(a => ({label: a, value: a}))
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    });
+
+    this.accessControlService.getAllResources().subscribe({
+      next: value => {
+        this.resources = value;
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    });
   }
 }

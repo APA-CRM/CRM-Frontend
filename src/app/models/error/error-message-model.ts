@@ -1,3 +1,3 @@
 export interface ErrorMessageModel {
-    message: string;
+  message: string;
 }

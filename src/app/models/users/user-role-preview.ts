@@ -1,4 +1,4 @@
 export interface UserRolePreview {
-    id: number
-    name: string
+  id: number
+  name: string
 }

@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthRequest } from '../../models/auth/auth-request';
-import { AuthDetails } from '../../models/auth/auth-response';
-import { EnvironmentDev } from '../environment/environment.dev';
-import { Observable } from 'rxjs';
-import { SignUpRequest } from '../../models/auth/sign-up-request';
-import { AuthStorageService } from './auth-storage.service';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {AuthRequest} from '../../models/auth/auth-request';
+import {AuthDetails} from '../../models/auth/auth-response';
+import {EnvironmentDev} from '../environment/environment.dev';
+import {Observable} from 'rxjs';
+import {SignUpRequest} from '../../models/auth/sign-up-request';
+import {AuthStorageService} from './auth-storage.service';
 
 
 @Injectable({
@@ -19,7 +19,8 @@ export class AuthService {
     private http: HttpClient,
     private env: EnvironmentDev,
     private authStorage: AuthStorageService
-  ) {}
+  ) {
+  }
 
   public signIn(authRequest: AuthRequest): Observable<AuthDetails> {
     return this.http.post<AuthDetails>(this.env.apiUrl + this.BASE_URI + '/sign-in', authRequest);
@@ -29,7 +30,7 @@ export class AuthService {
     return this.http.post<AuthDetails>(this.env.apiUrl + this.BASE_URI + '/sign-up', signUpRequest);
   }
 
-  public refreshToken(): Observable<AuthDetails>{
+  public refreshToken(): Observable<AuthDetails> {
     const body = {refreshToken: this.authStorage.getRefreshToken()};
 
     return this.http.post<AuthDetails>(this.env.apiUrl + this.BASE_URI + '/refresh', body);

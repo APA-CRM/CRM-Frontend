@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { UserWithRolesModel } from '../../models/users/user-with-roles-model';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { PageModel } from '../../models/page/page-model';
-import { UsersFilterRequest } from '../../models/users/users-filter-request';
-import { EnvironmentDev } from '../environment/environment.dev';
-import { UserModel } from '../../models/users/user-model';
+import {Injectable} from '@angular/core';
+import {UserWithRolesModel} from '../../models/users/user-with-roles-model';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {PageModel} from '../../models/page/page-model';
+import {UsersFilterRequest} from '../../models/users/users-filter-request';
+import {EnvironmentDev} from '../environment/environment.dev';
+import {UserModel} from '../../models/users/user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +17,12 @@ export class OrganizationUsersService {
   constructor(
     private http: HttpClient,
     private env: EnvironmentDev
-  ) {}
+  ) {
+  }
 
   public getFilterUsers(filter: UsersFilterRequest, organizationId: number): Observable<PageModel<UserWithRolesModel>> {
     return this.http.post<PageModel<UserWithRolesModel>>(
-      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`, 
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`,
       filter
     );
   }

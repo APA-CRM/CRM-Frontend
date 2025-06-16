@@ -1,5 +1,5 @@
 export interface AuthDetails {
-    token: string
-    tokenType: string,
-    refreshToken: string
+  token: string
+  tokenType: string,
+  refreshToken: string
 }

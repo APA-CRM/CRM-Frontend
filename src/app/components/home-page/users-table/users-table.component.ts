@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Table, TableModule } from 'primeng/table';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { UserWithRolesModel } from '../../../models/users/user-with-roles-model';
-import { CommonModule } from '@angular/common';
-import { UsersFilterRequest } from '../../../models/users/users-filter-request';
-import { SortDirection } from '../../../core/enums/sort-direction';
-import { OrganizationHolderService } from '../../../core/services/organization-holder.service';
-import { TagModule } from 'primeng/tag';
-import { ConfirmationService, MessageService, SortEvent } from 'primeng/api';
-import { ErrorMessageModel } from '../../../models/error/error-message-model';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { SelectFilterEvent, SelectModule } from 'primeng/select';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { PopoverModule } from 'primeng/popover';
-import { OrganizationUsersService } from '../../../core/services/organization-users.service';
-import { OrganizationRolesService } from '../../../core/services/organization-roles.service';
-import { RoleModel } from '../../../models/roles/role-model';
-import { UserModel } from '../../../models/users/user-model';
-import { UserService } from '../../../core/services/user.service';
-import { OrganizationUsersRolesService } from '../../../core/services/organization-users-roles.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Table, TableModule} from 'primeng/table';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {UserWithRolesModel} from '../../../models/users/user-with-roles-model';
+import {CommonModule} from '@angular/common';
+import {UsersFilterRequest} from '../../../models/users/users-filter-request';
+import {SortDirection} from '../../../core/enums/sort-direction';
+import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
+import {TagModule} from 'primeng/tag';
+import {ConfirmationService, MessageService, SortEvent} from 'primeng/api';
+import {ErrorMessageModel} from '../../../models/error/error-message-model';
+import {InputTextModule} from 'primeng/inputtext';
+import {FormsModule} from '@angular/forms';
+import {ButtonModule} from 'primeng/button';
+import {SelectFilterEvent, SelectModule} from 'primeng/select';
+import {PaginatorModule, PaginatorState} from 'primeng/paginator';
+import {PopoverModule} from 'primeng/popover';
+import {OrganizationUsersService} from '../../../core/services/organization-users.service';
+import {OrganizationRolesService} from '../../../core/services/organization-roles.service';
+import {RoleModel} from '../../../models/roles/role-model';
+import {UserModel} from '../../../models/users/user-model';
+import {UserService} from '../../../core/services/user.service';
+import {OrganizationUsersRolesService} from '../../../core/services/organization-users-roles.service';
 
 @Component({
   selector: 'app-users-table',
@@ -72,22 +72,6 @@ export class UsersTableComponent implements OnInit {
     this.filter = this.defaultValueOfFilter();
   }
 
-  private defaultValueOfFilter(): UsersFilterRequest {
-    return {
-      page: 0,
-      size: 10,
-      sortDirection: SortDirection.ASC,
-      sortBy: null,
-      login: null,
-      email: null,
-      firstName: null,
-      lastName: null,
-      createdDate: null,
-      updatedDate: null,
-      rolesId: []
-    };
-  }
-
   resetFilter(): void {
     this.filter = this.defaultValueOfFilter();
 
@@ -109,14 +93,14 @@ export class UsersTableComponent implements OnInit {
 
   findUsersToAddToOrganization($event: SelectFilterEvent) {
     this.userService.getUsersByFullName($event.filter)
-    .subscribe({
-      next: (value) => this.usersToAdd = value,
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
+      .subscribe({
+        next: (value) => this.usersToAdd = value,
+        error: (err) => {
+          const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
-      }
-    });
+          this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+        }
+      });
   }
 
   addRoleToUser(userId: number, roleId: number): void {
@@ -130,7 +114,7 @@ export class UsersTableComponent implements OnInit {
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
   }
@@ -146,24 +130,28 @@ export class UsersTableComponent implements OnInit {
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
   }
 
-  addUserToOrganization(): void{
+  addUserToOrganization(): void {
     this.organizationUserService.addUserToOrganization(
       this.organizationHolder.getOrganizationId(),
       this.selectedUser!.id
     ).subscribe({
       next: (user) => {
-        this.messageService.add({closable: true, summary: `${user.fullName} added to organization`, severity: 'success'});
+        this.messageService.add({
+          closable: true,
+          summary: `${user.fullName} added to organization`,
+          severity: 'success'
+        });
         this.fetchUsers();
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
   }
@@ -172,7 +160,7 @@ export class UsersTableComponent implements OnInit {
     this.loading = true;
 
     this.organizationUserService.getFilterUsers(
-      this.filter, 
+      this.filter,
       this.organizationHolder.getOrganizationId()
     ).subscribe({
       next: (value) => {
@@ -189,7 +177,7 @@ export class UsersTableComponent implements OnInit {
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     });
 
@@ -220,7 +208,7 @@ export class UsersTableComponent implements OnInit {
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
 
@@ -234,7 +222,7 @@ export class UsersTableComponent implements OnInit {
       error: (err) => {
         const error: ErrorMessageModel = err.error;
 
-        this.messageService.add({ closable: true, summary: error.message, severity: 'error' });
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
   }
@@ -247,6 +235,22 @@ export class UsersTableComponent implements OnInit {
   onSort(event: SortEvent): void {
     this.filter.sortBy = event.field!;
     this.filter.sortDirection = event.order === 1 ? SortDirection.ASC : SortDirection.DESC;
+  }
+
+  private defaultValueOfFilter(): UsersFilterRequest {
+    return {
+      page: 0,
+      size: 10,
+      sortDirection: SortDirection.ASC,
+      sortBy: null,
+      login: null,
+      email: null,
+      firstName: null,
+      lastName: null,
+      createdDate: null,
+      updatedDate: null,
+      rolesId: []
+    };
   }
 
 }

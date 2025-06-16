@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { EnvironmentDev } from '../environment/environment.dev';
-import { RoleModel } from '../../models/roles/role-model';
-import { Observable } from 'rxjs';
-import { RoleRequest } from '../../models/roles/create-role-request';
-import { RoleFilterRequest } from '../../models/roles/role-filter-request';
-import { PageModel } from '../../models/page/page-model';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {EnvironmentDev} from '../environment/environment.dev';
+import {RoleModel} from '../../models/roles/role-model';
+import {Observable} from 'rxjs';
+import {RoleRequest} from '../../models/roles/create-role-request';
+import {RoleFilterRequest} from '../../models/roles/role-filter-request';
+import {PageModel} from '../../models/page/page-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +17,13 @@ export class OrganizationRolesService {
   constructor(
     private http: HttpClient,
     private env: EnvironmentDev
-  ) {}
+  ) {
+  }
 
 
   public getOrganizationUsers(organizationId: number): Observable<RoleModel[]> {
     return this.http.get<RoleModel[]>(
-      this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles` 
+      this.env.apiUrl + this.BASE_URI + `/${organizationId}/roles`
     );
   }
 

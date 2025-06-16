@@ -1,14 +1,14 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, EMPTY, filter, Observable, switchMap, take, throwError } from 'rxjs';
-import { AuthService } from '../services/auth.service';
-import { AuthStorageService } from '../services/auth-storage.service';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject, catchError, EMPTY, filter, Observable, switchMap, take, throwError} from 'rxjs';
+import {AuthService} from '../services/auth.service';
+import {AuthStorageService} from '../services/auth-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthInterceptorService implements HttpInterceptor{
+export class AuthInterceptorService implements HttpInterceptor {
 
   private isRefreshing = false;
 
@@ -17,23 +17,24 @@ export class AuthInterceptorService implements HttpInterceptor{
   constructor(
     private authService: AuthService,
     private authStorage: AuthStorageService,
-    private router: Router 
-  ) { }
-  
+    private router: Router
+  ) {
+  }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let request = req;
-    
+
     request = this.addTokenHeader(req);
-    
+
 
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status == 401) {
-          
-          if(req.url.includes('refresh')) {
+
+          if (req.url.includes('refresh')) {
             return throwError(() => err);
           }
-        
+
           return this.handle401Error(request, next);
         }
         return throwError(() => err);
@@ -60,21 +61,20 @@ export class AuthInterceptorService implements HttpInterceptor{
 
       return this.authService.refreshToken().pipe(
         switchMap((tokenResp) => {
-            this.isRefreshing = false;
-            this.authStorage.saveCredential(tokenResp);
+          this.isRefreshing = false;
+          this.authStorage.saveCredential(tokenResp);
 
 
-            this.refreshTokenSubject.next(true);
-            return next.handle(this.addTokenHeader(request));
+          this.refreshTokenSubject.next(true);
+          return next.handle(this.addTokenHeader(request));
         }),
         catchError((err) => {
-            this.isRefreshing = false;
-            this.router.navigate(['login']);
-            return EMPTY; 
+          this.isRefreshing = false;
+          this.router.navigate(['login']);
+          return EMPTY;
         })
-    );
-    }
-    else {
+      );
+    } else {
       return this.refreshTokenSubject.pipe(
         filter((bool: boolean) => bool),
         take(1),
@@ -82,6 +82,6 @@ export class AuthInterceptorService implements HttpInterceptor{
       );
     }
   }
-  
+
 
 }

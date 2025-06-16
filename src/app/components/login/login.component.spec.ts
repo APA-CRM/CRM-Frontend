@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LoginComponent } from './login.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { AuthService } from '../../core/services/auth.service';
-import { of, throwError } from 'rxjs';
-import { AuthDetails } from '../../models/auth/auth-response';
-import { ErrorMessageModel } from '../../models/error/error-message-model';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {LoginComponent} from './login.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
+import {AuthService} from '../../core/services/auth.service';
+import {of, throwError} from 'rxjs';
+import {AuthDetails} from '../../models/auth/auth-response';
+import {ErrorMessageModel} from '../../models/error/error-message-model';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -32,9 +32,9 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, LoginComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
-        { provide: MessageService, useValue: messageServiceMock },
-        { provide: Router, useValue: routerMock }
+        {provide: AuthService, useValue: authServiceMock},
+        {provide: MessageService, useValue: messageServiceMock},
+        {provide: Router, useValue: routerMock}
       ]
     }).compileComponents();
 
@@ -55,7 +55,7 @@ describe('LoginComponent', () => {
   });
 
   it('should mark form invalid if required fields are empty', () => {
-    component.loginForm.setValue({ login: '', password: '' });
+    component.loginForm.setValue({login: '', password: ''});
     expect(component.loginForm.invalid).toBeTrue();
   });
 
@@ -67,22 +67,22 @@ describe('LoginComponent', () => {
     };
 
     authServiceMock.signIn.and.returnValue(of(mockResponse));
-    component.loginForm.setValue({ login: 'user', password: 'pass' });
+    component.loginForm.setValue({login: 'user', password: 'pass'});
 
     component.onSubmit();
 
-    expect(authServiceMock.signIn).toHaveBeenCalledWith({ login: 'user', password: 'pass' });
+    expect(authServiceMock.signIn).toHaveBeenCalledWith({login: 'user', password: 'pass'});
     expect(authServiceMock.saveCredential).toHaveBeenCalledWith(mockResponse);
     expect(routerMock.navigate).toHaveBeenCalledWith(['']);
   });
 
   it('should show error message on failed login', () => {
     const mockError = {
-      error: { message: 'Invalid credentials' } as ErrorMessageModel
+      error: {message: 'Invalid credentials'} as ErrorMessageModel
     };
 
     authServiceMock.signIn.and.returnValue(throwError(() => mockError));
-    component.loginForm.setValue({ login: 'user', password: 'wrongpass' });
+    component.loginForm.setValue({login: 'user', password: 'wrongpass'});
 
     component.onSubmit();
 
@@ -94,7 +94,7 @@ describe('LoginComponent', () => {
   });
 
   it('should not call AuthService.signUp if form is invalid', () => {
-    component.loginForm.setValue({ login: '', password: '' });
+    component.loginForm.setValue({login: '', password: ''});
 
     component.onSubmit();
 

@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { AuthService } from '../../core/services/auth.service';
-import { AuthRequest } from '../../models/auth/auth-request';
-import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
-import { ErrorMessageModel } from '../../models/error/error-message-model';
-import { AuthStorageService } from '../../core/services/auth-storage.service';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {CommonModule} from '@angular/common';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {FloatLabelModule} from 'primeng/floatlabel';
+import {AuthService} from '../../core/services/auth.service';
+import {AuthRequest} from '../../models/auth/auth-request';
+import {MessageService} from 'primeng/api';
+import {Router} from '@angular/router';
+import {ErrorMessageModel} from '../../models/error/error-message-model';
+import {AuthStorageService} from '../../core/services/auth-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +36,8 @@ export class LoginComponent {
     private authStorage: AuthStorageService,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -48,19 +49,19 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const credentials: AuthRequest = this.loginForm.value;
-      
+
       this.authService.signIn(credentials)
-      .subscribe({
-        next: details => {
-          this.authStorage.saveCredential(details);
-          this.router.navigate(['/organization/choose']);
-        },
-        error: err => {
-          const error: ErrorMessageModel = err.error; 
-          
-          this.messageService.add({closable: true, summary: error.message, severity: 'error'})
-        }
-      });
+        .subscribe({
+          next: details => {
+            this.authStorage.saveCredential(details);
+            this.router.navigate(['/organization/choose']);
+          },
+          error: err => {
+            const error: ErrorMessageModel = err.error;
+
+            this.messageService.add({closable: true, summary: error.message, severity: 'error'})
+          }
+        });
     }
   }
 
@@ -69,8 +70,8 @@ export class LoginComponent {
   }
 
   isInvalidField(key: string): boolean {
-    return this.loginForm.controls[key].invalid && 
-        this.loginForm.controls[key].touched;
+    return this.loginForm.controls[key].invalid &&
+      this.loginForm.controls[key].touched;
   }
 
 }

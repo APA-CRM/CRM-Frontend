@@ -1,103 +1,103 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
-        <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
+  <div class="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
 
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-7">
-            <div>
-                <p-inputgroup>
-                    <p-inputgroup-addon>
-                        <i class="pi pi-user"></i>
-                    </p-inputgroup-addon>
-                    <p-floatlabel>
-                        <label for="login">Login</label>
-                        <input pInputText id="login" formControlName="login" class="w-full" />
-                    </p-floatlabel>
-                </p-inputgroup>
-                <div *ngIf="isInvalidField('login')" class="text-red-500 text-sm mt-1">
-                    Login is required.
-                </div>
-            </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="space-y-7">
+      <div>
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-user"></i>
+          </p-inputgroup-addon>
+          <p-floatlabel>
+            <label for="login">Login</label>
+            <input class="w-full" formControlName="login" id="login" pInputText/>
+          </p-floatlabel>
+        </p-inputgroup>
+        <div *ngIf="isInvalidField('login')" class="text-red-500 text-sm mt-1">
+          Login is required.
+        </div>
+      </div>
 
-            <div>
-                <p-inputgroup>
-                    <p-inputgroup-addon>
-                        <i class="pi pi-envelope"></i>
-                    </p-inputgroup-addon>
-                    <p-floatlabel>
-                        <label for="email">Email</label>
-                        <input pInputText type="email" id="email" formControlName="email" class="w-full" />
-                    </p-floatlabel>
-                </p-inputgroup>
-                <div *ngIf="isInvalidField('email')" class="text-red-500 text-sm mt-1">
-                    A valid email is required.
-                </div>
-            </div>
+      <div>
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-envelope"></i>
+          </p-inputgroup-addon>
+          <p-floatlabel>
+            <label for="email">Email</label>
+            <input class="w-full" formControlName="email" id="email" pInputText type="email"/>
+          </p-floatlabel>
+        </p-inputgroup>
+        <div *ngIf="isInvalidField('email')" class="text-red-500 text-sm mt-1">
+          A valid email is required.
+        </div>
+      </div>
 
-            <div>
-                <p-inputgroup>
-                    <p-inputgroup-addon>
-                        <i class="pi pi-id-card"></i>
-                    </p-inputgroup-addon>
-                    <p-floatlabel>
-                        <label for="firstName">First name</label>
-                        <input pInputText type="text" id="firstName" formControlName="firstName" class="w-full" />
-                    </p-floatlabel>
-                </p-inputgroup>
-            </div>
+      <div>
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-id-card"></i>
+          </p-inputgroup-addon>
+          <p-floatlabel>
+            <label for="firstName">First name</label>
+            <input class="w-full" formControlName="firstName" id="firstName" pInputText type="text"/>
+          </p-floatlabel>
+        </p-inputgroup>
+      </div>
 
-            <div>
-                <p-inputgroup>
-                    <p-inputgroup-addon>
-                        <i class="pi pi-id-card"></i>
-                    </p-inputgroup-addon>
-                    <p-floatlabel>
-                        <label for="lastName">Last name</label>
-                        <input pInputText type="text" id="lastName" formControlName="lastName" class="w-full" />
-                    </p-floatlabel>
-                </p-inputgroup>
-            </div>
+      <div>
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-id-card"></i>
+          </p-inputgroup-addon>
+          <p-floatlabel>
+            <label for="lastName">Last name</label>
+            <input class="w-full" formControlName="lastName" id="lastName" pInputText type="text"/>
+          </p-floatlabel>
+        </p-inputgroup>
+      </div>
 
 
-            <div *ngIf="!registerForm.get('generatePassword')?.value" class="space-y-7">
-                <div>
-                    <p-inputgroup>
-                        <p-inputgroup-addon>
-                            <i class="pi pi-unlock"></i>
-                        </p-inputgroup-addon>
-                        <p-floatlabel>
-                            <label for="password">Password</label>
-                            <input pInputText type="password" id="password" formControlName="password" class="w-full">
-                        </p-floatlabel>
-                    </p-inputgroup>
-                    <div *ngIf="isInvalidField('password')" class="text-red-500 text-sm mt-1">
-                        Password is required.
-                    </div>
-                </div>
+      <div *ngIf="!registerForm.get('generatePassword')?.value" class="space-y-7">
+        <div>
+          <p-inputgroup>
+            <p-inputgroup-addon>
+              <i class="pi pi-unlock"></i>
+            </p-inputgroup-addon>
+            <p-floatlabel>
+              <label for="password">Password</label>
+              <input class="w-full" formControlName="password" id="password" pInputText type="password">
+            </p-floatlabel>
+          </p-inputgroup>
+          <div *ngIf="isInvalidField('password')" class="text-red-500 text-sm mt-1">
+            Password is required.
+          </div>
+        </div>
 
-                <div>
-                    <p-inputgroup>
-                        <p-inputgroup-addon>
-                            <i class="pi pi-lock"></i>
-                        </p-inputgroup-addon>
-                        <p-floatlabel>
-                            <label for="confirmPassword">Confirm Password</label>
-                            <input pInputText type="password" id="confirmPassword" formControlName="confirmPassword"
-                                class="w-full">
-                        </p-floatlabel>
-                    </p-inputgroup>
-                    <div *ngIf="isInvalidField('confirmPassword')" class="text-red-500 text-sm mt-1">
-                        Passwords must match.
-                    </div>
-                </div>
-            </div>
+        <div>
+          <p-inputgroup>
+            <p-inputgroup-addon>
+              <i class="pi pi-lock"></i>
+            </p-inputgroup-addon>
+            <p-floatlabel>
+              <label for="confirmPassword">Confirm Password</label>
+              <input class="w-full" formControlName="confirmPassword" id="confirmPassword" pInputText
+                     type="password">
+            </p-floatlabel>
+          </p-inputgroup>
+          <div *ngIf="isInvalidField('confirmPassword')" class="text-red-500 text-sm mt-1">
+            Passwords must match.
+          </div>
+        </div>
+      </div>
 
-            <div>
-                <p-checkbox id="ga" formControlName="generatePassword" [binary]="true"
-                    (onChange)="togglePasswordFields()" />
-                <label for="ga" class="ml-2 text-gray-700 font-sans">Generate Password Automatically</label>
-            </div>
+      <div>
+        <p-checkbox (onChange)="togglePasswordFields()" [binary]="true" formControlName="generatePassword"
+                    id="ga"/>
+        <label class="ml-2 text-gray-700 font-sans" for="ga">Generate Password Automatically</label>
+      </div>
 
-            <button pButton type="submit" label="Register" class="w-full" [disabled]="registerForm.invalid"></button>
-        </form>
-    </div>
+      <button [disabled]="registerForm.invalid" class="w-full" label="Register" pButton type="submit"></button>
+    </form>
+  </div>
 </div>

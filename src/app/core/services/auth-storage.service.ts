@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AuthDetails } from '../../models/auth/auth-response';
+import {Injectable} from '@angular/core';
+import {AuthDetails} from '../../models/auth/auth-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class AuthStorageService {
     const token: string | null = localStorage.getItem(this.TOKEN_KEY);
 
     return tokenType && token ? `${tokenType} ${token}` : null;
-  } 
+  }
 
   public getRefreshToken(): string | null {
     return localStorage.getItem(this.REFRESH_TOKEN_KEY);

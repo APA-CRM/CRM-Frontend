@@ -1,4 +1,4 @@
 export interface AccessControl {
-    resource: string
-    actions: string[]
+  resource: string
+  actions: string[]
 }
