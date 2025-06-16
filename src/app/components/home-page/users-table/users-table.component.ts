@@ -108,7 +108,7 @@ export class UsersTableComponent implements OnInit {
   }
 
   findUsersToAddToOrganization($event: SelectFilterEvent) {
-    this.userService.getUsersByLogin($event.filter)
+    this.userService.getUsersByFullName($event.filter)
     .subscribe({
       next: (value) => this.usersToAdd = value,
       error: (err) => {

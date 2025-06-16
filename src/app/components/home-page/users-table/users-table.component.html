@@ -3,7 +3,7 @@
         <div>
             <p-select [options]="usersToAdd" [(ngModel)]="selectedUser" [filter]="true" [showClear]="true"
                 (onFilter)="findUsersToAddToOrganization($event)" optionLabel="fullName" placeholder="Select an User"
-                filterPlaceholder="Find by login" class="w-full md:w-56" />
+                filterPlaceholder="Find by full name" class="w-full md:w-56" />
             <button pButton type="button" icon="pi pi-plus" class="ml-3 p-2" [disabled]="selectedUser === null"
                 (click)="addUserToOrganization()">Add user</button>
         </div>
