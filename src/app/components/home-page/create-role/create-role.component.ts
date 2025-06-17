@@ -45,7 +45,8 @@ export class CreateRoleComponent {
     private organizationHolder: OrganizationHolderService,
     private organizationRoleService: OrganizationRolesService,
     private messageService: MessageService
-  ) {}
+  ) {
+  }
 
   disableResourceIfNotAll(resource: Resource) {
     return resource !== Resource.ALL && this.isAllResourceSelected;
@@ -66,7 +67,6 @@ export class CreateRoleComponent {
         resource,
         actions,
       }));
-
 
 
     const role: RoleRequest = {
