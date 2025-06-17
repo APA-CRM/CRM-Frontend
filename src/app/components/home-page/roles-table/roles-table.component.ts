@@ -16,8 +16,9 @@ import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {TagModule} from 'primeng/tag';
 import {RoleRequest} from '../../../models/roles/create-role-request';
 import {FormsModule} from '@angular/forms';
-import {AccessControlService} from '../../../core/services/access-control.service';
 import {MultiSelect} from 'primeng/multiselect';
+import {Action} from '../../../core/enums/action';
+import {Resource} from '../../../core/enums/resource';
 
 @Component({
   selector: 'app-roles-table',
@@ -54,9 +55,9 @@ export class RolesTableComponent implements OnInit, OnChanges {
 
   loading: boolean = true;
 
-  availableResources: string[] = [];
+  availableResources: Resource[] = Object.values(Resource);
 
-  availableActions: string[] = [];
+  availableActions: Action[] = Object.values(Action);
 
   selectedActionsPerResource: { [resource: string]: string[] } = {};
 
@@ -82,7 +83,6 @@ export class RolesTableComponent implements OnInit, OnChanges {
   constructor(
     private organizationHolder: OrganizationHolderService,
     private organizationRolesService: OrganizationRolesService,
-    private accessControlService: AccessControlService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
@@ -96,7 +96,6 @@ export class RolesTableComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.fetchRoles()
-    this.fetchResourcesAndActions();
   }
 
   fetchRoles(): void {
@@ -126,21 +125,6 @@ export class RolesTableComponent implements OnInit, OnChanges {
     this.fetchRoles();
   }
 
-  onUpdateRow(role: RoleModel) {
-    if (role.id === this.updatedRowId) {
-      this.updatedRowId = 0;
-    } else {
-      this.isAllResourceSelected = false;
-      this.updatedRowId = role.id;
-      this.updatedRole.name = role.name;
-      this.selectedActionsPerResource = {}
-
-      for (const ac of role.accessControls) {
-        this.selectedActionsPerResource[ac.resource] = ac.actions;
-      }
-    }
-  }
-
   openSidebar(role: RoleModel): void {
     this.isAllResourceSelected = false;
     this.updatedRowId = role.id;
@@ -148,7 +132,7 @@ export class RolesTableComponent implements OnInit, OnChanges {
     this.selectedActionsPerResource = {};
 
     for (const ac of role.accessControls) {
-      if (ac.resource === 'All' && ac.actions.length > 0) {
+      if (ac.resource === Resource.ALL && ac.actions.length > 0) {
         this.isAllResourceSelected = true;
       }
 
@@ -164,14 +148,12 @@ export class RolesTableComponent implements OnInit, OnChanges {
   }
 
   updateRole(): void {
-    const permissions = Object.entries(this.selectedActionsPerResource)
+    this.updatedRole.resources = Object.entries(this.selectedActionsPerResource)
       .filter(([_, actions]) => actions.length > 0)
       .map(([resource, actions]) => ({
         resource,
         actions,
       }));
-
-    this.updatedRole.resources = permissions;
 
     this.organizationRolesService.updateOrganizationRole(
       this.updatedRole, this.organizationHolder.getOrganizationId(),
@@ -192,12 +174,12 @@ export class RolesTableComponent implements OnInit, OnChanges {
     this.cancelEdit();
   }
 
-  disableResourceIfNotAll(resource: string) {
-    return resource !== 'All' && this.isAllResourceSelected;
+  disableResourceIfNotAll(resource: Resource) {
+    return resource !== Resource.ALL && this.isAllResourceSelected;
   }
 
-  onActionChange(resource: string) {
-    if (resource === 'All' && this.selectedActionsPerResource[resource].length > 0) {
+  onActionChange(resource: Resource) {
+    if (resource === Resource.ALL && this.selectedActionsPerResource[resource].length > 0) {
       this.isAllResourceSelected = true;
     } else {
       this.isAllResourceSelected = false;
@@ -232,32 +214,6 @@ export class RolesTableComponent implements OnInit, OnChanges {
         this.messageService.add({closable: true, summary: error.message, severity: 'error'});
       }
     })
-  }
-
-  private fetchResourcesAndActions() {
-    this.accessControlService.getAllActions().subscribe({
-      next: value => {
-        this.availableActions = value;
-
-        this.availableActions.map(a => ({label: a, value: a}))
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-
-        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-      }
-    });
-
-    this.accessControlService.getAllResources().subscribe({
-      next: value => {
-        this.availableResources = value;
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-
-        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-      }
-    });
   }
 
   private updateRoleInTable(newRole: RoleModel) {
