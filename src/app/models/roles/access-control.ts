@@ -1,4 +1,7 @@
+import {Action} from '../../core/enums/action';
+import {Resource} from '../../core/enums/resource';
+
 export interface AccessControl {
-  resource: string
-  actions: string[]
+  resource: Resource
+  actions: Action[]
 }

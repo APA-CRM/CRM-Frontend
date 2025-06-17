@@ -5,12 +5,13 @@ import {ButtonModule} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {MultiSelect} from 'primeng/multiselect';
 import {PopoverModule} from 'primeng/popover';
-import {AccessControlService} from '../../../core/services/access-control.service';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {RoleRequest} from '../../../models/roles/create-role-request';
 import {OrganizationRolesService} from '../../../core/services/organization-roles.service';
 import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
+import {Resource} from '../../../core/enums/resource';
+import {Action} from '../../../core/enums/action';
 
 @Component({
   selector: 'app-create-role',
@@ -32,29 +33,26 @@ export class CreateRoleComponent {
 
   roleName: string = '';
 
-  resources: string[] = [];
+  resources: Resource[] = Object.values(Resource);
 
-  availableActions: string[] = [];
+  availableActions: Action[] = Object.values(Action);
 
   isAllResourceSelected: boolean = false;
 
   selectedActionsPerResource: { [resource: string]: string[] } = {};
 
   constructor(
-    private accessControlService: AccessControlService,
     private organizationHolder: OrganizationHolderService,
     private organizationRoleService: OrganizationRolesService,
     private messageService: MessageService
-  ) {
-    this.fetchResourcesAndActions();
+  ) {}
+
+  disableResourceIfNotAll(resource: Resource) {
+    return resource !== Resource.ALL && this.isAllResourceSelected;
   }
 
-  disableResourceIfNotAll(resource: string) {
-    return resource !== 'All' && this.isAllResourceSelected;
-  }
-
-  onActionChange(resource: string) {
-    if (resource === 'All' && this.selectedActionsPerResource[resource].length > 0) {
+  onActionChange(resource: Resource) {
+    if (resource === Resource.ALL && this.selectedActionsPerResource[resource].length > 0) {
       this.isAllResourceSelected = true;
     } else {
       this.isAllResourceSelected = false;
@@ -68,6 +66,8 @@ export class CreateRoleComponent {
         resource,
         actions,
       }));
+
+
 
     const role: RoleRequest = {
       name: this.roleName,
@@ -91,29 +91,4 @@ export class CreateRoleComponent {
     })
   }
 
-  private fetchResourcesAndActions() {
-    this.accessControlService.getAllActions().subscribe({
-      next: value => {
-        this.availableActions = value;
-
-        this.availableActions.map(a => ({label: a, value: a}))
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-
-        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-      }
-    });
-
-    this.accessControlService.getAllResources().subscribe({
-      next: value => {
-        this.resources = value;
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-
-        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-      }
-    });
-  }
 }
