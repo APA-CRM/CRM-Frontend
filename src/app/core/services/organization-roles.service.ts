@@ -13,7 +13,7 @@ import {FilterRequestMapperService} from '../mapper/filter-request-mapper.servic
 })
 export class OrganizationRolesService {
 
-  private readonly BASE_URI = '/api/organizations/'
+  private readonly BASE_URI = '/api/organizations'
 
   constructor(
     private http: HttpClient,

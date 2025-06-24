@@ -9,7 +9,7 @@ import {RoleModel} from '../../models/roles/role-model';
 })
 export class OrganizationUsersRolesService {
 
-  private readonly BASE_URI = '/api/organizations/'
+  private readonly BASE_URI = '/api/organizations'
 
   constructor(
     private http: HttpClient,
