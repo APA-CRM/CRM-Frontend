@@ -5,7 +5,6 @@ import {Observable} from 'rxjs';
 import {PageModel} from '../../models/page/page-model';
 import {UsersFilterRequest} from '../../models/users/users-filter-request';
 import {EnvironmentDev} from '../environment/environment.dev';
-import {UserModel} from '../../models/users/user-model';
 import {FilterRequestMapperService} from '../mapper/filter-request-mapper.service';
 
 @Injectable({
@@ -27,12 +26,6 @@ export class OrganizationUsersService {
 
     return this.http.get<PageModel<UserWithRolesModel>>(
       this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`, {params: params}
-    );
-  }
-
-  public addUserToOrganization(organizationId: number, userId: number): Observable<UserModel> {
-    return this.http.put<UserModel>(
-      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`, null
     );
   }
 

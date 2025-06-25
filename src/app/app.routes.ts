@@ -6,12 +6,14 @@ import {ChooseOrganizationComponent} from './components/choose-organization/choo
 import {UsersTableComponent} from './components/home-page/users-table/users-table.component';
 import {HomeComponent} from './components/home-page/home/home.component';
 import {RolesComponent} from './components/home-page/roles/roles.component';
+import {InvitationComponent} from './components/invitation/invitation.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'organization/create', component: CreateOrganizationComponent},
   {path: 'organization/choose', component: ChooseOrganizationComponent},
+  {path: 'invitation/:invitationId', component: InvitationComponent},
   {
     path: '', component: HomeComponent, children: [
       {path: 'users', component: UsersTableComponent},
