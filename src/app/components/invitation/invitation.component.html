@@ -1,0 +1,86 @@
+@if (!invitationNotFound) {
+
+  <p-card
+    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl p-8 bg-white rounded-2xl shadow-2xl">
+
+    <ng-template #header>
+      @if (loading) {
+        <p-skeleton styleClass="mx-auto mb-6" height="2rem" width="60%" borderRadius="8px" animation="wave"/>
+      } @else {
+        <div class="text-center text-2xl font-bold">
+          You've been invited!
+        </div>
+      }
+    </ng-template>
+
+    <ng-template #content>
+      <div class="space-y-6 text-center text-lg px-4">
+        @if (loading) {
+          <p-skeleton styleClass="m-auto mb-2" height="1.25rem" width="75%" borderRadius="6px" animation="wave"/>
+          <p-skeleton styleClass="m-auto" height="1.25rem" width="50%" borderRadius="6px" animation="wave"/>
+        } @else {
+          <p class="text-gray-700">
+            <strong>{{ invitation!.organization.name }}</strong> has invited you to join their organization.
+          </p>
+
+          <p class="text-gray-600 text-base italic">
+            The invitation will expire on
+            <strong>{{ invitation.expiredAt | date: 'dd MMM yyyy h:mm:ss a' }}</strong>
+          </p>
+        }
+      </div>
+    </ng-template>
+
+    <ng-template #footer>
+      <div class="flex justify-center gap-6 mt-10 px-4">
+        @if (loading) {
+          <p-skeleton class="rounded-xl" width="8rem" height="3rem" animation="wave"/>
+          <p-skeleton class="rounded-xl" width="8rem" height="3rem" animation="wave"/>
+        } @else {
+          <button (click)="declineInvitation()"
+                  class="w-32 h-12 text-base"
+                  icon="pi pi-times"
+                  label="Decline"
+                  outlined
+                  pButton
+                  severity="danger"
+                  type="button"></button>
+
+          <button (click)="acceptInvitation()"
+                  class="w-32 h-12 text-base"
+                  icon="pi pi-check"
+                  label="Accept"
+                  pButton
+                  severity="success"
+                  type="button"></button>
+        }
+      </div>
+
+      <div class="text-center mt-8 text-lg">
+        @if (loading) {
+          <p-skeleton styleClass="mx-auto" height="1rem" width="6rem" borderRadius="6px" animation="wave"/>
+        } @else {
+          <button pButton label="Back to Home"
+                  icon="pi pi-home"
+                  class="w-[350px] mt-4"
+                  (click)="goToHomePage()"
+                  severity="secondary"></button>
+        }
+      </div>
+    </ng-template>
+
+  </p-card>
+} @else {
+  <div
+    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center bg-white shadow-2xl p-8 rounded-2xl max-w-md w-full">
+    <h2 class="text-2xl font-bold text-red-600 mb-4">Invitation Not Found</h2>
+    <p class="text-gray-700 mb-6">
+      We couldn't find the invitation you're looking for.
+    </p>
+    <button pButton label="Back to Home"
+            icon="pi pi-home"
+            class="w-full"
+            (click)="goToHomePage()"
+            severity="secondary"></button>
+  </div>
+}

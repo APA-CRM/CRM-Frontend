@@ -29,8 +29,8 @@ export class OrganizationInvitationService {
     return this.http.post<InvitationModel>(this.env.apiUrl + this.BASE_URI + `/${organizationId}/invitations`, body)
   }
 
-  public approveInvitation(invitationId: string): Observable<InvitationModel> {
-    return this.http.patch<InvitationModel>(this.env.apiUrl + this.BASE_URI + `/invitations/${invitationId}/approve`, {});
+  public acceptInvitation(invitationId: string): Observable<InvitationModel> {
+    return this.http.patch<InvitationModel>(this.env.apiUrl + this.BASE_URI + `/invitations/${invitationId}/accept`, {});
   }
 
   public declineInvitation(invitationId: string): Observable<InvitationModel> {
