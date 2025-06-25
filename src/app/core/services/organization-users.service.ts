@@ -30,12 +30,6 @@ export class OrganizationUsersService {
     );
   }
 
-  public addUserToOrganization(organizationId: number, userId: number): Observable<UserModel> {
-    return this.http.put<UserModel>(
-      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`, null
-    );
-  }
-
   public removeUserFromOrganization(organizationId: number, userId: number): Observable<Object> {
     return this.http.delete(this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`);
   }

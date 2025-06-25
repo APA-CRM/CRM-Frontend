@@ -21,6 +21,7 @@ import {RoleModel} from '../../../models/roles/role-model';
 import {UserModel} from '../../../models/users/user-model';
 import {UserService} from '../../../core/services/user.service';
 import {OrganizationUsersRolesService} from '../../../core/services/organization-users-roles.service';
+import {OrganizationInvitationService} from '../../../core/services/organization-invitation.service';
 
 @Component({
   selector: 'app-users-table',
@@ -66,6 +67,7 @@ export class UsersTableComponent implements OnInit {
     private organizationRolesService: OrganizationRolesService,
     private organizationUsersRolesService: OrganizationUsersRolesService,
     private userService: UserService,
+    private invitationService: OrganizationInvitationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
@@ -135,18 +137,17 @@ export class UsersTableComponent implements OnInit {
     })
   }
 
-  addUserToOrganization(): void {
-    this.organizationUserService.addUserToOrganization(
+  inviteUserToOrganization(): void {
+    this.invitationService.createInvitation(
       this.organizationHolder.getOrganizationId(),
       this.selectedUser!.id
     ).subscribe({
-      next: (user) => {
+      next: (data) => {
         this.messageService.add({
           closable: true,
-          summary: `${user.fullName} added to organization`,
+          summary: `User has been invited to the organization`,
           severity: 'success'
         });
-        this.fetchUsers();
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;
