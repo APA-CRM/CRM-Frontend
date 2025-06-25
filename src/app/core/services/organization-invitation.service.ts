@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {EnvironmentDev} from '../environment/environment.dev';
 import {InvitationModel} from '../../models/invitations/invitation-model';
@@ -15,7 +15,8 @@ export class OrganizationInvitationService {
   constructor(
     private http: HttpClient,
     private env: EnvironmentDev
-  ) { }
+  ) {
+  }
 
   public getInvitation(invitationId: string): Observable<InvitationModel> {
     return this.http.get<InvitationModel>(this.env.apiUrl + this.BASE_URI + `/invitations/${invitationId}`);
