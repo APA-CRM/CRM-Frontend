@@ -22,9 +22,10 @@ export class OrganizationInvitationService {
     return this.http.get<InvitationModel>(this.env.apiUrl + this.BASE_URI + `/invitations/${invitationId}`);
   }
 
-  public createInvitation(organizationId: number, userId: number): Observable<InvitationModel> {
+  public createInvitation(organizationId: number, userId: number, roleId: number | null): Observable<InvitationModel> {
     let body: InvitationRequest = {
       userId: userId,
+      roleId: roleId
     };
 
     return this.http.post<InvitationModel>(this.env.apiUrl + this.BASE_URI + `/${organizationId}/invitations`, body)

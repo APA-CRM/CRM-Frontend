@@ -5,6 +5,10 @@
                 [options]="usersToAdd"
                 [showClear]="true" class="w-full md:w-56" filterPlaceholder="Find by full name"
                 optionLabel="fullName" placeholder="Select an User"/>
+      @if (selectedUser) {
+        <p-select [options]="roles" [(ngModel)]="selectedRole"
+                  optionLabel="name" placeholder="Select a role for the user" [showClear]="true" class="ml-2"/>
+      }
       <button (click)="inviteUserToOrganization()" [disabled]="selectedUser === null" class="ml-3 p-2" icon="pi pi-plus"
               pButton
               type="button">Invite User

@@ -51,6 +51,8 @@ export class UsersTableComponent implements OnInit {
 
   selectedUser: UserModel | null = null;
 
+  selectedRole: RoleModel | null = null;
+
   totalElements: number = 0;
 
   size: number = 10
@@ -138,9 +140,12 @@ export class UsersTableComponent implements OnInit {
   }
 
   inviteUserToOrganization(): void {
+    const roleId = this.selectedRole ? this.selectedRole.id : null;
+
     this.invitationService.createInvitation(
       this.organizationHolder.getOrganizationId(),
-      this.selectedUser!.id
+      this.selectedUser!.id,
+      roleId
     ).subscribe({
       next: (data) => {
         this.messageService.add({
