@@ -1,0 +1,102 @@
+<div class="main-content ml-[250px] p-6">
+  <!-- Skeleton loader when loading -->
+  <ng-container *ngIf="loading; else profileContent">
+    <div class="space-y-8">
+      <div class="flex justify-between items-center mb-6">
+        <p-skeleton width="160px" height="32px" borderRadius="8px"></p-skeleton>
+        <p-skeleton width="100px" height="36px" borderRadius="6px"></p-skeleton>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
+          <p-skeleton width="100%" height="38px"></p-skeleton>
+        </div>
+        <div>
+          <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
+          <p-skeleton width="100%" height="38px"></p-skeleton>
+        </div>
+        <div class="flex gap-4 col-span-2">
+          <div class="flex-1">
+            <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
+            <p-skeleton width="100%" height="38px"></p-skeleton>
+          </div>
+          <div class="flex-1">
+            <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
+            <p-skeleton width="100%" height="38px"></p-skeleton>
+          </div>
+        </div>
+        <div>
+          <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
+          <p-skeleton width="100%" height="38px"></p-skeleton>
+        </div>
+        <div class="md:col-span-2">
+          <p-skeleton width="150px" height="20px" class="mb-2"></p-skeleton>
+          <p-skeleton width="100%" height="70px"></p-skeleton>
+        </div>
+      </div>
+      <div class="flex justify-end mt-8 gap-2">
+        <p-skeleton width="160px" height="36px"></p-skeleton>
+        <p-skeleton width="80px" height="36px"></p-skeleton>
+      </div>
+      <div class="mt-8 text-sm text-gray-500">
+        <p-skeleton width="120px" height="18px" class="mb-2"></p-skeleton>
+        <p-skeleton width="140px" height="18px"></p-skeleton>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Profile content when loaded -->
+  <ng-template #profileContent>
+    <div *ngIf="user">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">User Profile</h2>
+        <button *ngIf="isMe && !editing" (click)="enableEdit()" pButton type="button" icon="pi pi-pencil"
+                label="Edit"></button>
+      </div>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-gray-700 font-semibold mb-1">Login</label>
+            <input pInputText class="w-full" formControlName="login" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-1">Email</label>
+            <input pInputText class="w-full" formControlName="email" />
+          </div>
+          <div class="flex gap-4 col-span-2">
+            <div class="flex-1">
+              <label class="block text-gray-700 font-semibold mb-1">First Name</label>
+              <input pInputText class="w-full" formControlName="firstName" />
+            </div>
+            <div class="flex-1">
+              <label class="block text-gray-700 font-semibold mb-1">Last Name</label>
+              <input pInputText class="w-full" formControlName="lastName" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-1">Phone Number</label>
+            <input pInputText class="w-full" formControlName="phoneNumber" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-gray-700 font-semibold mb-1">About Yourself</label>
+            <textarea pTextarea class="w-full" formControlName="aboutYourself" rows="3"></textarea>
+          </div>
+        </div>
+        <div *ngIf="editing" class="flex justify-end mt-8 gap-2">
+          <button type="button" pButton label="Reset values to default" class="p-button-secondary" (click)="resetToDefault()"></button>
+          <button type="submit" pButton [loading]="saveLoading" label="Save"></button>
+        </div>
+      </form>
+      <div class="mt-8 text-sm text-gray-500">
+        <div>
+          <span class="font-medium">Created:</span>
+          {{ user.createdAt | date:'medium' }}
+        </div>
+        <div>
+          <span class="font-medium">Last Updated:</span>
+          {{ user.updateAt | date:'medium' }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
