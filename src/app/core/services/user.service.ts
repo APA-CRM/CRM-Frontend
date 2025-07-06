@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {EnvironmentDev} from '../environment/environment.dev';
 import {Observable} from 'rxjs';
 import {UserModel} from '../../models/users/user-model';
+import {UserUpdateRequest} from '../../models/users/user-update-request';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,14 @@ export class UserService {
 
   public getUsersByFullName(fullName: string): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(this.env.apiUrl + this.BASE_URI, {params: {"fullName": fullName}});
+  }
+
+  public getUserById(id: number): Observable<UserModel> {
+    return this.http.get<UserModel>(`${this.env.apiUrl}${this.BASE_URI}/${id}`);
+  }
+
+  public updateUser(id: number, request: UserUpdateRequest): Observable<UserModel> {
+    return this.http.patch<UserModel>(`${this.env.apiUrl}${this.BASE_URI}/${id}`, request);
   }
 
 }
