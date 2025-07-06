@@ -71,7 +71,7 @@
     </ng-template>
     <ng-template #body let-user>
       <tr>
-        <td>{{ user.login }}</td>
+        <td (click)="navigateToUserProfile(user.id)" class="cursor-pointer">{{ user.login }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.firstName || 'Not specified' }}</td>
         <td>{{ user.lastName || 'Not specified' }}</td>

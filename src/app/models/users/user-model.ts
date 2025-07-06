@@ -5,6 +5,8 @@ export interface UserModel {
   fullName: string
   firstName: string
   lastName: string
+  phoneNumber: string
+  aboutYourself: string
   createdAt: Date
   updateAt: Date
 }

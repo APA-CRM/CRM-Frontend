@@ -22,6 +22,7 @@ import {UserModel} from '../../../models/users/user-model';
 import {UserService} from '../../../core/services/user.service';
 import {OrganizationUsersRolesService} from '../../../core/services/organization-users-roles.service';
 import {OrganizationInvitationService} from '../../../core/services/organization-invitation.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-users-table',
@@ -71,7 +72,8 @@ export class UsersTableComponent implements OnInit {
     private userService: UserService,
     private invitationService: OrganizationInvitationService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) {
     this.filter = this.defaultValueOfFilter();
   }
@@ -241,6 +243,10 @@ export class UsersTableComponent implements OnInit {
   onSort(event: SortEvent): void {
     this.filter.sortBy = event.field!;
     this.filter.sortDirection = event.order === 1 ? SortDirection.ASC : SortDirection.DESC;
+  }
+
+  navigateToUserProfile(userId: number) {
+    this.router.navigate([`user/${userId}`]);
   }
 
   private defaultValueOfFilter(): UsersFilterRequest {
