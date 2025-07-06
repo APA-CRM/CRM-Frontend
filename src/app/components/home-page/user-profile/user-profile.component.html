@@ -1,46 +1,48 @@
 <div class="main-content ml-[250px] p-6">
+  <h2 class="text-2xl font-bold mb-3 text-gray-800">User Profile</h2>
   <!-- Skeleton loader when loading -->
   <ng-container *ngIf="loading; else profileContent">
+    <div class="flex items-center mb-8">
+      <p-skeleton size="3rem" styleClass="mr-2"/>
+      <p-skeleton styleClass="ml-2" width="5rem"/>
+    </div>
     <div class="space-y-8">
-      <div class="flex justify-between items-center mb-6">
-        <p-skeleton width="160px" height="32px" borderRadius="8px"></p-skeleton>
-        <p-skeleton width="100px" height="36px" borderRadius="6px"></p-skeleton>
-      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
-          <p-skeleton width="100%" height="38px"></p-skeleton>
+          <p-skeleton borderRadius="8px" height="32px" width="160px"></p-skeleton>
+          <p-skeleton borderRadius="6px" height="36px" width="100px"></p-skeleton>
+          <p-skeleton height="38px" width="100%"></p-skeleton>
         </div>
         <div>
-          <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
-          <p-skeleton width="100%" height="38px"></p-skeleton>
+          <p-skeleton class="mb-2" height="20px" width="120px"></p-skeleton>
+          <p-skeleton height="38px" width="100%"></p-skeleton>
         </div>
         <div class="flex gap-4 col-span-2">
           <div class="flex-1">
-            <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
-            <p-skeleton width="100%" height="38px"></p-skeleton>
+            <p-skeleton class="mb-2" height="20px" width="120px"></p-skeleton>
+            <p-skeleton height="38px" width="100%"></p-skeleton>
           </div>
           <div class="flex-1">
-            <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
-            <p-skeleton width="100%" height="38px"></p-skeleton>
+            <p-skeleton class="mb-2" height="20px" width="120px"></p-skeleton>
+            <p-skeleton height="38px" width="100%"></p-skeleton>
           </div>
         </div>
         <div>
-          <p-skeleton width="120px" height="20px" class="mb-2"></p-skeleton>
-          <p-skeleton width="100%" height="38px"></p-skeleton>
+          <p-skeleton class="mb-2" height="20px" width="120px"></p-skeleton>
+          <p-skeleton height="38px" width="100%"></p-skeleton>
         </div>
         <div class="md:col-span-2">
-          <p-skeleton width="150px" height="20px" class="mb-2"></p-skeleton>
-          <p-skeleton width="100%" height="70px"></p-skeleton>
+          <p-skeleton class="mb-2" height="20px" width="150px"></p-skeleton>
+          <p-skeleton height="70px" width="100%"></p-skeleton>
         </div>
       </div>
       <div class="flex justify-end mt-8 gap-2">
-        <p-skeleton width="160px" height="36px"></p-skeleton>
-        <p-skeleton width="80px" height="36px"></p-skeleton>
+        <p-skeleton height="36px" width="160px"></p-skeleton>
+        <p-skeleton height="36px" width="80px"></p-skeleton>
       </div>
       <div class="mt-8 text-sm text-gray-500">
-        <p-skeleton width="120px" height="18px" class="mb-2"></p-skeleton>
-        <p-skeleton width="140px" height="18px"></p-skeleton>
+        <p-skeleton class="mb-2" height="18px" width="120px"></p-skeleton>
+        <p-skeleton height="18px" width="140px"></p-skeleton>
       </div>
     </div>
   </ng-container>
@@ -49,42 +51,76 @@
   <ng-template #profileContent>
     <div *ngIf="user">
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">User Profile</h2>
-        <button *ngIf="isMe && !editing" (click)="enableEdit()" pButton type="button" icon="pi pi-pencil"
-                label="Edit"></button>
+        <div class="flex items-center mb-8">
+          <p-avatar
+            [label]="getLabelForAvatar(user!.fullName)"
+            [style]="{ 'background-color': '#00a63e', color: 'white', 'width': '80px', 'height': '80px', 'font-size': '2.5rem' }"
+            size="xlarge"
+            styleClass="cursor-default text-3xl"/>
+          <span class="ml-4 font-bold text-2xl">{{ user!.fullName }}</span>
+        </div>
+        <button (click)="enableEdit()" *ngIf="isMe && !editing" icon="pi pi-pencil" pButton type="button">Edit</button>
       </div>
-      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <form (ngSubmit)="saveProfile()" [formGroup]="profileForm">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-gray-700 font-semibold mb-1">Login</label>
-            <input pInputText class="w-full" formControlName="login" />
+            <div class="w-full h-[38px] flex items-center bg-gray-100 rounded px-3 text-gray-700 select-text">
+              {{ user.login }}
+            </div>
           </div>
           <div>
             <label class="block text-gray-700 font-semibold mb-1">Email</label>
-            <input pInputText class="w-full" formControlName="email" />
+            <div class="w-full h-[38px] flex items-center bg-gray-100 rounded px-3 text-gray-700 select-text">
+              {{ user.email }}
+            </div>
           </div>
           <div class="flex gap-4 col-span-2">
             <div class="flex-1">
               <label class="block text-gray-700 font-semibold mb-1">First Name</label>
-              <input pInputText class="w-full" formControlName="firstName" />
+              @if (isMe && editing) {
+                <input pInputText class="w-full" formControlName="firstName"/>
+              } @else {
+                <div class="w-full h-[38px] flex items-center bg-gray-100 rounded px-3 text-gray-700 select-text">
+                  {{ user.firstName }}
+                </div>
+              }
             </div>
             <div class="flex-1">
               <label class="block text-gray-700 font-semibold mb-1">Last Name</label>
-              <input pInputText class="w-full" formControlName="lastName" />
+              @if (isMe && editing) {
+                <input pInputText class="w-full" formControlName="lastName"/>
+              } @else {
+                <div class="w-full h-[38px] flex items-center bg-gray-100 rounded px-3 text-gray-700 select-text">
+                  {{ user.lastName }}
+                </div>
+              }
             </div>
           </div>
           <div>
             <label class="block text-gray-700 font-semibold mb-1">Phone Number</label>
-            <input pInputText class="w-full" formControlName="phoneNumber" />
+            @if (isMe && editing) {
+              <input pInputText class="w-full" formControlName="phoneNumber"/>
+            } @else {
+              <div class="w-full h-[38px] flex items-center bg-gray-100 rounded px-3 text-gray-700 select-text">
+                {{ user.phoneNumber || 'Not Specified' }}
+              </div>
+            }
           </div>
           <div class="md:col-span-2">
             <label class="block text-gray-700 font-semibold mb-1">About Yourself</label>
-            <textarea pTextarea class="w-full" formControlName="aboutYourself" rows="3"></textarea>
+            @if (isMe && editing) {
+              <textarea pTextarea class="w-full" formControlName="aboutYourself" rows="3"></textarea>
+            } @else {
+              <div class="w-full h-[38px] flex items-center bg-gray-100 rounded px-3 text-gray-700 select-text">
+                {{ user.aboutYourself || 'Not Specified' }}
+              </div>
+            }
           </div>
         </div>
         <div *ngIf="editing" class="flex justify-end mt-8 gap-2">
-          <button type="button" pButton label="Reset values to default" class="p-button-secondary" (click)="resetToDefault()"></button>
-          <button type="submit" pButton [loading]="saveLoading" label="Save"></button>
+          <button (click)="resetToDefault()" class="p-button-secondary" pButton type="button">Cancel</button>
+          <button [loading]="saveLoading" label="Save" pButton type="submit"></button>
         </div>
       </form>
       <div class="mt-8 text-sm text-gray-500">

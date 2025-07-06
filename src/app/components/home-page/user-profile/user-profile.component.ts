@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../core/services/user.service';
 import {UserModel} from '../../../models/users/user-model';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {UserUpdateRequest} from '../../../models/users/user-update-request';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
@@ -12,6 +12,7 @@ import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {TextareaModule} from 'primeng/textarea';
 import {SkeletonModule} from 'primeng/skeleton';
+import {AvatarModule} from 'primeng/avatar';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,7 +24,8 @@ import {SkeletonModule} from 'primeng/skeleton';
     ButtonModule,
     InputTextModule,
     TextareaModule,
-    SkeletonModule
+    SkeletonModule,
+    AvatarModule
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -44,13 +46,13 @@ export class UserProfileComponent implements OnInit {
     private messageService: MessageService,
   ) {
     this.profileForm = this.fb.group({
-      login: [{ value: '', disabled: true }],
-      email: [{ value: '', disabled: true }],
-      fullName: [{ value: '', disabled: true }],
-      firstName: [{ value: '', disabled: true }],
-      lastName: [{ value: '', disabled: true }],
-      phoneNumber: [{ value: '', disabled: true }],
-      aboutYourself: [{ value: '', disabled: true }],
+      login: [{value: '', disabled: true}],
+      email: [{value: '', disabled: true}],
+      fullName: [{value: '', disabled: true}],
+      firstName: [{value: '', disabled: true}],
+      lastName: [{value: '', disabled: true}],
+      phoneNumber: [{value: '', disabled: true}],
+      aboutYourself: [{value: '', disabled: true}],
     });
   }
 
@@ -65,7 +67,6 @@ export class UserProfileComponent implements OnInit {
           this.user = data;
           this.loading = false;
           this.setFormValues(this.user)
-          this.enableEdit()
         },
         error: (err) => {
           const error: ErrorMessageModel = err.error;
@@ -167,7 +168,16 @@ export class UserProfileComponent implements OnInit {
   }
 
   resetToDefault() {
-    if (this.user) this.setFormValues(this.user);
+    this.editing = false;
+    this.setFormValues(this.user!);
+  }
+
+  getLabelForAvatar(value: string): string {
+    if (value) {
+      return value.charAt(0).toUpperCase();
+    }
+
+    return 'C';
   }
 
 }
