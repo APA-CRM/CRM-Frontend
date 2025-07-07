@@ -4,8 +4,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PageModel} from '../../models/page/page-model';
 import {UsersFilterRequest} from '../../models/users/users-filter-request';
-import {EnvironmentDev} from '../environment/environment.dev';
 import {FilterRequestMapperService} from '../mapper/filter-request-mapper.service';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,7 @@ export class OrganizationUsersService {
 
   constructor(
     private http: HttpClient,
-    private filterRequestMapperService: FilterRequestMapperService,
-    private env: EnvironmentDev
+    private filterRequestMapperService: FilterRequestMapperService
   ) {
   }
 
@@ -25,12 +24,12 @@ export class OrganizationUsersService {
     let params: HttpParams = this.filterRequestMapperService.mapUserFilterRequestToHttpParams(filter);
 
     return this.http.get<PageModel<UserWithRolesModel>>(
-      this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`, {params: params}
+      environment.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`, {params: params}
     );
   }
 
   public removeUserFromOrganization(organizationId: number, userId: number): Observable<Object> {
-    return this.http.delete(this.env.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`);
+    return this.http.delete(environment.apiUrl + this.BASE_URI + `/${organizationId}/users/${userId}`);
   }
 
 }
