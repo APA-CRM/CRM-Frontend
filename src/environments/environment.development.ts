@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: "http://my-dev-env:8080"
+  apiUrl: "http://192.168.88.113:8080"
 };
