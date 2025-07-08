@@ -11,6 +11,7 @@ import {OrganizationService as OrganizationService} from '../../core/services/or
 import {Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../models/error/error-message-model';
+import {OrganizationHolderService} from '../../core/services/organization-holder.service';
 
 @Component({
   selector: 'app-create-organization',
@@ -41,6 +42,7 @@ export class CreateOrganizationComponent {
     private fb: FormBuilder,
     private organizationService: OrganizationService,
     private messageService: MessageService,
+    private organizationHolderService: OrganizationHolderService,
     private router: Router
   ) {
     this.organizationForm = this.fb.group({
@@ -62,7 +64,10 @@ export class CreateOrganizationComponent {
       const orgData: OrganizationCreateRequest = this.organizationForm.value;
       this.organizationService.createOrganization(orgData)
         .subscribe({
-          next: () => this.router.navigate(['']),
+          next: (data) => {
+            this.router.navigate(['']);
+            this.organizationHolderService.setOrganizationId(data.id);
+          },
           error: err => {
             const error: ErrorMessageModel = err.error;
 

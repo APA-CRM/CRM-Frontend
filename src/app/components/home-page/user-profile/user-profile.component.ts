@@ -141,7 +141,7 @@ export class UserProfileComponent implements OnInit {
     this.userService.updateUser(this.user!.id, updateRequest).subscribe({
       next: data => {
         this.user = data;
-        this.loading = false;
+        this.saveLoading = false;
 
         this.messageService.add({closable: true, summary: `User has been updated`, severity: 'success'});
       },
