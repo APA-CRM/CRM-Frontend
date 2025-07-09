@@ -119,7 +119,7 @@
           </div>
         </div>
         <div *ngIf="editing" class="flex justify-end mt-8 gap-2">
-          <button (click)="resetToDefault()" class="p-button-secondary" pButton type="button">Cancel</button>
+          <button (click)="cancelEditing()" class="p-button-secondary" pButton type="button">Cancel</button>
           <button [loading]="saveLoading" label="Save" pButton type="submit"></button>
         </div>
       </form>

@@ -142,6 +142,7 @@ export class UserProfileComponent implements OnInit {
       next: data => {
         this.user = data;
         this.saveLoading = false;
+        this.cancelEditing();
 
         this.messageService.add({closable: true, summary: `User has been updated`, severity: 'success'});
       },
@@ -167,7 +168,7 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
-  resetToDefault() {
+  cancelEditing() {
     this.editing = false;
     this.setFormValues(this.user!);
   }
