@@ -25,11 +25,7 @@ import {CommonModule} from '@angular/common';
 })
 export class SideBarComponent implements OnInit {
 
-  protected currentUser!: UserModel;
-
-  protected organizationOfUser: OrganizationPreviewModel[] = [];
-
-  sideBarContent: {uri: string, icon: string, name: string}[] = [
+  sideBarContent: { uri: string, icon: string, name: string }[] = [
     {
       uri: "",
       icon: "pi-home",
@@ -46,6 +42,8 @@ export class SideBarComponent implements OnInit {
       name: "Roles",
     },
   ]
+  protected currentUser!: UserModel;
+  protected organizationOfUser: OrganizationPreviewModel[] = [];
 
   constructor(
     private userService: UserService,
@@ -71,6 +69,15 @@ export class SideBarComponent implements OnInit {
     }
 
     return 'C';
+  }
+
+  protected changeOrganization(organization: OrganizationPreviewModel): void {
+    if (organization.id !== this.organizationHolder.getOrganizationId()) {
+      this.organizationHolder.setOrganizationId(organization.id);
+      this.messageService.add({closable: true, summary: `You switched to ${organization.name}`, severity: 'success'});
+    }
+
+    this.router.navigate([``]);
   }
 
   private fetchAuthenticatedUser(): void {

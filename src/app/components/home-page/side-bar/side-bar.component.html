@@ -25,33 +25,34 @@
   <div>
     @for (elem of sideBarContent; track $index) {
       <div (click)="navigateTo(elem.uri)"
-        class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+           class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
         <i class="pi" [ngClass]="elem.icon"></i>
         <span class="text-[18px] ml-4 text-gray-200 font-bold">{{ elem.name }}</span>
       </div>
     }
-  <div class="organizations mt-5">
-    <div class="mb-2 ml-1 flex items-center text-white">
-      <i class="bi bi-box-arrow-in-right"></i>
-      <span class="text-[13px] ml-2 text-gray-200 font-bold cursor-default">Your Organizations</span>
-    </div>
-    <div class="mb-2 flex flex-col">
-      @for (organization of organizationOfUser; track $index) {
-        <div class="mt-2 p-1.5 pl-4 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600">
-          <p-avatar [label]="getLabelForAvatar(organization.name)"
-                    [style]="{ 'background-color': '#00a63e', color: 'white' }"/>
-          <span class="text-white text-[14px] pl-2 font-sans">{{ organization.name }}</span>
-        </div>
-      } @empty {
-        <div class="mt-2 p-1.5 pl-4 flex items-center">
-          <p-skeleton size="2rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
-          <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
-        </div>
-        <div class="mt-2 p-1.5 pl-4 flex items-center">
-          <p-skeleton size="2rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
-          <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
-        </div>
-      }
+    <div class="organizations mt-5">
+      <div class="mb-2 ml-1 flex items-center text-white">
+        <i class="bi bi-box-arrow-in-right"></i>
+        <span class="text-[13px] ml-2 text-gray-200 font-bold cursor-default">Your Organizations</span>
+      </div>
+      <div class="mb-2 flex flex-col">
+        @for (organization of organizationOfUser; track $index) {
+          <div class="mt-2 p-1.5 pl-4 flex items-center rounded-md duration-300 cursor-pointer hover:bg-blue-600"
+               (click)="changeOrganization(organization)">
+            <p-avatar [label]="getLabelForAvatar(organization.name)"
+                      [style]="{ 'background-color': '#00a63e', color: 'white' }"/>
+            <span class="text-white text-[14px] pl-2 font-sans">{{ organization.name }}</span>
+          </div>
+        } @empty {
+          <div class="mt-2 p-1.5 pl-4 flex items-center">
+            <p-skeleton size="2rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
+            <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
+          </div>
+          <div class="mt-2 p-1.5 pl-4 flex items-center">
+            <p-skeleton size="2rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
+            <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
+          </div>
+        }
+      </div>
     </div>
   </div>
-</div>
