@@ -23,30 +23,14 @@
   </div>
   <div class="my-2 bg-gray-600 h-[1px]"></div>
   <div>
-    <div
-      class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-      <i class="pi pi-home"></i>
-      <span class="text-[18px] ml-4 text-gray-200 font-bold">Home</span>
-    </div>
-    <div
-      (click)="navigateTo('users')"
-      class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-      <i class="pi pi-user"></i>
-      <span class="text-[18px] ml-4 text-gray-200 font-bold">Users</span>
-    </div>
-    <div
-      (click)="navigateTo('roles')"
-      class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-      <i class="pi pi-users"></i>
-      <span class="text-[18px] ml-4 text-gray-200 font-bold">Roles</span>
-    </div>
-    <div
-      class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-      <i class="pi pi-file-o"></i>
-      <span class="text-[18px] ml-4 text-gray-200 font-bold">Documents</span>
-    </div>
-  </div>
-  <div class="organizations mt-9">
+    @for (elem of sideBarContent; track $index) {
+      <div (click)="navigateTo(elem.uri)"
+        class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <i class="pi" [ngClass]="elem.icon"></i>
+        <span class="text-[18px] ml-4 text-gray-200 font-bold">{{ elem.name }}</span>
+      </div>
+    }
+  <div class="organizations mt-5">
     <div class="mb-2 ml-1 flex items-center text-white">
       <i class="bi bi-box-arrow-in-right"></i>
       <span class="text-[13px] ml-2 text-gray-200 font-bold cursor-default">Your Organizations</span>

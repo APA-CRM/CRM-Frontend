@@ -29,6 +29,24 @@ export class SideBarComponent implements OnInit {
 
   protected organizationOfUser: OrganizationPreviewModel[] = [];
 
+  sideBarContent: {uri: string, icon: string, name: string}[] = [
+    {
+      uri: "",
+      icon: "pi-home",
+      name: "Home",
+    },
+    {
+      uri: "users",
+      icon: "pi-user",
+      name: "Users",
+    },
+    {
+      uri: "roles",
+      icon: "pi-users",
+      name: "Roles",
+    },
+  ]
+
   constructor(
     private userService: UserService,
     private organizationService: OrganizationService,
