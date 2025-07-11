@@ -5,17 +5,28 @@ import {Injectable} from '@angular/core';
 })
 export class OrganizationHolderService {
 
-  private readonly ORGANIZATION_ID_NAME: string = 'organizationId';
+  private readonly CURRENT_ORGANIZATION_ID_NAME: string = 'currentOrganizationId';
+  private readonly USER_ORGANIZATION_IDS_NAME: string = 'userOrganizationIds';
 
   constructor() {
   }
 
+  public setUserOrganizations(organizationIds: number[]): void {
+    localStorage.setItem(this.USER_ORGANIZATION_IDS_NAME, JSON.stringify(organizationIds));
+  }
+
   public setOrganizationId(organizationId: number): void {
-    localStorage.setItem(this.ORGANIZATION_ID_NAME, organizationId.toString());
+    localStorage.setItem(this.CURRENT_ORGANIZATION_ID_NAME, organizationId.toString());
+  }
+
+  public getUserOrganizationIds(): number[] {
+    let item = localStorage.getItem(this.USER_ORGANIZATION_IDS_NAME);
+
+    return JSON.parse(item!);
   }
 
   public getOrganizationId(): number {
-    return Number.parseInt(localStorage.getItem(this.ORGANIZATION_ID_NAME)!);
+    return Number.parseInt(localStorage.getItem(this.CURRENT_ORGANIZATION_ID_NAME)!);
   }
 
 }

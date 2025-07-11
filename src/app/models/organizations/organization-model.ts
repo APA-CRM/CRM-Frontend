@@ -5,6 +5,7 @@ export interface OrganizationModel {
   address: string
   city: string
   country: string
+  description: string
   createdAt: Date
   updateAt: Date
 }

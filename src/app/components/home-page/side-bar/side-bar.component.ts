@@ -97,6 +97,10 @@ export class SideBarComponent implements OnInit {
     this.organizationService.getOrganizationOfUser().subscribe({
       next: (value) => {
         this.organizationOfUser = value;
+
+        let organizationIds = value.map(organization => organization.id);
+
+        this.organizationHolder.setUserOrganizations(organizationIds);
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;
