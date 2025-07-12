@@ -6,7 +6,7 @@ import {FloatLabelModule} from 'primeng/floatlabel';
 import {CommonModule} from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
-import {OrganizationCreateRequest} from '../../models/organizations/organization-create-request';
+import {OrganizationRequest} from '../../models/organizations/organization-request';
 import {OrganizationService as OrganizationService} from '../../core/services/organization.service';
 import {Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
@@ -61,12 +61,12 @@ export class CreateOrganizationComponent {
 
   onSubmit(): void {
     if (this.organizationForm.valid) {
-      const orgData: OrganizationCreateRequest = this.organizationForm.value;
+      const orgData: OrganizationRequest = this.organizationForm.value;
       this.organizationService.createOrganization(orgData)
         .subscribe({
           next: (data) => {
             this.router.navigate(['']);
-            this.organizationHolderService.setOrganizationId(data.id);
+            this.organizationHolderService.setCurrentOrganization(data.id, data.name);
           },
           error: err => {
             const error: ErrorMessageModel = err.error;

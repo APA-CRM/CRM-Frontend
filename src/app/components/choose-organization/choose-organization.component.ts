@@ -58,7 +58,7 @@ export class ChooseOrganizationComponent implements OnInit {
   }
 
   selectOrganization(org: OrganizationPreviewModel) {
-    this.organizationHolder.setOrganizationId(org.id);
+    this.organizationHolder.setCurrentOrganization(org.id, org.name);
     this.router.navigate(['']);
   }
 

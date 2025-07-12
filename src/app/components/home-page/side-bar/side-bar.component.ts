@@ -59,8 +59,18 @@ export class SideBarComponent implements OnInit {
     this.fetchOrganizationsOfUser();
   }
 
+  navigateToOrganizationProfile() {
+    let organizationId = this.organizationHolder.getOrganizationId();
+
+    this.navigateTo('organization/' + organizationId);
+  }
+
   navigateTo(uri: string) {
     this.router.navigate([uri]);
+  }
+
+  getCurrentOrganizationName() {
+    return this.organizationHolder.getOrganizationName();
   }
 
   protected getLabelForAvatar(value: string): string {
@@ -73,8 +83,8 @@ export class SideBarComponent implements OnInit {
 
   protected changeOrganization(organization: OrganizationPreviewModel): void {
     if (organization.id !== this.organizationHolder.getOrganizationId()) {
-      this.organizationHolder.setOrganizationId(organization.id);
-      this.messageService.add({closable: true, summary: `You switched to ${organization.name}`, severity: 'success'});
+      this.organizationHolder.setCurrentOrganization(organization.id, organization.name);
+      this.messageService.add({closable: true, summary: `You switched to ${organization.name}`, severity: 'info'});
     }
 
     this.router.navigate([``]);
@@ -97,6 +107,10 @@ export class SideBarComponent implements OnInit {
     this.organizationService.getOrganizationOfUser().subscribe({
       next: (value) => {
         this.organizationOfUser = value;
+
+        let organizationIds = value.map(organization => organization.id);
+
+        this.organizationHolder.setUserOrganizations(organizationIds);
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;

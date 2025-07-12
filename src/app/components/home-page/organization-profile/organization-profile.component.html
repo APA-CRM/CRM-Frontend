@@ -1,0 +1,165 @@
+<div class="main-content ml-[250px] p-6">
+  <div class="p-6 min-h-screen  ">
+    <div *ngIf="organization; else loading">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+        <p-avatar
+          [label]="getLabelForAvatar(organization.name)"
+          [style]="{ 'background-color': '#00a63e', color: 'white' }"
+          size="xlarge"
+          styleClass="cursor-default"
+        ></p-avatar>
+        <div class="text-center sm:text-left">
+          <h1 class="text-2xl font-bold font-sans">{{ organization.name }}</h1>
+          <p class="text-sm ">Created at: {{ organization.createdAt | date: 'mediumDate' }}</p>
+        </div>
+      </div>
+
+      <div
+        [ngClass]="{
+          'grid-cols-1': visibleFieldCount <= 2,
+          'grid-cols-1 md:grid-cols-2': visibleFieldCount > 2,
+          'gap-4': visibleFieldCount <= 2,
+          'gap-6': visibleFieldCount > 2
+        }"
+        class="grid mt-8"
+      >
+        <div>
+          <p class="text-sm">Email</p>
+          <p class="text-lg font-big font-sans">{{ organization.email }}</p>
+        </div>
+
+        @if (organization.address) {
+          <div>
+            <p class="text-sm">Address</p>
+            <p class="text-lg font-medium font-sans">{{ organization.address }}</p>
+          </div>
+        }
+
+        @if (organization.city) {
+          <div>
+            <p class="text-sm">City</p>
+            <p class="text-lg font-medium font-sans">{{ organization.city }}</p>
+          </div>
+        }
+
+        @if (organization.country) {
+          <div>
+            <p class="text-sm">Country</p>
+            <p class="text-lg font-medium font-sans">{{ organization.country }}</p>
+          </div>
+        }
+
+        @if (organization.description) {
+          <div class="md:col-span-2">
+            <p class="text-sm ">Description</p>
+            <p class="text-lg font-medium font-sans">{{ organization.description }}</p>
+          </div>
+        }
+      </div>
+
+      <div *ngIf="visibleFieldCount <= 1" class="mt-6 text-sm italic">
+        Additional details about this organization are not provided.
+      </div>
+
+      @if (canEdit) {
+        <div class="mt-10">
+          <button
+            (click)="openEditDialog()"
+            class="p-button-success"
+            icon="pi pi-pencil"
+            label="Edit Organization"
+            pButton
+          ></button>
+        </div>
+      }
+
+    </div>
+
+    <p-dialog [(visible)]="editing" [closable]="true" [dismissableMask]="true"
+              [modal]="true" [style]="{ width: '700px' }">
+      <ng-template pTemplate="header">
+        <button class="font-bold text-xl">Update the organization</button>
+      </ng-template>
+
+      <form (ngSubmit)="onSubmit()" [formGroup]="organizationForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Left Column -->
+        <div class="col-span-2 md:col-span-1">
+          <label class="text-sm" for="name">Name <span class="text-red-500">*</span></label>
+          <input
+            [ngClass]="{ 'p-invalid': isInvalid('name') }"
+            class="w-full mt-1"
+            formControlName="name"
+            id="name"
+            pInputText
+            type="text"
+          />
+          <small *ngIf="isInvalid('name')" class="text-red-400">Name is required.</small>
+        </div>
+
+        <div class="col-span-2 md:col-span-1">
+          <label class="text-sm" for="email">Email <span class="text-red-500">*</span></label>
+          <input
+            [ngClass]="{ 'p-invalid': isInvalid('email') }"
+            class="w-full mt-1"
+            formControlName="email"
+            id="email"
+            pInputText
+            type="email"
+          />
+          <small *ngIf="isInvalid('email')" class="text-red-400">Email is required.</small>
+        </div>
+
+        <div class="col-span-2 md:col-span-1">
+          <label class="text-sm" for="address">Address</label>
+          <input class="w-full mt-1" formControlName="address" id="address" pInputText type="text"/>
+        </div>
+
+        <div class="col-span-2 md:col-span-1">
+          <label class="text-sm" for="city">City</label>
+          <input class="w-full mt-1" formControlName="city" id="city" pInputText type="text"/>
+        </div>
+
+        <div class="col-span-2 md:col-span-1">
+          <label class="text-sm" for="country">Country</label>
+          <input class="w-full mt-1" formControlName="country" id="country" pInputText type="text"/>
+        </div>
+
+        <div class="col-span-2">
+          <label class="text-sm" for="description">Description</label>
+          <textarea
+            class="w-full mt-1"
+            formControlName="description"
+            id="description"
+            pTextarea
+            rows="3"
+          ></textarea>
+        </div>
+      </form>
+
+      <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-2">
+          <button
+            (click)="onSubmit()"
+            [disabled]="organizationForm.invalid"
+            class="p-button-success"
+            icon="pi pi-check"
+            label="Save"
+            pButton
+            type="submit"
+          ></button>
+        </div>
+      </ng-template>
+    </p-dialog>
+
+
+    <ng-template #loading>
+      <div class="animate-pulse space-y-4">
+        <p-skeleton size="4rem" styleClass="mb-2"/>
+        <p-skeleton height="2rem" width="10rem"/>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <p-skeleton *ngFor="let _ of [1,2,3,4,5]" height="2rem"/>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
