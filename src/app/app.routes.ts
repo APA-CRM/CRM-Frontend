@@ -8,6 +8,7 @@ import {HomeComponent} from './components/home-page/home/home.component';
 import {RolesComponent} from './components/home-page/roles/roles.component';
 import {InvitationComponent} from './components/invitation/invitation.component';
 import {UserProfileComponent} from './components/home-page/user-profile/user-profile.component';
+import {OrganizationProfileComponent} from './components/home-page/organization-profile/organization-profile.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -20,7 +21,8 @@ export const routes: Routes = [
       {path: 'users', component: UsersTableComponent},
       {path: 'roles', component: RolesComponent},
       {path: 'user/me', component: UserProfileComponent},
-      {path: 'user/:userId', component: UserProfileComponent}
+      {path: 'user/:userId', component: UserProfileComponent},
+      {path: 'organization/:organizationId', component: OrganizationProfileComponent}
     ]
   }
 ];

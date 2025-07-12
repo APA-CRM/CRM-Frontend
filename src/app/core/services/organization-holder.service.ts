@@ -29,4 +29,10 @@ export class OrganizationHolderService {
     return Number.parseInt(localStorage.getItem(this.CURRENT_ORGANIZATION_ID_NAME)!);
   }
 
+  public isUserInOrganization(organizationId: number): boolean {
+    let organizationIds = this.getUserOrganizationIds();
+
+    return organizationIds.includes(organizationId);
+  }
+
 }
