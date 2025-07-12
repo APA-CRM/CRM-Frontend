@@ -11,6 +11,7 @@ import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
 import {SkeletonModule} from 'primeng/skeleton';
 import {CommonModule} from '@angular/common';
+import {UserHolderService} from '../../../core/services/user-holder.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -49,6 +50,7 @@ export class SideBarComponent implements OnInit {
     private userService: UserService,
     private organizationService: OrganizationService,
     private organizationHolder: OrganizationHolderService,
+    private userHolder: UserHolderService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -94,6 +96,8 @@ export class SideBarComponent implements OnInit {
     this.userService.getAuthenticatedUser().subscribe({
       next: (value) => {
         this.currentUser = value;
+
+        this.userHolder.setCurrentUserId(value.id);
       },
       error: (err) => {
         const error: ErrorMessageModel = err.error;

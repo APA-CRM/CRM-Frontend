@@ -6,7 +6,7 @@
                   [style]="{ 'background-color': '#00a63e', color: 'white' }"/>
         <span
           class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline"
-          (click)="navigateTo('user/me')">{{ currentUser.fullName }}</span>
+          (click)="navigateTo('user/' + currentUser.id)">{{ currentUser.fullName }}</span>
       } @else {
         <p-skeleton size="3rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
         <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
@@ -18,7 +18,8 @@
     <div
       (click)="navigateToOrganizationProfile()"
       class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-      <p-avatar [label]="getLabelForAvatar(getCurrentOrganizationName())" [style]="{ 'background-color': '#00a63e', color: 'white' }" size="normal"
+      <p-avatar [label]="getLabelForAvatar(getCurrentOrganizationName())"
+                [style]="{ 'background-color': '#00a63e', color: 'white' }" size="normal"
                 styleClass="cursor-default"/>
       <span class="text-[18px] ml-4 text-gray-200 font-bold">{{ getCurrentOrganizationName() }}</span>
     </div>
