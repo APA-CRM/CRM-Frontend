@@ -69,6 +69,10 @@ export class SideBarComponent implements OnInit {
     this.router.navigate([uri]);
   }
 
+  getCurrentOrganizationName() {
+    return this.organizationHolder.getOrganizationName();
+  }
+
   protected getLabelForAvatar(value: string): string {
     if (value) {
       return value.charAt(0).toUpperCase();
@@ -79,7 +83,7 @@ export class SideBarComponent implements OnInit {
 
   protected changeOrganization(organization: OrganizationPreviewModel): void {
     if (organization.id !== this.organizationHolder.getOrganizationId()) {
-      this.organizationHolder.setOrganizationId(organization.id);
+      this.organizationHolder.setCurrentOrganization(organization.id, organization.name);
       this.messageService.add({closable: true, summary: `You switched to ${organization.name}`, severity: 'info'});
     }
 

@@ -18,8 +18,9 @@
     <div
       (click)="navigateToOrganizationProfile()"
       class="p-1 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
-      <i class="pi pi-building"></i>
-      <span class="text-[18px] ml-4 text-gray-200 font-bold">My Organization</span>
+      <p-avatar [label]="getLabelForAvatar(getCurrentOrganizationName())" [style]="{ 'background-color': '#00a63e', color: 'white' }" size="normal"
+                styleClass="cursor-default"/>
+      <span class="text-[18px] ml-4 text-gray-200 font-bold">{{ getCurrentOrganizationName() }}</span>
     </div>
   </div>
   <div class="my-2 bg-gray-600 h-[1px]"></div>

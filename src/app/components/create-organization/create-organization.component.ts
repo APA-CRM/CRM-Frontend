@@ -66,7 +66,7 @@ export class CreateOrganizationComponent {
         .subscribe({
           next: (data) => {
             this.router.navigate(['']);
-            this.organizationHolderService.setOrganizationId(data.id);
+            this.organizationHolderService.setCurrentOrganization(data.id, data.name);
           },
           error: err => {
             const error: ErrorMessageModel = err.error;

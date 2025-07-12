@@ -54,7 +54,7 @@ export class InvitationComponent implements OnInit {
           summary: `You has been added to ${this.invitation.organization.name}`,
           severity: 'success'
         })
-        this.organizationHolder.setOrganizationId(this.invitation.organization.id);
+        this.organizationHolder.setCurrentOrganization(this.invitation.organization.id, this.invitation.organization.name);
         this.goToHomePage()
       },
       error: err => {
