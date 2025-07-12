@@ -13,6 +13,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {TextareaModule} from 'primeng/textarea';
 import {SkeletonModule} from 'primeng/skeleton';
 import {AvatarModule} from 'primeng/avatar';
+import {UserHolderService} from '../../../core/services/user-holder.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -44,6 +45,7 @@ export class UserProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private messageService: MessageService,
+    private userHolder: UserHolderService
   ) {
     this.profileForm = this.fb.group({
       login: [{value: '', disabled: true}],
@@ -57,39 +59,25 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isMe = this.route.snapshot.routeConfig?.path === 'user/me';
+    const id: number = Number(this.route.snapshot.paramMap.get('userId'));
+
+    this.isMe = id === this.userHolder.getCurrentUserId();
 
     this.loading = true;
 
-    if (this.isMe) {
-      this.userService.getAuthenticatedUser().subscribe({
-        next: data => {
-          this.user = data;
-          this.loading = false;
-          this.setFormValues(this.user)
-        },
-        error: (err) => {
-          const error: ErrorMessageModel = err.error;
+    this.userService.getUserById(id).subscribe({
+      next: data => {
+        this.user = data;
+        this.loading = false;
+        this.setFormValues(this.user)
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
 
-          this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-        }
-      })
-    } else {
-      const id = this.route.snapshot.paramMap.get('userId');
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
 
-      this.userService.getUserById(Number(id)).subscribe({
-        next: data => {
-          this.user = data;
-          this.loading = false;
-          this.setFormValues(this.user)
-        },
-        error: (err) => {
-          const error: ErrorMessageModel = err.error;
-
-          this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-        }
-      })
-    }
   }
 
   setFormValues(user: UserModel) {
