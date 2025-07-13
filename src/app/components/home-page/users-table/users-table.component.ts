@@ -23,6 +23,7 @@ import {UserService} from '../../../core/services/user.service';
 import {OrganizationUsersRolesService} from '../../../core/services/organization-users-roles.service';
 import {OrganizationInvitationService} from '../../../core/services/organization-invitation.service';
 import {Router} from '@angular/router';
+import {SkeletonModule} from 'primeng/skeleton';
 
 @Component({
   selector: 'app-users-table',
@@ -36,12 +37,15 @@ import {Router} from '@angular/router';
     PopoverModule,
     SelectModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    SkeletonModule
   ],
   templateUrl: './users-table.component.html',
   styleUrl: './users-table.component.css'
 })
 export class UsersTableComponent implements OnInit {
+  skeleton: any;
+
   users: UserWithRolesModel[] = [];
 
   roles: RoleModel[] = [];
@@ -75,6 +79,7 @@ export class UsersTableComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private router: Router
   ) {
+    this.skeleton = Array.from({length: 8}).map((_, i) => `Item #${i}`);
     this.filter = this.defaultValueOfFilter();
   }
 
