@@ -65,6 +65,8 @@ export class RolesTableComponent implements OnInit, OnChanges {
 
   showSidebar: boolean = false;
 
+  timerId: number | undefined;
+
   page: Page = {
     number: 0,
     totalPages: 0,
@@ -89,13 +91,25 @@ export class RolesTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.request.name = this.searchRoleName;
-
-    this.fetchRoles();
+    if (changes['searchRoleName'] && !changes['searchRoleName'].firstChange) {
+      this.request.name = this.searchRoleName;
+      this.fetchRolesByName();
+    } else if (changes['refreshTrigger'] && !changes['refreshTrigger'].firstChange) {
+      this.fetchRoles();
+    }
   }
 
   ngOnInit(): void {
     this.fetchRoles()
+  }
+
+  fetchRolesByName(): void {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+    }
+
+    // @ts-ignore
+    this.timerId = setTimeout(() => this.fetchRoles(), 1000);
   }
 
   fetchRoles(): void {
