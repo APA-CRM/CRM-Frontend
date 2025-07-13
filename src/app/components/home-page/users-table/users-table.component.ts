@@ -7,7 +7,7 @@ import {UsersFilterRequest} from '../../../models/users/users-filter-request';
 import {SortDirection} from '../../../core/enums/sort-direction';
 import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
 import {TagModule} from 'primeng/tag';
-import {ConfirmationService, MessageService, SortEvent} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
@@ -238,11 +238,6 @@ export class UsersTableComponent implements OnInit {
   applyFilter() {
     this.filter.page = 0;
     this.fetchUsers();
-  }
-
-  onSort(event: SortEvent): void {
-    this.filter.sortBy = event.field!;
-    this.filter.sortDirection = event.order === 1 ? SortDirection.ASC : SortDirection.DESC;
   }
 
   navigateToUserProfile(userId: number) {

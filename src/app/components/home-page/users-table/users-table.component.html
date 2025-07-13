@@ -15,54 +15,82 @@
       </button>
     </div>
     <div class="flex items-center">
-            <span (click)="resetFilter()"
-                  class="pi pi-filter-slash cursor-pointer hover:bg-gray-200 duration-300 rounded-lg p-2"
-                  title="Reset Filter"></span>
-      <button (click)="applyFilter()" class="ml-3 p-2" icon="pi pi-filter" pButton type="button">Apply
+
+      <p-popover #filterPopover>
+        <div class="p-4 w-96">
+          <h3 class="font-semibold text-lg mb-4 text-gray-800">Filter Users</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium">Login</label>
+              <input [(ngModel)]="filter.login" class="w-full" pInputText type="text" placeholder="Search by login" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium">Email</label>
+              <input [(ngModel)]="filter.email" class="w-full" pInputText type="text" placeholder="Search by email" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium">First Name</label>
+              <input [(ngModel)]="filter.firstName" class="w-full" pInputText type="text" placeholder="Search by first name" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium">Last Name</label>
+              <input [(ngModel)]="filter.lastName" class="w-full" pInputText type="text" placeholder="Search by last name" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium">Roles</label>
+              <p-multiselect [(ngModel)]="filter.rolesId" [options]="roles"
+                             optionLabel="name" optionValue="id"
+                             placeholder="Select Roles" class="w-full"/>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium">Sort By</label>
+              <p-select [(ngModel)]="filter.sortBy"
+                        [options]="[
+              {label: 'Login', value: 'login'},
+              {label: 'Email', value: 'email'},
+              {label: 'First Name', value: 'firstName'},
+              {label: 'Last Name', value: 'lastName'}
+            ]"
+                        placeholder="Choose field"
+                        class="w-full">
+              </p-select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium">Sort Direction</label>
+              <p-select [(ngModel)]="filter.sortDirection"
+                        [options]="[
+              {label: 'Ascending', value: 'ASC'},
+              {label: 'Descending', value: 'DESC'}
+            ]"
+                        placeholder="Choose direction"
+                        class="w-full">
+              </p-select>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+              <button (click)="resetFilter(); filterPopover.hide()" pButton type="button" severity="secondary" label="Reset" icon="pi pi-filter-slash"></button>
+              <button (click)="applyFilter(); filterPopover.hide()" pButton type="button" label="Apply" icon="pi pi-check"></button>
+            </div>
+          </div>
+        </div>
+      </p-popover>
+
+      <button (click)="filterPopover.toggle($event)" class="p-2" icon="pi pi-filter" pButton type="button">
         Filter
       </button>
     </div>
   </div>
-  <p-table #userTable (sortFunction)="onSort($event)" [customSort]="true" [loading]="loading" [value]="users">
+  <p-table #userTable class="h-56" [loading]="loading" [value]="users">
     <ng-template #header>
       <tr>
-        <th pSortableColumn="login">Login
-          <p-sortIcon class="ml-2" field="login"/>
-        </th>
-        <th pSortableColumn="email">Email
-          <p-sortIcon class="ml-2" field="email"/>
-        </th>
-        <th pSortableColumn="firstName">First Name
-          <p-sortIcon class="ml-2" field="firstName"/>
-        </th>
-        <th pSortableColumn="lastName">Last Name
-          <p-sortIcon class="ml-2" field="lastName"/>
-        </th>
+        <th>Login</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
         <th>Roles</th>
         <th class="w-12 text-center"></th>
-      </tr>
-      <tr>
-        <th>
-          <input [(ngModel)]="filter.login" class="w-full" pInputText placeholder="Search by login"
-                 type="text"/>
-        </th>
-        <th>
-          <input [(ngModel)]="filter.email" class="w-full" pInputText placeholder="Search by email"
-                 type="text"/>
-        </th>
-        <th>
-          <input [(ngModel)]="filter.firstName" class="w-full" pInputText placeholder="Search by first"
-                 type="text"/>
-        <th>
-          <input [(ngModel)]="filter.lastName" class="w-full" pInputText placeholder="Search by last name"
-                 type="text"/>
-        </th>
-        <th>
-          <p-multiselect [(ngModel)]="filter.rolesId" [filter]="false" [options]="roles" [showHeader]="false"
-                         optionLabel="name" optionLabel="name" optionValue="id" placeholder="Select Roles"
-                         styleClass="w-full"/>
-        </th>
-        <th></th>
       </tr>
       <tr>
         <td colspan="6">
