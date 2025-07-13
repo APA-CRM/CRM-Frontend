@@ -1,7 +1,7 @@
 <div class="main-content ml-[250px] p-6">
   <div class="flex justify-between items-center mb-4">
     <div>
-      <p-select (onFilter)="findUsersToAddToOrganization($event)" [(ngModel)]="selectedUser" [filter]="true"
+      <p-select (onFilter)="onFilterUsers($event)" [(ngModel)]="selectedUser" [filter]="true" [loading]="loadingSelect"
                 [options]="usersToAdd"
                 [showClear]="true" class="w-full md:w-56" filterPlaceholder="Find by full name"
                 optionLabel="fullName" placeholder="Select an User"/>
@@ -22,25 +22,27 @@
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium">Login</label>
-              <input [(ngModel)]="filter.login" class="w-full" pInputText type="text" placeholder="Search by login" />
+              <input [(ngModel)]="filter.login" class="w-full" pInputText placeholder="Search by login" type="text"/>
             </div>
             <div>
               <label class="block text-sm font-medium">Email</label>
-              <input [(ngModel)]="filter.email" class="w-full" pInputText type="text" placeholder="Search by email" />
+              <input [(ngModel)]="filter.email" class="w-full" pInputText placeholder="Search by email" type="text"/>
             </div>
             <div>
               <label class="block text-sm font-medium">First Name</label>
-              <input [(ngModel)]="filter.firstName" class="w-full" pInputText type="text" placeholder="Search by first name" />
+              <input [(ngModel)]="filter.firstName" class="w-full" pInputText placeholder="Search by first name"
+                     type="text"/>
             </div>
             <div>
               <label class="block text-sm font-medium">Last Name</label>
-              <input [(ngModel)]="filter.lastName" class="w-full" pInputText type="text" placeholder="Search by last name" />
+              <input [(ngModel)]="filter.lastName" class="w-full" pInputText placeholder="Search by last name"
+                     type="text"/>
             </div>
             <div>
               <label class="block text-sm font-medium">Roles</label>
               <p-multiselect [(ngModel)]="filter.rolesId" [options]="roles"
-                             optionLabel="name" optionValue="id"
-                             placeholder="Select Roles" class="w-full"/>
+                             class="w-full" optionLabel="name"
+                             optionValue="id" placeholder="Select Roles"/>
             </div>
 
             <div>
@@ -52,8 +54,8 @@
               {label: 'First Name', value: 'firstName'},
               {label: 'Last Name', value: 'lastName'}
             ]"
-                        placeholder="Choose field"
-                        class="w-full">
+                        class="w-full"
+                        placeholder="Choose field">
               </p-select>
             </div>
 
@@ -64,14 +66,16 @@
               {label: 'Ascending', value: 'ASC'},
               {label: 'Descending', value: 'DESC'}
             ]"
-                        placeholder="Choose direction"
-                        class="w-full">
+                        class="w-full"
+                        placeholder="Choose direction">
               </p-select>
             </div>
 
             <div class="flex justify-end gap-2 pt-2">
-              <button (click)="resetFilter(); filterPopover.hide()" pButton type="button" severity="secondary" label="Reset" icon="pi pi-filter-slash"></button>
-              <button (click)="applyFilter(); filterPopover.hide()" pButton type="button" label="Apply" icon="pi pi-check"></button>
+              <button (click)="resetFilter(); filterPopover.hide()" icon="pi pi-filter-slash" label="Reset" pButton
+                      severity="secondary" type="button"></button>
+              <button (click)="applyFilter(); filterPopover.hide()" icon="pi pi-check" label="Apply" pButton
+                      type="button"></button>
             </div>
           </div>
         </div>
@@ -82,78 +86,116 @@
       </button>
     </div>
   </div>
-  <p-table #userTable class="h-56" [loading]="loading" [value]="users">
-    <ng-template #header>
-      <tr>
-        <th>Login</th>
-        <th>Email</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Roles</th>
-        <th class="w-12 text-center"></th>
-      </tr>
-      <tr>
-        <td colspan="6">
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template #body let-user>
-      <tr>
-        <td (click)="navigateToUserProfile(user.id)" class="cursor-pointer hover:underline">{{ user.login }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.firstName || 'Not specified' }}</td>
-        <td>{{ user.lastName || 'Not specified' }}</td>
-        <td class="w-[325px] max-w-[325px] align-top">
-          <div class="flex justify-between items-center gap-2">
-            <div class="flex flex-wrap gap-2">
-              <p-tag *ngFor="let role of user.roles" class="flex items-center gap-1" severity="success">
-                <span>{{ role.name }}</span>
-                <i (click)="removeRoleFromUser(user.id, role.id)"
-                   class="pi pi-times cursor-pointer hover:text-red-500 duration-200"></i>
-              </p-tag>
-            </div>
-            <div class="flex-shrink-0 self-center">
-              <p-popover #rolesToAdd>
-                <div class="w-48">
-                  <div class="p-4">
-                    <h4 class="text-lg font-bold text-center text-gray-800 mb-4">Assign Role</h4>
-                    <div *ngFor="let role of roles"
-                         class="flex items-center justify-between mb-3 last:mb-0">
-                      <span class="text-gray-700 font-medium">{{ role.name }}</span>
-                      <button
-                        (click)="addRoleToUser(user.id, role.id)"
-                        class="flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-full shadow transition duration-200">
-                        <i class="pi pi-plus"></i>
-                      </button>
+  @if (loading) {
+    <p-table #skeletonTable [value]="skeleton">
+      <ng-template #header>
+        <tr>
+          <th>Login</th>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Roles</th>
+          <th class="w-12 text-center"></th>
+        </tr>
+        <tr>
+          <td colspan="6">
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #body let-skeleton>
+        <tr>
+          <td>
+            <p-skeleton/>
+          </td>
+          <td>
+            <p-skeleton/>
+          </td>
+          <td>
+            <p-skeleton/>
+          </td>
+          <td>
+            <p-skeleton/>
+          </td>
+          <td>
+            <p-skeleton/>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <p-table #userTable class="h-56" [value]="users">
+      <ng-template #header>
+        <tr>
+          <th>Login</th>
+          <th>Email</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Roles</th>
+          <th class="w-12 text-center"></th>
+        </tr>
+        <tr>
+          <td colspan="6">
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #body let-user>
+        <tr>
+          <td (click)="navigateToUserProfile(user.id)" class="cursor-pointer hover:underline">{{ user.login }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.firstName || 'Not specified' }}</td>
+          <td>{{ user.lastName || 'Not specified' }}</td>
+          <td class="w-[325px] max-w-[325px] align-top">
+            <div class="flex justify-between items-center gap-2">
+              <div class="flex flex-wrap gap-2">
+                <p-tag *ngFor="let role of user.roles" class="flex items-center gap-1" severity="success">
+                  <span>{{ role.name }}</span>
+                  <i (click)="removeRoleFromUser(user.id, role.id)"
+                     class="pi pi-times cursor-pointer hover:text-red-500 duration-200"></i>
+                </p-tag>
+              </div>
+              <div class="flex-shrink-0 self-center">
+                <p-popover #rolesToAdd>
+                  <div class="w-48">
+                    <div class="p-4">
+                      <h4 class="text-lg font-bold text-center text-gray-800 mb-4">Assign Role</h4>
+                      <div *ngFor="let role of roles"
+                           class="flex items-center justify-between mb-3 last:mb-0">
+                        <span class="text-gray-700 font-medium">{{ role.name }}</span>
+                        <button
+                          (click)="addRoleToUser(user.id, role.id)"
+                          class="flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-full shadow transition duration-200">
+                          <i class="pi pi-plus"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </p-popover>
-              <i
-                (click)="rolesToAdd.toggle($event)"
-                class="pi pi-plus-circle cursor-pointer text-gray-700 hover:text-green-600 hover:bg-gray-200 rounded-full p-2 transition duration-300"></i>
+                </p-popover>
+                <i
+                  (click)="rolesToAdd.toggle($event)"
+                  class="pi pi-plus-circle cursor-pointer text-gray-700 hover:text-green-600 hover:bg-gray-200 rounded-full p-2 transition duration-300"></i>
+              </div>
             </div>
-          </div>
-        </td>
-        <td class="text-center align-middle w-6">
-          <p-popover #actionsPopover>
-            <div class="p-2 w-40">
-              <button (click)="confirmDeletationOfUserFromOrganization(user.id); actionsPopover.hide()"
-                      class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-100 rounded transition">
-                <i class="pi pi-trash"></i> Remove User
-              </button>
-            </div>
-          </p-popover>
-          <i
-            (click)="actionsPopover.toggle($event)"
-            class="pi pi-ellipsis-v text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition duration-200 text-lg"
-            title="Actions">
-          </i>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <p-paginator (onPageChange)="onPageChanged($event)" [first]="first" [rows]="size" [totalRecords]="totalElements"/>
+          </td>
+          <td class="text-center align-middle w-6">
+            <p-popover #actionsPopover>
+              <div class="p-2 w-40">
+                <button (click)="confirmDeletationOfUserFromOrganization(user.id); actionsPopover.hide()"
+                        class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-100 rounded transition">
+                  <i class="pi pi-trash"></i> Remove User
+                </button>
+              </div>
+            </p-popover>
+            <i
+              (click)="actionsPopover.toggle($event)"
+              class="pi pi-ellipsis-v text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition duration-200 text-lg"
+              title="Actions">
+            </i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator (onPageChange)="onPageChanged($event)" [first]="first" [rows]="size" [totalRecords]="totalElements"/>
+  }
 
 
 </div>

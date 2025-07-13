@@ -23,6 +23,7 @@ import {UserService} from '../../../core/services/user.service';
 import {OrganizationUsersRolesService} from '../../../core/services/organization-users-roles.service';
 import {OrganizationInvitationService} from '../../../core/services/organization-invitation.service';
 import {Router} from '@angular/router';
+import {SkeletonModule} from 'primeng/skeleton';
 
 @Component({
   selector: 'app-users-table',
@@ -36,17 +37,22 @@ import {Router} from '@angular/router';
     PopoverModule,
     SelectModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    SkeletonModule
   ],
   templateUrl: './users-table.component.html',
   styleUrl: './users-table.component.css'
 })
 export class UsersTableComponent implements OnInit {
+  skeleton: any;
+
   users: UserWithRolesModel[] = [];
 
   roles: RoleModel[] = [];
 
   loading: boolean = true;
+
+  loadingSelect: boolean = false;
 
   usersToAdd: UserModel[] = [];
 
@@ -61,8 +67,8 @@ export class UsersTableComponent implements OnInit {
   first: number = 0;
 
   filter!: UsersFilterRequest;
-
   @ViewChild('userTable') userTable!: Table;
+  private timerId: number | undefined;
 
   constructor(
     private organizationHolder: OrganizationHolderService,
@@ -75,6 +81,7 @@ export class UsersTableComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private router: Router
   ) {
+    this.skeleton = Array.from({length: 8}).map((_, i) => `Item #${i}`);
     this.filter = this.defaultValueOfFilter();
   }
 
@@ -97,10 +104,24 @@ export class UsersTableComponent implements OnInit {
     this.fetchUsers();
   }
 
-  findUsersToAddToOrganization($event: SelectFilterEvent) {
-    this.userService.getUsersByFullName($event.filter)
+  onFilterUsers($event: SelectFilterEvent): void {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+    }
+
+    // @ts-ignore
+    this.timerId = setTimeout(() => this.findUsersToAddToOrganization($event.filter), 1000);
+  }
+
+  findUsersToAddToOrganization(value: string) {
+    this.loadingSelect = true;
+
+    this.userService.getUsersByFullName(value)
       .subscribe({
-        next: (value) => this.usersToAdd = value,
+        next: (data) => {
+          this.usersToAdd = data;
+          this.loadingSelect = false;
+        },
         error: (err) => {
           const error: ErrorMessageModel = err.error;
 
