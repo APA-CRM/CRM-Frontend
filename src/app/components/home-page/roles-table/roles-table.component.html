@@ -1,47 +1,80 @@
-<p-table [loading]="loading" [value]="roles">
-  <ng-template #header>
-    <tr class="bg-gray-100 text-left text-lg font-semibold text-gray-800">
-      <th class="px-6 py-4 border-b border-gray-300">Name</th>
-      <th class="px-6 py-4 border-b border-gray-300">Access Controls</th>
-      <th class="px-6 py-4 border-b border-gray-300">Created At</th>
-      <th class="px-6 py-4 border-b border-gray-300">Updated At</th>
-      <th></th>
-    </tr>
-  </ng-template>
-  <ng-template #body let-role>
-    <tr class="hover:bg-gray-50 text-base text-gray-900">
-      <td class="px-6 py-4 border-b border-gray-200">
-        <p-tag [value]="role.name" severity="success"/>
-      </td>
-      <td class="px-6 py-4 border-b border-gray-200 space-y-1">
-        <div *ngFor="let ac of role.accessControls" class="flex flex-wrap items-center gap-2 text-sm">
-          <span class="font-semibold text-gray-700">{{ ac.resource }}:</span>
-          <ng-container *ngFor="let action of ac.actions">
-            <p-tag [value]="action" class="text-xs m-0" severity="info"></p-tag>
-          </ng-container>
-        </div>
-      </td>
-      <td class="px-6 py-4 border-b border-gray-200">
-        {{ role.createdAt | date: 'dd MMM yyyy h:mm:ss a' }}
-      </td>
-      <td class="px-6 py-4 border-b border-gray-200">
-        {{ role.updateAt | date: 'dd MMM yyyy h:mm:ss a' }}
-      </td>
-      <td>
-        <i (click)="openSidebar(role)"
-           class="pi pi-pencil cursor-pointer text-blue-500 hover:text-blue-700 transition duration-300"></i>
-        <i (click)="onDeleteRole(role.id)"
-           class="ml-4 pi pi-trash cursor-pointer text-red-500 hover:text-red-700 transition duration-300"></i>
+@if (loading) {
+  <p-table #skeletonTable [value]="skeleton">
+    <ng-template #header>
+      <tr>
+        <th class="px-6 py-4 border-b border-gray-300">Name</th>
+        <th class="px-6 py-4 border-b border-gray-300">Access Controls</th>
+        <th class="px-6 py-4 border-b border-gray-300">Created At</th>
+        <th class="px-6 py-4 border-b border-gray-300">Updated At</th>
+      </tr>
+      <tr>
+        <td colspan="4">
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #body let-skeleton>
+      <tr>
+        <td>
+          <p-skeleton/>
+        </td>
+        <td>
+          <p-skeleton/>
+        </td>
+        <td>
+          <p-skeleton/>
+        </td>
+        <td>
+          <p-skeleton/>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+} @else {
+  <p-table [value]="roles">
+    <ng-template #header>
+      <tr class="bg-gray-100 text-left text-lg font-semibold text-gray-800">
+        <th class="px-6 py-4 border-b border-gray-300">Name</th>
+        <th class="px-6 py-4 border-b border-gray-300">Access Controls</th>
+        <th class="px-6 py-4 border-b border-gray-300">Created At</th>
+        <th class="px-6 py-4 border-b border-gray-300">Updated At</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-role>
+      <tr class="hover:bg-gray-50 text-base text-gray-900">
+        <td class="px-6 py-4 border-b border-gray-200">
+          <p-tag [value]="role.name" severity="success"/>
+        </td>
+        <td class="px-6 py-4 border-b border-gray-200 space-y-1">
+          <div *ngFor="let ac of role.accessControls" class="flex flex-wrap items-center gap-2 text-sm">
+            <span class="font-semibold text-gray-700">{{ ac.resource }}:</span>
+            <ng-container *ngFor="let action of ac.actions">
+              <p-tag [value]="action" class="text-xs m-0" severity="info"></p-tag>
+            </ng-container>
+          </div>
+        </td>
+        <td class="px-6 py-4 border-b border-gray-200">
+          {{ role.createdAt | date: 'dd MMM yyyy h:mm:ss a' }}
+        </td>
+        <td class="px-6 py-4 border-b border-gray-200">
+          {{ role.updateAt | date: 'dd MMM yyyy h:mm:ss a' }}
+        </td>
+        <td>
+          <i (click)="openSidebar(role)"
+             class="pi pi-pencil cursor-pointer text-blue-500 hover:text-blue-700 transition duration-300"></i>
+          <i (click)="onDeleteRole(role.id)"
+             class="ml-4 pi pi-trash cursor-pointer text-red-500 hover:text-red-700 transition duration-300"></i>
 
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-<div class="mt-6">
-  <p-paginator (onPageChange)="onPageChanged($event)" [first]="page.number" [rows]="page.size"
-               [totalRecords]="page.totalElements" class="w-full text-base"></p-paginator>
-</div>
+  <div class="mt-6">
+    <p-paginator (onPageChange)="onPageChanged($event)" [first]="page.number" [rows]="page.size"
+                 [totalRecords]="page.totalElements" class="w-full text-base"></p-paginator>
+  </div>
+}
 
 <p-drawer [(visible)]="showSidebar" [baseZIndex]="100" header="Edit Role" position="right">
   <div class="mb-4">
@@ -54,7 +87,7 @@
     <p-multiSelect (onChange)="onActionChange(resource)" [(ngModel)]="selectedActionsPerResource[resource]"
                    [disabled]="disableResourceIfNotAll(resource)" [maxSelectedLabels]="2"
                    [options]="availableActions"
-                   class="w-full" defaultLabel="Select actions"/>
+                   class="w-full" placeholder="Select actions"/>
   </div>
 
   <div class="flex justify-end gap-2 mt-6">

@@ -19,6 +19,7 @@ import {FormsModule} from '@angular/forms';
 import {MultiSelect} from 'primeng/multiselect';
 import {Action} from '../../../core/enums/action';
 import {Resource} from '../../../core/enums/resource';
+import {SkeletonModule} from 'primeng/skeleton';
 
 @Component({
   selector: 'app-roles-table',
@@ -31,7 +32,8 @@ import {Resource} from '../../../core/enums/resource';
     DrawerModule,
     ButtonModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    SkeletonModule
   ],
   templateUrl: './roles-table.component.html',
   styleUrl: './roles-table.component.css'
@@ -45,6 +47,8 @@ export class RolesTableComponent implements OnInit, OnChanges {
   refreshTrigger: boolean = false;
 
   roles: RoleModel[] = [];
+
+  skeleton: any;
 
   updatedRole: RoleRequest = {
     name: "",
@@ -88,6 +92,7 @@ export class RolesTableComponent implements OnInit, OnChanges {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
+    this.skeleton = Array.from({length: 8}).map((_, i) => `Item #${i}`);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
