@@ -22,27 +22,25 @@
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium">Login</label>
-              <input [(ngModel)]="filter.login" class="w-full" pInputText placeholder="Search by login" type="text"/>
+              <input [(ngModel)]="filter.login" class="w-full" pInputText type="text" placeholder="Search by login" />
             </div>
             <div>
               <label class="block text-sm font-medium">Email</label>
-              <input [(ngModel)]="filter.email" class="w-full" pInputText placeholder="Search by email" type="text"/>
+              <input [(ngModel)]="filter.email" class="w-full" pInputText type="text" placeholder="Search by email" />
             </div>
             <div>
               <label class="block text-sm font-medium">First Name</label>
-              <input [(ngModel)]="filter.firstName" class="w-full" pInputText placeholder="Search by first name"
-                     type="text"/>
+              <input [(ngModel)]="filter.firstName" class="w-full" pInputText type="text" placeholder="Search by first name" />
             </div>
             <div>
               <label class="block text-sm font-medium">Last Name</label>
-              <input [(ngModel)]="filter.lastName" class="w-full" pInputText placeholder="Search by last name"
-                     type="text"/>
+              <input [(ngModel)]="filter.lastName" class="w-full" pInputText type="text" placeholder="Search by last name" />
             </div>
             <div>
               <label class="block text-sm font-medium">Roles</label>
               <p-multiselect [(ngModel)]="filter.rolesId" [options]="roles"
-                             class="w-full" optionLabel="name"
-                             optionValue="id" placeholder="Select Roles"/>
+                             optionLabel="name" optionValue="id"
+                             placeholder="Select Roles" class="w-full"/>
             </div>
 
             <div>
@@ -54,8 +52,8 @@
               {label: 'First Name', value: 'firstName'},
               {label: 'Last Name', value: 'lastName'}
             ]"
-                        class="w-full"
-                        placeholder="Choose field">
+                        placeholder="Choose field"
+                        class="w-full">
               </p-select>
             </div>
 
@@ -66,16 +64,14 @@
               {label: 'Ascending', value: 'ASC'},
               {label: 'Descending', value: 'DESC'}
             ]"
-                        class="w-full"
-                        placeholder="Choose direction">
+                        placeholder="Choose direction"
+                        class="w-full">
               </p-select>
             </div>
 
             <div class="flex justify-end gap-2 pt-2">
-              <button (click)="resetFilter(); filterPopover.hide()" icon="pi pi-filter-slash" label="Reset" pButton
-                      severity="secondary" type="button"></button>
-              <button (click)="applyFilter(); filterPopover.hide()" icon="pi pi-check" label="Apply" pButton
-                      type="button"></button>
+              <button (click)="resetFilter(); filterPopover.hide()" pButton type="button" severity="secondary" label="Reset" icon="pi pi-filter-slash"></button>
+              <button (click)="applyFilter(); filterPopover.hide()" pButton type="button" label="Apply" icon="pi pi-check"></button>
             </div>
           </div>
         </div>
@@ -86,7 +82,7 @@
       </button>
     </div>
   </div>
-  <p-table #userTable [loading]="loading" [value]="users" class="h-56">
+  <p-table #userTable class="h-56" [loading]="loading" [value]="users">
     <ng-template #header>
       <tr>
         <th>Login</th>
@@ -120,10 +116,7 @@
               <p-popover #rolesToAdd>
                 <div class="w-48">
                   <div class="p-4">
-                    <h4 class="text-lg font-bold text-center text-gray-800 mb-4">Assign
-                      <Ro></Ro>
-                      le
-                    </h4>
+                    <h4 class="text-lg font-bold text-center text-gray-800 mb-4">Assign Role</h4>
                     <div *ngFor="let role of roles"
                          class="flex items-center justify-between mb-3 last:mb-0">
                       <span class="text-gray-700 font-medium">{{ role.name }}</span>
