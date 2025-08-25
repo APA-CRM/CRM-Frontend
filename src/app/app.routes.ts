@@ -9,6 +9,7 @@ import {RolesComponent} from './components/home-page/roles/roles.component';
 import {InvitationComponent} from './components/invitation/invitation.component';
 import {UserProfileComponent} from './components/home-page/user-profile/user-profile.component';
 import {OrganizationProfileComponent} from './components/home-page/organization-profile/organization-profile.component';
+import {FilesComponent} from './components/home-page/files/files.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -22,7 +23,8 @@ export const routes: Routes = [
       {path: 'roles', component: RolesComponent},
       {path: 'user/me', component: UserProfileComponent},
       {path: 'user/:userId', component: UserProfileComponent},
-      {path: 'organization/:organizationId', component: OrganizationProfileComponent}
+      {path: 'organization/:organizationId', component: OrganizationProfileComponent},
+      {path: 'files', component: FilesComponent}
     ]
   }
 ];
