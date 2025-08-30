@@ -28,7 +28,7 @@ export class FilesService {
     formData.append('parentFileId', request.parentFileId);
     formData.append("fileType", request.fileType);
 
-    return this.http.post<FileModel>(environment.apiUrl + this.BASE_URI, request);
+    return this.http.post<FileModel>(environment.apiUrl + this.BASE_URI, formData);
   }
 
   public updateFile(fileId: string, request: FileUpdateRequest): Observable<FileWithChildrenModel> {
@@ -36,7 +36,7 @@ export class FilesService {
     formData.append('name', request.name);
     formData.append('parentFileId', request.parentFileId);
 
-    return this.http.patch<FileWithChildrenModel>(environment.apiUrl + this.BASE_URI + `/${fileId}`, request);
+    return this.http.patch<FileWithChildrenModel>(environment.apiUrl + this.BASE_URI + `/${fileId}`, formData);
   }
 
   public deleteFile(fileId: string): Observable<void> {

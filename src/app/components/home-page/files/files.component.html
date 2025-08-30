@@ -1,1 +1,59 @@
-<p>files works!</p>
+<div class="main-content ml-[250px] p-6">
+
+  <div class="p-4">
+    <h1 class="pb-4 text-2xl">Organization files</h1>
+    <p-treeTable *ngIf="filesTree" [(selection)]="selectedFile"
+                 [value]="filesTree ? [toTreeNodes(filesTree)] : []"
+                 selectionMode="single">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Extension</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
+        <tr>
+          <td>{{ rowData.name }}</td>
+          <td>{{ rowData.fileType }}</td>
+          <td>{{ rowData.fileExtension }}</td>
+          <td>{{ rowData.createdAt | date:'short' }}</td>
+          <td>{{ rowData.updatedAt | date:'short' }}</td>
+          <td>
+            <button (click)="openEditDialog(rowData)" class="p-button-rounded p-button-text" icon="pi pi-pencil"
+                    pButton></button>
+            <button (click)="deleteFile(rowData)" class="p-button-rounded p-button-danger p-button-text"
+                    icon="pi pi-trash"
+                    pButton></button>
+            <button (click)="openCreateDialog(rowData.id)" class="p-button-rounded p-button-success p-button-text"
+                    icon="pi pi-plus"
+                    pButton></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-treeTable>
+
+    <p-dialog [(visible)]="displayDialog" [closable]="false" [modal]="true"
+              header="{{ isEdit ? 'Edit File' : 'Create File' }}">
+      <form (ngSubmit)="saveFile()" class="flex flex-col gap-4">
+        <div>
+          <label class="block mb-2 font-medium">Name</label>
+          <input [(ngModel)]="fileForm.name" class="w-full" name="name" pInputText required type="text"/>
+        </div>
+        <div>
+          <label class="block mb-2 font-medium">Type</label>
+          <p-select [(ngModel)]="fileForm.fileType" [disabled]="isEdit" [options]="fileTypeOptions" class="w-full"
+                    name="fileType" optionLabel="label" optionValue="value" required></p-select>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button class="p-button-success" label="Save" pButton type="submit"></button>
+          <button (click)="displayDialog=false" class="p-button-secondary" label="Cancel" pButton
+                  type="button"></button>
+        </div>
+      </form>
+    </p-dialog>
+  </div>
+</div>

@@ -42,6 +42,11 @@ export class SideBarComponent implements OnInit {
       icon: "pi-users",
       name: "Roles",
     },
+    {
+      uri: 'files',
+      icon: 'pi-folder',
+      name: 'Files',
+    }
   ]
   protected currentUser!: UserModel;
   protected organizationOfUser: OrganizationPreviewModel[] = [];
