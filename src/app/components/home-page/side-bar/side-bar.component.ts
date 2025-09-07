@@ -43,7 +43,7 @@ export class SideBarComponent implements OnInit {
       name: "Roles",
     },
     {
-      uri: 'files',
+      uri: 'files/root',
       icon: 'pi-folder',
       name: 'Files',
     }

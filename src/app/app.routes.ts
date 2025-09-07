@@ -24,7 +24,8 @@ export const routes: Routes = [
       {path: 'user/me', component: UserProfileComponent},
       {path: 'user/:userId', component: UserProfileComponent},
       {path: 'organization/:organizationId', component: OrganizationProfileComponent},
-      {path: 'files', component: FilesComponent}
+      {path: 'files/root', component: FilesComponent},
+      {path: 'files/:fileId', component: FilesComponent}
     ]
   }
 ];

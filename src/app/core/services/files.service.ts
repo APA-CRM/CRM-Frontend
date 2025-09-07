@@ -27,6 +27,9 @@ export class FilesService {
     formData.append('name', request.name);
     formData.append('parentFileId', request.parentFileId);
     formData.append("fileType", request.fileType);
+    if (request.content) {
+      formData.append('content', request.content);
+    }
 
     return this.http.post<FileModel>(environment.apiUrl + this.BASE_URI, formData);
   }
@@ -35,6 +38,9 @@ export class FilesService {
     let formData = new FormData();
     formData.append('name', request.name);
     formData.append('parentFileId', request.parentFileId);
+    if (request.content) {
+      formData.append('content', request.content);
+    }
 
     return this.http.patch<FileWithChildrenModel>(environment.apiUrl + this.BASE_URI + `/${fileId}`, formData);
   }

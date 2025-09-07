@@ -1,57 +1,91 @@
 <div class="main-content ml-[250px] p-6">
 
-  <div class="p-4">
-    <h1 class="pb-4 text-2xl">Organization files</h1>
-    <p-treeTable *ngIf="filesTree" [(selection)]="selectedFile"
-                 [value]="filesTree ? [toTreeNodes(filesTree)] : []"
-                 selectionMode="single">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Extension</th>
-          <th>Created</th>
-          <th>Updated</th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template let-rowData="rowData" let-rowNode pTemplate="body">
-        <tr>
-          <td>{{ rowData.name }}</td>
-          <td>{{ rowData.fileType }}</td>
-          <td>{{ rowData.fileExtension }}</td>
-          <td>{{ rowData.createdAt | date:'short' }}</td>
-          <td>{{ rowData.updatedAt | date:'short' }}</td>
-          <td>
-            <button (click)="openEditDialog(rowData)" class="p-button-rounded p-button-text" icon="pi pi-pencil"
-                    pButton></button>
-            <button (click)="deleteFile(rowData)" class="p-button-rounded p-button-danger p-button-text"
-                    icon="pi pi-trash"
-                    pButton></button>
-            <button (click)="openCreateDialog(rowData.id)" class="p-button-rounded p-button-success p-button-text"
-                    icon="pi pi-plus"
-                    pButton></button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-treeTable>
+  <div>
+    <div class="flex items-center justify-between mb-6">
 
-    <p-dialog [(visible)]="displayDialog" [closable]="false" [modal]="true"
-              header="{{ isEdit ? 'Edit File' : 'Create File' }}">
+      @if (file && !isLoading) {
+        <div class="text-4xl font-extrabold">
+          {{ file.name }}
+        </div>
+
+        <p-button
+          class=""
+          label="Create File"
+          icon="pi pi-plus"
+          (click)="openCreateDialog(file.id)">
+        </p-button>
+      }
+
+    </div>
+
+    @if (file && !isLoading) {
+      @if (file.childrenFiles.length !== 0) {
+        <div class="flex flex-wrap gap-4">
+          @for (childFile of file.childrenFiles; track $index) {
+            <div
+              class="flex items-center px-10 py-6 rounded-xl shadow-lg cursor-pointer bg-gray-200 hover:bg-gray-300  transition group min-w-[220px] min-h-[64px] text-xl"
+              tabindex="0"
+              role="button"
+            >
+              <i [ngClass]="getIconForFile(childFile.fileType)"
+                 class="mr-5 text-3xl group-hover:text-primary-600 transition"></i>
+              <span class="font-semibold truncate group-hover:text-primary-600 transition hover:underline"
+                    (click)="openDirectory(childFile)">{{ childFile.name }}</span>
+              <i class="pi pi-ellipsis-v ml-5 text-3xl group-hover:text-primary-600 transition"
+                 (click)="fileActions.toggle($event)"></i>
+              <p-popover #fileActions>
+                <div class="flex flex-col gap-2 p-2 w-40">
+                  <button
+                    type="button"
+                    class="w-full py-2 px-3 rounded hover:bg-gray-300 text-left transition"
+                    (click)="openEditDialog(childFile)"
+                  >
+                    <i class="pi pi-pencil mr-2"></i> Update file
+                  </button>
+                  <button
+                    type="button"
+                    class="w-full py-2 px-3 rounded hover:bg-red-100 text-left text-red-600 transition"
+                    (click)="deleteFile(childFile)"
+                  >
+                    <i class="pi pi-trash mr-2"></i> Delete file
+                  </button>
+                </div>
+              </p-popover>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="flex items-center justify-center h-screen">
+          <div class="text-4xl text-center font-extrabold">
+            Directory is empty
+          </div>
+        </div>
+      }
+    }
+
+    <p-dialog [(visible)]="displayDialog" [closable]="true" [modal]="true" [resizable]="false"
+              [style]="{ width: '400px', height: '420px' }" header="{{ isEdit ? 'Edit File' : 'Create File' }}">
       <form (ngSubmit)="saveFile()" class="flex flex-col gap-4">
         <div>
           <label class="block mb-2 font-medium">Name</label>
           <input [(ngModel)]="fileForm.name" class="w-full" name="name" pInputText required type="text"/>
         </div>
-        <div>
-          <label class="block mb-2 font-medium">Type</label>
-          <p-select [(ngModel)]="fileForm.fileType" [disabled]="isEdit" [options]="fileTypeOptions" class="w-full"
-                    name="fileType" optionLabel="label" optionValue="value" required></p-select>
-        </div>
+        @if (!isEdit) {
+          <div>
+            <label class="block mb-2 font-medium">Type</label>
+            <p-select [(ngModel)]="fileForm.fileType" [disabled]="isEdit" [options]="fileTypeOptions" class="w-full"
+                      name="fileType" optionLabel="label" optionValue="value" required></p-select>
+          </div>
+        }
+        @if (fileForm.fileType == 'FILE') {
+          <div>
+            <p-fileupload mode="basic" chooseIcon="pi pi-upload" chooseLabel="Choose a file"
+                          (onSelect)="onFileSelected($event)"/>
+          </div>
+        }
         <div class="flex gap-2 mt-4">
-          <button class="p-button-success" label="Save" pButton type="submit"></button>
-          <button (click)="displayDialog=false" class="p-button-secondary" label="Cancel" pButton
-                  type="button"></button>
+          <p-button class="" label="Save" type="submit"></p-button>
+          <p-button (click)="displayDialog=false" class="" label="Cancel"></p-button>
         </div>
       </form>
     </p-dialog>

@@ -4,4 +4,5 @@ export interface FileCreateRequest {
   name: string;
   fileType: FileType;
   parentFileId: string;
+  content: File;
 }
