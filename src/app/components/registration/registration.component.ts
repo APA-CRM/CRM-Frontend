@@ -84,9 +84,7 @@ export class RegistrationComponent {
   onSubmit(): void {
     if (this.registerForm.valid) {
 
-      var signUpRequest: SignUpRequest = this.registerForm.value;
-
-      console.log(signUpRequest);
+      var signUpRequest: SignUpRequest = this.registerForm.value;``
 
       this.authService.signUp(signUpRequest).subscribe({
         next: userDetails => {

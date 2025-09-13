@@ -5,6 +5,7 @@ export enum Resource {
   USERS_ROLES = 'User-Roles',
   ROLES = 'Roles',
   ORGANIZATIONS = 'Organizations',
-  INVITATIONS = 'Invitations'
+  INVITATIONS = 'Invitations',
+  FILES = 'Files'
 
 }
