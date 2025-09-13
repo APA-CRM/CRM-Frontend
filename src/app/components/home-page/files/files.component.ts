@@ -141,9 +141,11 @@ export class FilesComponent implements OnInit {
         content: this.fileForm.content!,
       };
       this.aggregator.updateOrganizationFile(this.selectedFile.id, updateReq).subscribe({
-        next: () => {
+        next: (file) => {
           this.displayDialog = false;
-          this.loadRootFile();
+          let indexOfFile = this.getIndexOfFile(file.id);
+          this.file!.childrenFiles[indexOfFile] = file;
+
           this.messageService.add({severity: 'success', summary: 'Updated', detail: 'File updated successfully'});
         },
         error: (err) => {
@@ -181,6 +183,9 @@ export class FilesComponent implements OnInit {
       accept: () => {
         this.aggregator.deleteFile(this.organizationId, file.id).subscribe({
           next: () => {
+            let indexOfFile = this.getIndexOfFile(file.id);
+            this.file?.childrenFiles.splice(indexOfFile, 1);
+
             this.messageService.add({
               severity: 'success',
               summary: 'Deleted',
@@ -210,5 +215,10 @@ export class FilesComponent implements OnInit {
 
   getIconForFile(fileType: FileType): string {
     return "pi " + (fileType == FileType.FILE ? "pi-file" : "pi-folder-open");
+  }
+
+  private getIndexOfFile(fileId: string ): number {
+    return <number>this.file?.childrenFiles
+      .findIndex(file => file.id === fileId);
   }
 }
