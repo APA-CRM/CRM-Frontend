@@ -21,6 +21,7 @@ import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {FileModel} from '../../../models/files/file-model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PopoverModule} from 'primeng/popover';
+import {SkeletonModule} from 'primeng/skeleton';
 
 @Component({
   selector: 'app-files',
@@ -34,7 +35,8 @@ import {PopoverModule} from 'primeng/popover';
     ButtonModule,
     NgClass,
     FileUploadModule,
-    PopoverModule
+    PopoverModule,
+    SkeletonModule
   ],
   templateUrl: './files.component.html',
   styleUrl: './files.component.css'
@@ -217,7 +219,7 @@ export class FilesComponent implements OnInit {
     return "pi " + (fileType == FileType.FILE ? "pi-file" : "pi-folder-open");
   }
 
-  private getIndexOfFile(fileId: string ): number {
+  private getIndexOfFile(fileId: string): number {
     return <number>this.file?.childrenFiles
       .findIndex(file => file.id === fileId);
   }

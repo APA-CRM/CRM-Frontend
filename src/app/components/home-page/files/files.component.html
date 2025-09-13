@@ -3,6 +3,14 @@
   <div>
     <div class="flex items-center justify-between mb-6">
 
+
+      @if (isLoading) {
+        <div class="flex items-center gap-6 w-full">
+          <p-skeleton height="3rem" width="20rem" borderRadius="6px"></p-skeleton>
+          <p-skeleton height="3rem" width="9rem" borderRadius="6px" class="ml-auto"></p-skeleton>
+        </div>
+      }
+
       @if (file && !isLoading) {
         <div class="text-4xl font-extrabold">
           {{ file.name }}
@@ -17,6 +25,21 @@
       }
 
     </div>
+
+    @if (isLoading) {
+      <!-- PrimeNG Skeletons for file "buttons" -->
+      <div class="flex flex-wrap gap-4">
+        @for (skel of [1, 2, 3, 4, 5]; track $index) {
+          <div class="flex items-center px-10 py-6 rounded-xl shadow-lg bg-gray-200 min-w-[220px] min-h-[64px]">
+            <p-skeleton shape="square" size="2.5rem" class="mr-5"></p-skeleton>
+            <div class="flex flex-col gap-2 flex-1">
+              <p-skeleton height="1.5rem" width="8rem" borderRadius="4px"></p-skeleton>
+              <p-skeleton height="1rem" width="5rem" borderRadius="4px"></p-skeleton>
+            </div>
+          </div>
+        }
+      </div>
+    }
 
     @if (file && !isLoading) {
       @if (file.childrenFiles.length !== 0) {
