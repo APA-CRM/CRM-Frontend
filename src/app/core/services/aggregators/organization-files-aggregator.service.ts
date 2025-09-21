@@ -19,6 +19,10 @@ export class OrganizationFilesAggregatorService {
   ) {
   }
 
+  public downloadOrganizationFile(fileId: string): Observable<Blob> {
+      return this.filesService.downloadFile(fileId);
+  }
+
   public getOrganizationFile(fileId: string): Observable<FileWithChildrenModel> {
     return this.filesService.getFile(fileId);
   }

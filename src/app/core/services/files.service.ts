@@ -18,6 +18,12 @@ export class FilesService {
   ) {
   }
 
+  public downloadFile(fileId: string): Observable<Blob> {
+    return this.http.get<Blob>(environment.apiUrl + this.BASE_URI + `/${fileId}/content`, {
+      responseType: 'blob' as 'json'
+    });
+  }
+
   public getFile(fileId: string): Observable<FileWithChildrenModel> {
     return this.http.get<FileWithChildrenModel>(environment.apiUrl + this.BASE_URI + `/${fileId}`);
   }

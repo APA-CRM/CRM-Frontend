@@ -114,6 +114,25 @@ export class FilesComponent implements OnInit {
     });
   }
 
+  downloadFile(file: FileModel): void {
+    this.aggregator.downloadOrganizationFile(file.id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.fullName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.log(err)
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+  }
+
   openCreateDialog(parentFileId: string) {
     this.isEdit = false;
     this.displayDialog = true;
