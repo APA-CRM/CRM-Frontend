@@ -51,8 +51,8 @@ export class FilesService {
     return this.http.patch<FileWithChildrenModel>(environment.apiUrl + this.BASE_URI + `/${fileId}`, formData);
   }
 
-  public deleteFile(fileId: string): Observable<void> {
-    return this.http.delete<void>(environment.apiUrl + this.BASE_URI + `/${fileId}`);
+  public deleteFile(fileId: string, forceDelete: boolean): Observable<void> {
+    return this.http.delete<void>(environment.apiUrl + this.BASE_URI + `/${fileId}`, {params: {forceDelete: forceDelete}});
   }
 
 }
