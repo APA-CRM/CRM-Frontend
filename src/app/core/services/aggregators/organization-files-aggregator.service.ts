@@ -20,7 +20,7 @@ export class OrganizationFilesAggregatorService {
   }
 
   public downloadOrganizationFile(fileId: string): Observable<Blob> {
-      return this.filesService.downloadFile(fileId);
+    return this.filesService.downloadFile(fileId);
   }
 
   public getOrganizationFile(fileId: string): Observable<FileWithChildrenModel> {
@@ -49,11 +49,11 @@ export class OrganizationFilesAggregatorService {
     return this.filesService.updateFile(fileId, request);
   }
 
-  public deleteFile(organizationId: number, fileId: string): Observable<void> {
+  public deleteFile(organizationId: number, fileId: string, forceDelete = false): Observable<void> {
     return this.organizationFilesService.deleteOrganizationFile(organizationId, fileId)
       .pipe(
         switchMap((data) =>
-          this.filesService.deleteFile(fileId)
+          this.filesService.deleteFile(fileId, forceDelete)
         )
       );
   }

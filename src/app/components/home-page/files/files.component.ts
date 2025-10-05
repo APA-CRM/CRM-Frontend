@@ -199,26 +199,24 @@ export class FilesComponent implements OnInit {
 
   deleteFile(file: FileModel) {
     this.confirmationService.confirm({
-      header: `Delete '${file.name}' file`,
-      message: 'Are you sure you want to delete this file?',
+      header: `Delete '${file.name}'?`,
+      message: `Are you sure you want to delete this file?`,
       accept: () => {
-        this.aggregator.deleteFile(this.organizationId, file.id).subscribe({
-          next: () => {
-            let indexOfFile = this.getIndexOfFile(file.id);
-            this.file?.childrenFiles.splice(indexOfFile, 1);
+        this.deleteOrganizationFile(file, false);
+      }
+    });
+  }
 
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Deleted',
-              detail: `${file.name} has been deleted successfully`
-            });
-          },
-          error: (err) => {
-            const error: ErrorMessageModel = err.error;
+  forceDeleteDirectory(file: FileModel) {
+    if (file.fileType == FileType.FILE) {
+      return;
+    }
 
-            this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-          }
-        });
+    this.confirmationService.confirm({
+      header: `Delete '${file.name}'?`,
+      message: `Are you sure you want to delete this directory and all nested files?`,
+      accept: () => {
+        this.deleteOrganizationFile(file, true);
       }
     });
   }
@@ -241,5 +239,26 @@ export class FilesComponent implements OnInit {
   private getIndexOfFile(fileId: string): number {
     return <number>this.file?.childrenFiles
       .findIndex(file => file.id === fileId);
+  }
+
+
+  private deleteOrganizationFile(file: FileModel, forceDelete: boolean) {
+    this.aggregator.deleteFile(this.organizationId, file.id, forceDelete).subscribe({
+      next: () => {
+        let indexOfFile = this.getIndexOfFile(file.id);
+        this.file?.childrenFiles.splice(indexOfFile, 1);
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: `${file.name} has been deleted successfully`
+        });
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    });
   }
 }
