@@ -1,59 +1,99 @@
-# CRMFrontend
+# CRM-Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
+## Overview
 
-## Development server
+CRM-Frontend is the front-end application for the APA-CRM platform, built with Angular and TypeScript. The project provides a user interface for interacting with APA-CRM services, following a modern component-based architecture.
 
-To start a local development server, run:
+## Technology Stack
 
-```bash
+- **TypeScript**
+- **Angular**
+- **HTML/CSS**
+- **Docker** (development workflow)
+- **Node.js / npm**
+- 
+## Prerequisites
+
+- Node.js (v18+ recommended)
+- npm
+- Angular CLI (`npm install -g @angular/cli`)
+- Docker (optional for containerization)
+- Git
+
+## Build & Run Instructions
+
+### 1. Clone the repository
+
+```sh
+git clone https://github.com/APA-CRM/CRM-Frontend.git
+cd CRM-Frontend
+```
+
+### 2. Install dependencies
+
+```sh
+npm install
+```
+
+### 3. Start the development server
+
+```sh
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open your browser at [http://localhost:4200](http://localhost:4200) to view the application. The server reloads automatically on source changes.
 
-## Code scaffolding
+### 4. Build for production
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+ng build --prod
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Build artifacts are output to the `dist/` directory.
 
-```bash
-ng generate --help
+### 5. Docker (development)
+
+```sh
+docker build -f Dockerfile.dev -t crm-frontend-dev .
+docker run -p 4200:4200 crm-frontend-dev
 ```
 
-## Building
+## Testing
 
-To build the project run:
+### Unit Tests
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
+```sh
 ng test
 ```
 
-## Running end-to-end tests
+Executes unit tests using Karma.
 
-For end-to-end (e2e) testing, run:
+### End-to-End Tests
 
-```bash
+```sh
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Runs e2e tests (set up required).
 
-## Additional Resources
+## Contribution Guidelines
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+We welcome contributions! Please follow these steps:
+
+- Fork the repository and create a feature branch
+- Follow Angular and TypeScript coding standards
+- Write clear and concise commit messages
+- Submit a Pull Request to the `develop` branch with a description
+
+For bug reports and feature requests, please use [GitHub Issues](https://github.com/APA-CRM/CRM-Frontend/issues).
+
+## License
+
+See [LICENSE](LICENSE) for details.
+
+## Contact
+
+For questions or support, open an issue in this repository.
+
+---
+_See project source for further documentation and environment configuration._
