@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SideBarComponent} from '../side-bar/side-bar.component';
 import {RouterOutlet} from '@angular/router';
+import {NotificationService} from '../../../core/services/notification.service';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +13,26 @@ import {RouterOutlet} from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  constructor(
+    private notificationService: NotificationService,
+    private messageService: MessageService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.notificationService.initConnection();
+
+    this.notificationService.userNotifications$.subscribe(
+      value => {
+        this.messageService.add({closable: true, summary: 'User Notification', detail: value.message, severity: 'info'});
+      }
+    )
+
+    this.notificationService.organizationNotifications$.subscribe(value => {
+      this.messageService.add({closable: true, summary: 'Organization Notification', detail: value.message, severity: 'info'});
+    })
+  }
 
 }
