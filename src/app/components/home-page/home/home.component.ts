@@ -26,12 +26,12 @@ export class HomeComponent implements OnInit {
 
     this.notificationService.userNotifications$.subscribe(
       value => {
-        this.messageService.add({closable: true, summary: 'User Notification', detail: value.message, severity: 'info'});
+        this.messageService.add({closable: true, summary: value.title, detail: value.message, severity: 'info'});
       }
     )
 
     this.notificationService.organizationNotifications$.subscribe(value => {
-      this.messageService.add({closable: true, summary: 'Organization Notification', detail: value.message, severity: 'info'});
+      this.messageService.add({closable: true, summary: value.title, detail: value.message, severity: 'info'});
     })
   }
 
