@@ -10,9 +10,13 @@ import {InvitationComponent} from './components/invitation/invitation.component'
 import {UserProfileComponent} from './components/home-page/user-profile/user-profile.component';
 import {OrganizationProfileComponent} from './components/home-page/organization-profile/organization-profile.component';
 import {FilesComponent} from './components/home-page/files/files.component';
+import {
+  CreateRestorePasswordRequestComponent
+} from './components/restore-password/create-restore-password-request/create-restore-password-request.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'forgot-password', component: CreateRestorePasswordRequestComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'organization/create', component: CreateOrganizationComponent},
   {path: 'organization/choose', component: ChooseOrganizationComponent},

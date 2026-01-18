@@ -6,6 +6,8 @@ import {Observable} from 'rxjs';
 import {SignUpRequest} from '../../models/auth/sign-up-request';
 import {AuthStorageService} from './auth-storage.service';
 import {environment} from '../../../environments/environment';
+import {PasswordRestoreRequestModel} from '../../models/restore-password/password-restore-request-model';
+import {CreateRestorePasswordRequest} from '../../models/restore-password/create-restore-password-request';
 
 
 @Injectable({
@@ -33,6 +35,10 @@ export class AuthService {
     const body = {refreshToken: this.authStorage.getRefreshToken()};
 
     return this.http.post<AuthDetails>(environment.apiUrl + this.BASE_URI + '/refresh', body);
+  }
+
+  public createPasswordRestoreRequest(body: CreateRestorePasswordRequest): Observable<PasswordRestoreRequestModel> {
+    return this.http.post<PasswordRestoreRequestModel>(environment.apiUrl + this.BASE_URI + '/restore-password-request', body);
   }
 
 }
