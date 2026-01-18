@@ -13,10 +13,12 @@ import {FilesComponent} from './components/home-page/files/files.component';
 import {
   CreateRestorePasswordRequestComponent
 } from './components/restore-password/create-restore-password-request/create-restore-password-request.component';
+import {VerifyCodeComponent} from './components/restore-password/verify-code/verify-code.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'forgot-password', component: CreateRestorePasswordRequestComponent},
+  {path: 'verify-code/:requestId', component: VerifyCodeComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'organization/create', component: CreateOrganizationComponent},
   {path: 'organization/choose', component: ChooseOrganizationComponent},

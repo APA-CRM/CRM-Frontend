@@ -57,9 +57,10 @@ export class CreateRestorePasswordRequestComponent {
     this.isLoading = true;
 
     this.authService.createPasswordRestoreRequest(request).subscribe({
-      next: () => {
-
+      next: (value) => {
         this.isLoading = false;
+
+        this.router.navigate([`verify-code/${value.id}`]);
       },
       error: err => {
         this.isLoading = false;

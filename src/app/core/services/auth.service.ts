@@ -8,6 +8,7 @@ import {AuthStorageService} from './auth-storage.service';
 import {environment} from '../../../environments/environment';
 import {PasswordRestoreRequestModel} from '../../models/restore-password/password-restore-request-model';
 import {CreateRestorePasswordRequest} from '../../models/restore-password/create-restore-password-request';
+import {VerifyCode} from '../../models/restore-password/verify-code';
 
 
 @Injectable({
@@ -39,6 +40,10 @@ export class AuthService {
 
   public createPasswordRestoreRequest(body: CreateRestorePasswordRequest): Observable<PasswordRestoreRequestModel> {
     return this.http.post<PasswordRestoreRequestModel>(environment.apiUrl + this.BASE_URI + '/restore-password-request', body);
+  }
+
+  public verifyCode(requestId: string, code: VerifyCode): Observable<AuthDetails> {
+    return this.http.put<AuthDetails>(environment.apiUrl + this.BASE_URI + `/restore-password-request/${requestId}/restore-password`, code);
   }
 
 }
