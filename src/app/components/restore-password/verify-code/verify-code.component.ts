@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {VerifyCode} from '../../../models/restore-password/verify-code';
-import {ButtonDirective} from 'primeng/button';
+import {ButtonDirective, ButtonModule} from 'primeng/button';
 import {FloatLabel} from 'primeng/floatlabel';
 import {InputGroup} from 'primeng/inputgroup';
 import {InputGroupAddon} from 'primeng/inputgroupaddon';
@@ -22,7 +22,8 @@ import {AuthStorageService} from '../../../core/services/auth-storage.service';
     InputGroupAddon,
     InputText,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonModule
   ],
   templateUrl: './verify-code.component.html',
   styleUrl: './verify-code.component.css'
@@ -31,7 +32,8 @@ export class VerifyCodeComponent implements OnInit {
 
   protected verifyForm: FormGroup;
 
-  protected isLoading: boolean = false;
+  protected loadingStateVerifyCode: boolean = false;
+  protected loadingStateResendCode: boolean = false;
 
   protected requestId!: string;
 
@@ -59,17 +61,35 @@ export class VerifyCodeComponent implements OnInit {
 
   onSubmit() {
     const request: VerifyCode = this.verifyForm.value;
-    this.isLoading = true;
+    this.loadingStateVerifyCode = true;
 
     this.authService.verifyCode(this.requestId, request).subscribe({
       next: (details) => {
-        this.isLoading = false;
+        this.loadingStateVerifyCode = false;
 
         this.authStorage.saveCredential(details);
         this.router.navigate(['/organization/choose']);
       },
       error: err => {
-        this.isLoading = false;
+        this.loadingStateVerifyCode = false;
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'})
+      }
+    })
+  }
+
+  resendCode() {
+    this.loadingStateResendCode = true;
+
+    this.authService.resendCode(this.requestId).subscribe({
+      next: () => {
+        this.loadingStateResendCode = false;
+
+        this.messageService.add({closable: true, summary: "Verification code has been resented", severity: 'success'})
+      },
+      error: err => {
+        this.loadingStateResendCode = true;
         const error: ErrorMessageModel = err.error;
 
         this.messageService.add({closable: true, summary: error.message, severity: 'error'})

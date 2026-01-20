@@ -4,7 +4,7 @@
 
     <form (ngSubmit)="onSubmit()" [formGroup]="verifyForm" class="space-y-7">
 
-      <div>
+      <div class="m-0">
         <p-inputgroup>
           <p-inputgroup-addon>
             <i class="pi pi-asterisk"></i>
@@ -19,7 +19,12 @@
         </div>
       </div>
 
-      <button [disabled]="verifyForm.invalid" [loading]="isLoading" class="w-full" label="Verify code" pButton
+      <div class="text-center mb-3 mt-3">
+        <p-button (onClick)="resendCode()" [loading]="loadingStateResendCode" label="Resend Code" link/>
+      </div>
+
+      <button [disabled]="verifyForm.invalid" [loading]="loadingStateVerifyCode" class="w-full" label="Verify code"
+              pButton
               type="submit"></button>
 
     </form>

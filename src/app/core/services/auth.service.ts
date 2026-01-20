@@ -43,7 +43,15 @@ export class AuthService {
   }
 
   public verifyCode(requestId: string, code: VerifyCode): Observable<AuthDetails> {
-    return this.http.put<AuthDetails>(environment.apiUrl + this.BASE_URI + `/restore-password-request/${requestId}/restore-password`, code);
+    return this.http.put<AuthDetails>(
+      environment.apiUrl + this.BASE_URI + `/restore-password-request/${requestId}/restore-password`, code
+    );
+  }
+
+  public resendCode(requestId: string): Observable<PasswordRestoreRequestModel> {
+    return this.http.patch<PasswordRestoreRequestModel>(
+      environment.apiUrl + this.BASE_URI + `/restore-password-request/${requestId}/resend`, null
+    );
   }
 
 }
