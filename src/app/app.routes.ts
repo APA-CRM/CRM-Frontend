@@ -14,11 +14,13 @@ import {
   CreateRestorePasswordRequestComponent
 } from './components/restore-password/create-restore-password-request/create-restore-password-request.component';
 import {VerifyCodeComponent} from './components/restore-password/verify-code/verify-code.component';
+import {RestorePasswordComponent} from './components/restore-password/restore-password/restore-password.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'forgot-password', component: CreateRestorePasswordRequestComponent},
   {path: 'verify-code/:requestId', component: VerifyCodeComponent},
+  {path: 'restore-password', component: RestorePasswordComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'organization/create', component: CreateOrganizationComponent},
   {path: 'organization/choose', component: ChooseOrganizationComponent},

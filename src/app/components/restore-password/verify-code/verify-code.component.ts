@@ -68,7 +68,7 @@ export class VerifyCodeComponent implements OnInit {
         this.loadingStateVerifyCode = false;
 
         this.authStorage.saveCredential(details);
-        this.router.navigate(['/organization/choose']);
+        this.router.navigate(['restore-password']);
       },
       error: err => {
         this.loadingStateVerifyCode = false;

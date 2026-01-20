@@ -13,6 +13,7 @@ import {SignUpRequest} from '../../models/auth/sign-up-request';
 import {ErrorMessageModel} from '../../models/error/error-message-model';
 import {CheckboxModule} from 'primeng/checkbox';
 import {AuthStorageService} from '../../core/services/auth-storage.service';
+import {matchPasswordValidator} from '../../core/validators/password-validator';
 
 @Component({
   selector: 'app-registration',
@@ -50,30 +51,10 @@ export class RegistrationComponent {
       },
       {
         validators: [
-          this.matchPasswordValidator('password', 'confirmPassword'),
+          matchPasswordValidator('password', 'confirmPassword'),
         ]
       }
     );
-  }
-
-  matchPasswordValidator(controlName: string, matchingControlName: string): ValidatorFn {
-    return (abstractControl: AbstractControl) => {
-      const control = abstractControl.get(controlName);
-      const matchingControl = abstractControl.get(matchingControlName);
-
-      if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
-        return null;
-      }
-
-      if (control!.value !== matchingControl!.value) {
-        const error = {confirmedValidator: 'Passwords do not match.'};
-        matchingControl!.setErrors(error);
-        return error;
-      } else {
-        matchingControl!.setErrors(null);
-        return null;
-      }
-    }
   }
 
   isInvalidField(field: string): boolean {
