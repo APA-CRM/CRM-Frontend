@@ -54,7 +54,7 @@ Build artifacts are output to the `dist/` directory.
 ### 5. Docker (development)
 
 ```sh
-docker build -f Dockerfile.dev -t crm-frontend-dev .
+docker build -f Dockerfile -t crm-frontend-dev .
 docker run -p 4200:4200 crm-frontend-dev
 ```
 

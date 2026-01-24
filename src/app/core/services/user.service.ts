@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {UserModel} from '../../models/users/user-model';
 import {UserUpdateRequest} from '../../models/users/user-update-request';
 import {environment} from '../../../environments/environment';
+import {UserChangePasswordRequest} from '../../models/users/user-change-password-request';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class UserService {
 
   public updateUser(id: number, request: UserUpdateRequest): Observable<UserModel> {
     return this.http.patch<UserModel>(`${environment.apiUrl}${this.BASE_URI}/${id}`, request);
+  }
+
+  public changeUserPassword(id: number, request: UserChangePasswordRequest): Observable<UserModel> {
+    return this.http.patch<UserModel>(`${environment.apiUrl}${this.BASE_URI}/${id}/update-password`, request);
   }
 
 }

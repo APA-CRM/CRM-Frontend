@@ -69,6 +69,10 @@ export class LoginComponent {
     this.router.navigate(['registration'])
   }
 
+  goToForgotPasswordPage(): void {
+    this.router.navigate(['forgot-password'])
+  }
+
   isInvalidField(key: string): boolean {
     return this.loginForm.controls[key].invalid &&
       this.loginForm.controls[key].touched;
