@@ -22,6 +22,11 @@ export class AuthStorageService {
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
   }
 
+  public isAuthenticated(): boolean {
+    return localStorage.getItem(this.TOKEN_KEY) !== null
+      && localStorage.getItem(this.TOKEN_TYPE_KEY) !== null;
+  }
+
   public getTokenWithType(): string | null {
     const tokenType: string | null = localStorage.getItem(this.TOKEN_TYPE_KEY);
     const token: string | null = localStorage.getItem(this.TOKEN_KEY);

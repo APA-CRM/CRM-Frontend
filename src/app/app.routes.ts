@@ -15,6 +15,7 @@ import {
 } from './components/restore-password/create-restore-password-request/create-restore-password-request.component';
 import {VerifyCodeComponent} from './components/restore-password/verify-code/verify-code.component';
 import {RestorePasswordComponent} from './components/restore-password/restore-password/restore-password.component';
+import {authenticationGuard} from './core/guards/authentication.guard';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -26,7 +27,7 @@ export const routes: Routes = [
   {path: 'organization/choose', component: ChooseOrganizationComponent},
   {path: 'invitation/:invitationId', component: InvitationComponent},
   {
-    path: '', component: HomeComponent, children: [
+    path: '', component: HomeComponent, canActivate: [authenticationGuard], children: [
       {path: 'users', component: UsersTableComponent},
       {path: 'roles', component: RolesComponent},
       {path: 'user/me', component: UserProfileComponent},
