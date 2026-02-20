@@ -54,4 +54,15 @@ export class AuthService {
     );
   }
 
+  public logout(): Observable<void> {
+    const body = {refreshToken: this.authStorage.getRefreshToken()};
+
+    return this.http.post<void>(environment.apiUrl + this.BASE_URI + '/logout', body)
+      .pipe(source => {
+        this.authStorage.removeCredential();
+
+        return source;
+      });
+  }
+
 }

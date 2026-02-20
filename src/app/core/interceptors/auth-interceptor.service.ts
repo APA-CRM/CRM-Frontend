@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (err.status == 401) {
 
-          if (req.url.includes('refresh')) {
+          if (req.url.includes('refresh') || req.url.includes('sign-in')) {
             return throwError(() => err);
           }
 
