@@ -12,6 +12,8 @@ import {OrganizationHolderService} from '../../../core/services/organization-hol
 import {SkeletonModule} from 'primeng/skeleton';
 import {CommonModule} from '@angular/common';
 import {UserHolderService} from '../../../core/services/user-holder.service';
+import {AuthService} from '../../../core/services/auth.service';
+import {PopoverModule} from 'primeng/popover';
 
 @Component({
   selector: 'app-side-bar',
@@ -19,12 +21,26 @@ import {UserHolderService} from '../../../core/services/user-holder.service';
     AvatarModule,
     AvatarGroupModule,
     SkeletonModule,
-    CommonModule
+    CommonModule,
+    PopoverModule
   ],
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.css'
 })
 export class SideBarComponent implements OnInit {
+
+  userProfileActions: { name: string, icon: string, action: () => void }[] = [
+    {
+      name: "See Profile",
+      icon: "pi-user",
+      action: () => this.goToUserProfile()
+    },
+    {
+      name: "Log Out",
+      icon: "pi-sign-out",
+      action: () => this.logout()
+    }
+  ]
 
   sideBarContent: { uri: string, icon: string, name: string }[] = [
     {
@@ -48,11 +64,13 @@ export class SideBarComponent implements OnInit {
       name: 'Files',
     }
   ]
+
   protected currentUser!: UserModel;
   protected organizationOfUser: OrganizationPreviewModel[] = [];
 
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private organizationService: OrganizationService,
     private organizationHolder: OrganizationHolderService,
     private userHolder: UserHolderService,
@@ -70,6 +88,23 @@ export class SideBarComponent implements OnInit {
     let organizationId = this.organizationHolder.getOrganizationId();
 
     this.navigateTo('organization/' + organizationId);
+  }
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.navigateTo('login');
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'})
+      }
+    });
+  }
+
+  goToUserProfile() {
+    this.navigateTo('user/' + this.currentUser.id)
   }
 
   navigateTo(uri: string) {

@@ -1,17 +1,36 @@
 <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-gray-900">
   <div class="text-gray-100 text-xl">
-    <div class="p-2.5 mt-1 flex items-center">
-      @if (currentUser) {
-        <p-avatar [label]="getLabelForAvatar(currentUser.fullName)" styleClass="cursor-default" size="large"
+    @if (currentUser) {
+      <div class="cursor-pointer hover:bg-blue-600 rounded-md duration-300 p-2.5 mt-1 flex items-center"
+           (click)="userProfilePopover.toggle($event)">
+        <p-avatar [label]="getLabelForAvatar(currentUser.fullName)" styleClass="ml-0" size="large"
                   [style]="{ 'background-color': '#00a63e', color: 'white' }"/>
-        <span
-          class="font-bold text-gray-200 text-[18px] ml-3 cursor-pointer hover:underline"
-          (click)="navigateTo('user/' + currentUser.id)">{{ currentUser.fullName }}</span>
-      } @else {
+        <span class="font-bold text-gray-200 text-[18px] ml-3 ">{{ currentUser.fullName }}</span>
+      </div>
+      <p-popover #userProfilePopover
+                 [appendTo]="'body'"
+                 styleClass="user-profile-popover">
+        <ng-template pTemplate="content">
+          <div class="flex flex-col divide-y divide-gray-200">
+            @for (action of userProfileActions; track $index) {
+              <button
+                class="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors focus:outline-none focus:bg-blue-100"
+                (click)="action.action(); userProfilePopover.hide()"
+                [attr.aria-label]="action.name">
+                <i class="pi mr-2" [ngClass]="action.icon"></i>
+                <span class="text-gray-700 font-medium">{{ action.name }}</span>
+              </button>
+            }
+          </div>
+        </ng-template>
+      </p-popover>
+
+    } @else {
+      <div class="p-2.5 mt-1 flex items-center">
         <p-skeleton size="3rem" styleClass="mr-2" [style]="{ 'background-color': '#4B5563' }"/>
         <p-skeleton width="5rem" styleClass="ml-2" [style]="{ 'background-color': '#4B5563' }"/>
-      }
-    </div>
+      </div>
+    }
   </div>
   <div class="my-2 bg-gray-600 h-[1px]"></div>
   <div class="mb-3">
@@ -59,3 +78,4 @@
       </div>
     </div>
   </div>
+</div>

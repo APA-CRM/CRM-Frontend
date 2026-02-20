@@ -16,6 +16,12 @@ export class AuthStorageService {
     localStorage.setItem(this.REFRESH_TOKEN_KEY, authResponse.refreshToken);
   }
 
+  public removeCredential(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.TOKEN_TYPE_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+  }
+
   public getTokenWithType(): string | null {
     const tokenType: string | null = localStorage.getItem(this.TOKEN_TYPE_KEY);
     const token: string | null = localStorage.getItem(this.TOKEN_KEY);
@@ -27,12 +33,4 @@ export class AuthStorageService {
     return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
-  public getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-
-  public getTokenType(): string | null {
-    return localStorage.getItem(this.TOKEN_TYPE_KEY);
-  }
 }
