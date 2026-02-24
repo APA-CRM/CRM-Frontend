@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AuthService} from '../../../core/services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
@@ -12,6 +11,7 @@ import {InputGroupAddon} from 'primeng/inputgroupaddon';
 import {InputText} from 'primeng/inputtext';
 import {NgIf} from '@angular/common';
 import {AuthStorageService} from '../../../core/services/auth-storage.service';
+import {RestorePasswordService} from '../../../core/services/restore-password.service';
 
 @Component({
   selector: 'app-verify-code',
@@ -39,7 +39,7 @@ export class VerifyCodeComponent implements OnInit {
 
   constructor(
     formBuilder: FormBuilder,
-    private authService: AuthService,
+    private restorePasswordService: RestorePasswordService,
     private authStorage: AuthStorageService,
     private router: Router,
     private route: ActivatedRoute,
@@ -63,7 +63,7 @@ export class VerifyCodeComponent implements OnInit {
     const request: VerifyCode = this.verifyForm.value;
     this.loadingStateVerifyCode = true;
 
-    this.authService.verifyCode(this.requestId, request).subscribe({
+    this.restorePasswordService.verifyCode(this.requestId, request).subscribe({
       next: (details) => {
         this.loadingStateVerifyCode = false;
 
@@ -82,7 +82,7 @@ export class VerifyCodeComponent implements OnInit {
   resendCode() {
     this.loadingStateResendCode = true;
 
-    this.authService.resendCode(this.requestId).subscribe({
+    this.restorePasswordService.resendCode(this.requestId).subscribe({
       next: () => {
         this.loadingStateResendCode = false;
 

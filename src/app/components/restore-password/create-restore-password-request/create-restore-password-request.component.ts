@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {AuthService} from '../../../core/services/auth.service';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FloatLabel} from 'primeng/floatlabel';
@@ -11,6 +10,7 @@ import {ButtonModule} from 'primeng/button';
 import {CreateRestorePasswordRequest} from '../../../models/restore-password/create-restore-password-request';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
+import {RestorePasswordService} from '../../../core/services/restore-password.service';
 
 @Component({
   selector: 'app-create-restore-password-request',
@@ -34,7 +34,7 @@ export class CreateRestorePasswordRequestComponent {
 
   constructor(
     formBuilder: FormBuilder,
-    private authService: AuthService,
+    private restorePasswordService: RestorePasswordService,
     private router: Router,
     private messageService: MessageService
   ) {
@@ -56,7 +56,7 @@ export class CreateRestorePasswordRequestComponent {
     const request: CreateRestorePasswordRequest = this.verifyForm.value;
     this.isLoading = true;
 
-    this.authService.createPasswordRestoreRequest(request).subscribe({
+    this.restorePasswordService.createPasswordRestoreRequest(request).subscribe({
       next: (value) => {
         this.isLoading = false;
 
