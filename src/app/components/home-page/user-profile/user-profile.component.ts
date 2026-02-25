@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../core/services/user.service';
 import {UserModel} from '../../../models/users/user-model';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UserUpdateRequest} from '../../../models/users/user-update-request';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {CommonModule} from '@angular/common';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ButtonModule} from 'primeng/button';
@@ -14,6 +14,10 @@ import {TextareaModule} from 'primeng/textarea';
 import {SkeletonModule} from 'primeng/skeleton';
 import {AvatarModule} from 'primeng/avatar';
 import {UserHolderService} from '../../../core/services/user-holder.service';
+import {UserSessionService} from '../../../core/services/user-session.service';
+import {UserSessionModel} from '../../../models/users/user-session-model';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {AuthStorageService} from '../../../core/services/auth-storage.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -26,7 +30,8 @@ import {UserHolderService} from '../../../core/services/user-holder.service';
     InputTextModule,
     TextareaModule,
     SkeletonModule,
-    AvatarModule
+    AvatarModule,
+    ConfirmPopupModule
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -36,15 +41,22 @@ export class UserProfileComponent implements OnInit {
   user: UserModel | null = null;
   isMe: boolean = false;
   profileForm: FormGroup;
-  loading = true;
+  closingSessionId: string | null = null;
+  userSessions: UserSessionModel[] = [];
+  profileLoading = true;
+  userSessionsLoading = true;
   editing = false;
   saveLoading = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private userService: UserService,
+    private userSessionService: UserSessionService,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private authStorageService: AuthStorageService,
     private userHolder: UserHolderService
   ) {
     this.profileForm = this.fb.group({
@@ -63,12 +75,12 @@ export class UserProfileComponent implements OnInit {
 
     this.isMe = id === this.userHolder.getCurrentUserId();
 
-    this.loading = true;
+    this.profileLoading = true;
 
     this.userService.getUserById(id).subscribe({
       next: data => {
         this.user = data;
-        this.loading = false;
+        this.profileLoading = false;
         this.setFormValues(this.user)
       },
       error: (err) => {
@@ -78,6 +90,93 @@ export class UserProfileComponent implements OnInit {
       }
     })
 
+    this.userSessionService.getUserSessions().subscribe({
+      next: data => {
+        this.userSessions = data;
+        this.userSessionsLoading = false;
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+
+  }
+
+  confirmCloseAllSessions(event: Event): void {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure you want to end all sessions including yours?',
+      icon: 'pi pi-exclamation-triangle',
+      header: 'End all sessions?',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete'
+      },
+      accept: () => {
+        this.endAllUsersSessions();
+      }
+    });
+  }
+
+  confirmCloseSession(event: Event, sessionId: string): void {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure you want to end this session?',
+      icon: 'pi pi-exclamation-triangle',
+      header: 'End session?',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete'
+      },
+      accept: () => {
+        this.endSession(sessionId);
+      }
+    });
+  }
+
+  endSession(sessionId: string): void {
+    this.closingSessionId = sessionId;
+
+    this.userSessionService.endUserSession(sessionId).subscribe({
+      next: () => {
+        this.closingSessionId = null;
+
+        this.userSessions = this.userSessions.filter(value => value.id !== sessionId);
+
+        this.messageService.add({closable: true, summary: `Session has been closed`, severity: 'success'})
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+  }
+
+  endAllUsersSessions(): void {
+    this.userSessionService.endAllUsersSessions().subscribe({
+      next: () => {
+        this.userSessions = [];
+
+        this.authStorageService.removeCredential();
+        this.router.navigate(['login'])
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
   }
 
   setFormValues(user: UserModel) {
