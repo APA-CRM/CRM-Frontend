@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {RoleRequest} from '../../models/roles/create-role-request';
 import {RoleFilterRequest} from '../../models/roles/role-filter-request';
 import {PageModel} from '../../models/page/page-model';
-import {FilterRequestMapperService} from '../mapper/filter-request-mapper.service';
+import {FilterRequestToHttpParamsAdapter} from '../adapter/filter-request-to-http-params-adapter.service';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class OrganizationRolesService {
 
   constructor(
     private http: HttpClient,
-    private filterRequestMapperService: FilterRequestMapperService
+    private requestToHttpParamsAdapter: FilterRequestToHttpParamsAdapter
   ) {
   }
 
@@ -35,7 +35,7 @@ export class OrganizationRolesService {
   }
 
   public filterOrganizationRoles(request: RoleFilterRequest, organizationId: number): Observable<PageModel<RoleModel>> {
-    let httpParams = this.filterRequestMapperService.mapRoleFilterRequestToHttpParams(request);
+    let httpParams = this.requestToHttpParamsAdapter.toHttpParams(request);
 
     return this.http.get<PageModel<RoleModel>>(
       environment.apiUrl + this.BASE_URI + `/${organizationId}/roles/filter`, {params: httpParams}
