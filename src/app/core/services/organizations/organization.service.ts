@@ -1,10 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {OrganizationModel} from '../../models/organizations/organization-model';
-import {OrganizationRequest} from '../../models/organizations/organization-request';
-import {OrganizationPreviewModel} from '../../models/organizations/organization-preview-model';
-import {environment} from '../../../environments/environment';
+import {OrganizationModel} from '../../../models/organizations/organization-model';
+import {OrganizationRequest} from '../../../models/organizations/organization-request';
+import {OrganizationPreviewModel} from '../../../models/organizations/organization-preview-model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

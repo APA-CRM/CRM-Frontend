@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {OrganizationInvitationService} from '../../core/services/organization-invitation.service';
-import {OrganizationHolderService} from '../../core/services/organization-holder.service';
+import {OrganizationInvitationService} from '../../core/services/organizations/organization-invitation.service';
+import {OrganizationHolderService} from '../../core/services/organizations/organization-holder.service';
 import {InvitationModel} from '../../models/invitations/invitation-model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorMessageModel} from '../../models/error/error-message-model';

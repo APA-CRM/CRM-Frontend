@@ -8,8 +8,8 @@ import {PopoverModule} from 'primeng/popover';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {RoleRequest} from '../../../models/roles/create-role-request';
-import {OrganizationRolesService} from '../../../core/services/organization-roles.service';
-import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
+import {OrganizationRolesService} from '../../../core/services/organizations/organization-roles.service';
+import {OrganizationHolderService} from '../../../core/services/organizations/organization-holder.service';
 import {Resource} from '../../../core/enums/resource';
 import {Action} from '../../../core/enums/action';
 

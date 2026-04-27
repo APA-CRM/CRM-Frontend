@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {UserWithRolesModel} from '../../models/users/user-with-roles-model';
+import {UserWithRolesModel} from '../../../models/users/user-with-roles-model';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PageModel} from '../../models/page/page-model';
-import {UsersFilterRequest} from '../../models/users/users-filter-request';
-import {FilterRequestToHttpParamsAdapter} from '../adapter/filter-request-to-http-params-adapter.service';
-import {environment} from '../../../environments/environment';
+import {PageModel} from '../../../models/page/page-model';
+import {UsersFilterRequest} from '../../../models/users/users-filter-request';
+import {FilterRequestToHttpParamsAdapter} from '../../adapter/filter-request-to-http-params-adapter.service';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

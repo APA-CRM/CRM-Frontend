@@ -14,7 +14,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {SelectModule} from 'primeng/select';
 import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
-import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
+import {OrganizationHolderService} from '../../../core/services/organizations/organization-holder.service';
 import {NgClass} from '@angular/common';
 import {FileSelectEvent, FileUploadModule} from 'primeng/fileupload';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';

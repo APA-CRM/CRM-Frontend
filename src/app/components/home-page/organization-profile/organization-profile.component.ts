@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {OrganizationService} from '../../../core/services/organization.service';
+import {OrganizationService} from '../../../core/services/organizations/organization.service';
 import {ActivatedRoute} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {CommonModule} from '@angular/common';
@@ -13,7 +13,7 @@ import {DialogModule} from 'primeng/dialog';
 import {InputTextModule} from 'primeng/inputtext';
 import {TextareaModule} from 'primeng/textarea';
 import {OrganizationRequest} from '../../../models/organizations/organization-request';
-import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
+import {OrganizationHolderService} from '../../../core/services/organizations/organization-holder.service';
 
 @Component({
   selector: 'app-organization-profile',
