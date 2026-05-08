@@ -7,6 +7,7 @@ import {environment} from '../../../../environments/environment';
 import {OrganizationHolderService} from '../organizations/organization-holder.service';
 import {TaskFilterRequest} from '../../../models/tasks/task-filter-request';
 import {FilterRequestToHttpParamsAdapter} from '../../adapter/filter-request-to-http-params-adapter.service';
+import {PageModel} from '../../../models/page/page-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,23 +18,8 @@ export class TaskService {
 
   constructor(
     private http: HttpClient,
-    private holderService: OrganizationHolderService,
-    private requestToHttpParamsAdapter: FilterRequestToHttpParamsAdapter
+    private holderService: OrganizationHolderService
   ) {
-  }
-
-  public filterTasks(filterRequest: TaskFilterRequest) {
-    const params = this.requestToHttpParamsAdapter.toHttpParams(filterRequest);
-
-    const organizationId = this.holderService.getOrganizationId();
-
-    return this.http.get(`${environment.apiUrl}${this.BASE_URI}/${organizationId}/tasks/filter`, {params: params});
-  }
-
-  public getTask(taskId: string): Observable<TaskModel> {
-    const organizationId = this.holderService.getOrganizationId();
-
-    return this.http.get<TaskModel>(`${environment.apiUrl}${this.BASE_URI}/${organizationId}/tasks/${taskId}`);
   }
 
   public createTask(request: TaskRequest): Observable<TaskModel> {

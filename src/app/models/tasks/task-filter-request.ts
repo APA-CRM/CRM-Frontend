@@ -3,7 +3,6 @@ import {DateRange} from '../filter/date-range';
 
 export interface TaskFilterRequest extends BaseFilterRequest {
   title?: string;
-  description?: string;
   statusId?: string;
   priorityId?: number;
   assignedTo?: number;
