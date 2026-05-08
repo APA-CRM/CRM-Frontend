@@ -16,6 +16,7 @@ import {
 import {VerifyCodeComponent} from './components/restore-password/verify-code/verify-code.component';
 import {RestorePasswordComponent} from './components/restore-password/restore-password/restore-password.component';
 import {authenticationGuard} from './core/guards/authentication.guard';
+import {TasksTableComponent} from './components/home-page/tasks-table/tasks-table.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -34,7 +35,8 @@ export const routes: Routes = [
       {path: 'user/:userId', component: UserProfileComponent},
       {path: 'organization/:organizationId', component: OrganizationProfileComponent},
       {path: 'files/root', component: FilesComponent},
-      {path: 'files/:fileId', component: FilesComponent}
+      {path: 'files/:fileId', component: FilesComponent},
+      {path: 'tasks', component: TasksTableComponent}
     ]
   }
 ];
