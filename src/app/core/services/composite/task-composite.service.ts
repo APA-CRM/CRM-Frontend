@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {PageModel} from '../../../models/page/page-model';
 import {environment} from '../../../../environments/environment';
 import {DetailedTaskModel} from '../../../models/tasks/detailed-task-model';
+import {TaskRequest} from '../../../models/tasks/task-request';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,24 @@ export class TaskCompositeService {
     const organizationId = this.holderService.getOrganizationId();
 
     return this.http.get<DetailedTaskModel>(`${environment.apiUrl}${this.BASE_URI}/${organizationId}/tasks/${taskId}`);
+  }
+
+  public createTask(request: TaskRequest): Observable<DetailedTaskModel> {
+    const organizationId = this.holderService.getOrganizationId();
+
+    return this.http.post<DetailedTaskModel>(`${environment.apiUrl}${this.BASE_URI}/${organizationId}/tasks`, request);
+  }
+
+  public updateTask(taskId: string, request: TaskRequest): Observable<DetailedTaskModel> {
+    const organizationId = this.holderService.getOrganizationId();
+
+    return this.http.put<DetailedTaskModel>(`${environment.apiUrl}${this.BASE_URI}/${organizationId}/tasks/${taskId}`, request);
+  }
+
+  public deleteTask(taskId: string): Observable<void> {
+    const organizationId = this.holderService.getOrganizationId();
+
+    return this.http.delete<void>(`${environment.apiUrl}${this.BASE_URI}/${organizationId}/tasks/${taskId}`);
   }
 
 }

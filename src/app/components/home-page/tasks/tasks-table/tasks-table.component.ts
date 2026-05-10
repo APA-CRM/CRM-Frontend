@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {TaskService} from '../../../../core/services/tasks/task.service';
 import {TaskStatusesService} from '../../../../core/services/tasks/task-statuses.service';
 import {TaskPrioritiesService} from '../../../../core/services/tasks/task-priorities.service';
 import {TaskFilterRequest} from '../../../../models/tasks/task-filter-request';
@@ -58,7 +57,6 @@ export class TasksTableComponent implements OnInit {
   @ViewChild('tasksTable') tasksTable!: Table;
 
   constructor(
-    private taskService: TaskService,
     private taskCompositeService: TaskCompositeService,
     private taskStatusesService: TaskStatusesService,
     private taskPrioritiesService: TaskPrioritiesService,
