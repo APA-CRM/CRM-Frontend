@@ -16,7 +16,7 @@ import {
 import {VerifyCodeComponent} from './components/restore-password/verify-code/verify-code.component';
 import {RestorePasswordComponent} from './components/restore-password/restore-password/restore-password.component';
 import {authenticationGuard} from './core/guards/authentication.guard';
-import {TasksTableComponent} from './components/home-page/tasks-table/tasks-table.component';
+import {TasksTableComponent} from './components/home-page/tasks/tasks-table/tasks-table.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
