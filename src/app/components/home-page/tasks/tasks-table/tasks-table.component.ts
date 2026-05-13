@@ -19,6 +19,7 @@ import {DetailedTaskModel} from '../../../../models/tasks/detailed-task-model';
 import {TagModule} from 'primeng/tag';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {DatePipe} from '@angular/common';
+import {CreateTaskComponent} from '../create-task/create-task.component';
 
 @Component({
   selector: 'app-tasks-table',
@@ -34,7 +35,8 @@ import {DatePipe} from '@angular/common';
     PaginatorModule,
     Skeleton,
     TableModule,
-    DatePipe
+    DatePipe,
+    CreateTaskComponent
   ],
   templateUrl: './tasks-table.component.html',
   styleUrl: './tasks-table.component.css'
@@ -133,6 +135,10 @@ export class TasksTableComponent implements OnInit {
     this.filter = this.getDefaultFilter();
     this.tasksTable.reset();
     this.fetchTasks();
+  }
+
+  addTaskToArray(task: DetailedTaskModel): void {
+    this.tasks.push(task);
   }
 
   private getDefaultFilter(): TaskFilterRequest {

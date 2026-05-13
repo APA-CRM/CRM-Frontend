@@ -59,6 +59,11 @@ export class SideBarComponent implements OnInit {
       name: "Roles",
     },
     {
+      uri: 'tasks',
+      icon: 'pi-list',
+      name: 'Tasks',
+    },
+    {
       uri: 'files/root',
       icon: 'pi-folder',
       name: 'Files',

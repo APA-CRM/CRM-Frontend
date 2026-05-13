@@ -1,6 +1,10 @@
 <div class="main-content ml-[250px] p-6">
   <div class="flex justify-between items-center mb-4">
     <div class="flex items-center">
+      <app-create-task (onTaskCreated)="addTaskToArray($event)" class="mr-2"></app-create-task>
+      <button (click)="filterPopover.toggle($event)" class="p-2" icon="pi pi-filter" pButton type="button">
+        Filter
+      </button>
       <p-popover #filterPopover>
         <div class="p-4 w-96">
           <h3 class="font-semibold text-lg mb-4 text-gray-800">Filter Tasks</h3>
@@ -60,10 +64,6 @@
           </div>
         </div>
       </p-popover>
-
-      <button (click)="filterPopover.toggle($event)" class="p-2" icon="pi pi-filter" pButton type="button">
-        Filter
-      </button>
     </div>
   </div>
 
@@ -143,7 +143,7 @@
           <td>{{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }})</span>
           </td>
           <td>{{ task.createdBy.fullName }} <span class="text-gray-500 text-sm">({{ task.createdBy.login }})</span></td>
-          <td>{{ task.dueDate ? (task.dueDate | date: 'short') : 'Not set' }}</td>
+          <td>{{ task.dueDate ? (task.dueDate | date: 'dd MMM yyyy h:mm:ss a') : 'Not set' }}</td>
           <td class="text-center align-middle w-6">
             <p-popover #actionsPopover>
               <div class="p-2 w-40">
