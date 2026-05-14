@@ -36,7 +36,8 @@ export const routes: Routes = [
       {path: 'organization/:organizationId', component: OrganizationProfileComponent},
       {path: 'files/root', component: FilesComponent},
       {path: 'files/:fileId', component: FilesComponent},
-      {path: 'tasks', component: TasksTableComponent}
+      {path: 'tasks', component: TasksTableComponent},
+      {path: 'tasks/:taskId', component: TasksTableComponent}
     ]
   }
 ];

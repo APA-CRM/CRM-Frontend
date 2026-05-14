@@ -1,171 +1,167 @@
-<div class="main-content ml-[250px] p-6">
-  <div class="flex justify-between items-center mb-4">
-    <div class="flex items-center">
-      <app-create-task (onTaskCreated)="addTaskToArray($event)" class="mr-2"></app-create-task>
-      <button (click)="filterPopover.toggle($event)" class="p-2" icon="pi pi-filter" pButton type="button">
-        Filter
-      </button>
-      <p-popover #filterPopover>
-        <div class="p-4 w-96">
-          <h3 class="font-semibold text-lg mb-4 text-gray-800">Filter Tasks</h3>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium">Title</label>
-              <input [(ngModel)]="filter.title" class="w-full" pInputText placeholder="Search by title" type="text"/>
-            </div>
-            <div>
-              <label class="block text-sm font-medium">Status</label>
-              <p-select [(ngModel)]="filter.statusId" [options]="taskStatuses"
-                        [showClear]="true" class="w-full"
-                        optionLabel="name" optionValue="id" placeholder="Select status"/>
-            </div>
-            <div>
-              <label class="block text-sm font-medium">Priority</label>
-              <p-select [(ngModel)]="filter.priorityId" [options]="taskPriorities"
-                        [showClear]="true" class="w-full"
-                        optionLabel="name" optionValue="id" placeholder="Select priority"/>
-            </div>
+<div class="flex h-screen">
+  <!-- Left: Tasks Table with margin for sidebar -->
+  <div class="flex-1 overflow-auto border-r border-gray-200 ml-[250px]">
+    <div class="main-content p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center">
+          <app-create-task (onTaskCreated)="addTaskToArray($event)" class="mr-2"></app-create-task>
+          <button (click)="filterPopover.toggle($event)" class="p-2" icon="pi pi-filter" pButton type="button">
+            Filter
+          </button>
+          <p-popover #filterPopover>
+            <div class="p-4 w-96">
+              <h3 class="font-semibold text-lg mb-4 text-gray-800">Filter Tasks</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium">Title</label>
+                  <input [(ngModel)]="filter.title" class="w-full" pInputText placeholder="Search by title"
+                         type="text"/>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium">Status</label>
+                  <p-select [(ngModel)]="filter.statusId" [options]="taskStatuses"
+                            [showClear]="true" class="w-full"
+                            optionLabel="name" optionValue="id" placeholder="Select status"/>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium">Priority</label>
+                  <p-select [(ngModel)]="filter.priorityId" [options]="taskPriorities"
+                            [showClear]="true" class="w-full"
+                            optionLabel="name" optionValue="id" placeholder="Select priority"/>
+                </div>
 
-            <!-- TODO: Provide filter by assignedTo and createdBy fields -->
+                <!-- TODO: Provide filter by assignedTo and createdBy fields -->
 
-            <div>
-              <label class="block text-sm font-medium">Sort By</label>
-              <p-select [(ngModel)]="filter.sortBy"
-                        [options]="[
-                          {label: 'Title', value: 'title'},
-                          {label: 'Created At', value: 'createdAt'},
-                          {label: 'Due Date', value: 'dueDate'},
-                          {label: 'Priority', value: 'priority'},
-                          {label: 'Status', value: 'status'}
-                        ]"
-                        class="w-full"
-                        placeholder="Choose field">
-              </p-select>
-            </div>
+                <div>
+                  <label class="block text-sm font-medium">Sort By</label>
+                  <p-select [(ngModel)]="filter.sortBy"
+                            [options]="[
+                              {label: 'Title', value: 'title'},
+                              {label: 'Created At', value: 'createdAt'},
+                              {label: 'Due Date', value: 'dueDate'},
+                              {label: 'Priority', value: 'priority'},
+                              {label: 'Status', value: 'status'}
+                            ]"
+                            class="w-full"
+                            placeholder="Choose field">
+                  </p-select>
+                </div>
 
-            <div>
-              <label class="block text-sm font-medium">Sort Direction</label>
-              <p-select [(ngModel)]="filter.sortDirection"
-                        [options]="[
-                          {label: 'Ascending', value: 'ASC'},
-                          {label: 'Descending', value: 'DESC'}
-                        ]"
-                        class="w-full"
-                        placeholder="Choose direction">
-              </p-select>
-            </div>
+                <div>
+                  <label class="block text-sm font-medium">Sort Direction</label>
+                  <p-select [(ngModel)]="filter.sortDirection"
+                            [options]="[
+                              {label: 'Ascending', value: 'ASC'},
+                              {label: 'Descending', value: 'DESC'}
+                            ]"
+                            class="w-full"
+                            placeholder="Choose direction">
+                  </p-select>
+                </div>
 
-            <div class="flex justify-end gap-2 pt-2">
-              <button (click)="resetFilter(); filterPopover.hide()" icon="pi pi-filter-slash" label="Reset" pButton
-                      severity="secondary" type="button"></button>
-              <button (click)="applyFilter(); filterPopover.hide()" icon="pi pi-check" label="Apply" pButton
-                      type="button"></button>
+                <div class="flex justify-end gap-2 pt-2">
+                  <button (click)="resetFilter(); filterPopover.hide()" icon="pi pi-filter-slash" label="Reset" pButton
+                          severity="secondary" type="button"></button>
+                  <button (click)="applyFilter(); filterPopover.hide()" icon="pi pi-check" label="Apply" pButton
+                          type="button"></button>
+                </div>
+              </div>
             </div>
-          </div>
+          </p-popover>
         </div>
-      </p-popover>
+      </div>
+
+      @if (loading) {
+        <p-table #skeletonTable [value]="skeleton">
+          <ng-template #header>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Assigned To</th>
+              <th>Created By</th>
+              <th>Due Date</th>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+            </tr>
+          </ng-template>
+          <ng-template #body let-skeleton>
+            <tr>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      } @else {
+        <p-table #tasksTable [value]="tasks">
+          <ng-template #header>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Assigned To</th>
+              <th>Created By</th>
+              <th>Due Date</th>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+            </tr>
+          </ng-template>
+          <ng-template #body let-task>
+            <tr [ngClass]="{'bg-blue-50': selectedTask?.id === task.id}" class="hover:bg-gray-50 cursor-pointer">
+              <td (click)="openTaskDetail(task)" class="hover:underline font-semibold">{{ task.title }}</td>
+              <td>
+                <p-tag
+                  [style]="{'background-color': task.status.color, 'color': '#fff'}"
+                  [value]="task.status.name"
+                />
+              </td>
+              <td>
+                <p-tag
+                  [style]="{'background-color': task.priority.color, 'color': '#fff'}"
+                  [value]="task.priority.name"
+                />
+              </td>
+              <td>{{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }}
+                )</span></td>
+              <td>{{ task.createdBy.fullName }} <span class="text-gray-500 text-sm">({{ task.createdBy.login }})</span>
+              </td>
+              <td>{{ task.dueDate ? (task.dueDate | date: 'dd MMM yyyy h:mm:ss a') : 'Not set' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChanged($event)" [first]="first" [rows]="size"
+                     [totalRecords]="totalElements"/>
+      }
     </div>
   </div>
 
-  @if (loading) {
-    <p-table #skeletonTable [value]="skeleton">
-      <ng-template #header>
-        <tr>
-          <th>Title</th>
-          <th>Status</th>
-          <th>Priority</th>
-          <th>Assigned To</th>
-          <th>Created By</th>
-          <th>Due Date</th>
-          <th class="w-12 text-center"></th>
-        </tr>
-        <tr>
-          <td colspan="7"></td>
-        </tr>
-      </ng-template>
-      <ng-template #body let-skeleton>
-        <tr>
-          <td>
-            <p-skeleton/>
-          </td>
-          <td>
-            <p-skeleton/>
-          </td>
-          <td>
-            <p-skeleton/>
-          </td>
-          <td>
-            <p-skeleton/>
-          </td>
-          <td>
-            <p-skeleton/>
-          </td>
-          <td>
-            <p-skeleton/>
-          </td>
-          <td>
-            <p-skeleton/>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  } @else {
-    <p-table #tasksTable [value]="tasks" class="h-56">
-      <ng-template #header>
-        <tr>
-          <th>Title</th>
-          <th>Status</th>
-          <th>Priority</th>
-          <th>Assigned To</th>
-          <th>Created By</th>
-          <th>Due Date</th>
-          <th class="w-12 text-center"></th>
-        </tr>
-        <tr>
-          <td colspan="7"></td>
-        </tr>
-      </ng-template>
-      <ng-template #body let-task>
-        <tr>
-          <td class="cursor-pointer hover:underline font-semibold">{{ task.title }}</td>
-          <td>
-            <p-tag
-              [style]="{'background-color': task.status.color, 'color': '#fff'}"
-              [value]="task.status.name"
-            />
-          </td>
-          <td>
-            <p-tag
-              [style]="{'background-color': task.priority.color, 'color': '#fff'}"
-              [value]="task.priority.name"
-            />
-          </td>
-          <td>{{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }})</span>
-          </td>
-          <td>{{ task.createdBy.fullName }} <span class="text-gray-500 text-sm">({{ task.createdBy.login }})</span></td>
-          <td>{{ task.dueDate ? (task.dueDate | date: 'dd MMM yyyy h:mm:ss a') : 'Not set' }}</td>
-          <td class="text-center align-middle w-6">
-            <p-popover #actionsPopover>
-              <div class="p-2 w-40">
-                <button
-                  class="w-full text-left px-3 py-2 text-blue-600 hover:bg-blue-100 rounded transition">
-                  <i class="pi pi-pencil"></i> Edit
-                </button>
-                <button
-                  class="w-full text-left px-3 py-2 text-red-600 hover:bg-red-100 rounded transition">
-                  <i class="pi pi-trash"></i> Delete
-                </button>
-              </div>
-            </p-popover>
-            <i
-              (click)="actionsPopover.toggle($event)"
-              class="pi pi-ellipsis-v text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition duration-200 text-lg"
-              title="Actions">
-            </i>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <p-paginator (onPageChange)="onPageChanged($event)" [first]="first" [rows]="size" [totalRecords]="totalElements"/>
+  <!-- Right: Task Detail Panel -->
+  @if (selectedTask) {
+    <div class="w-96 overflow-auto border-l border-gray-200 bg-white">
+      <app-task-detail
+        (close)="selectedTask = null"
+        (taskDeleted)="onTaskDeleted($event)"
+        (taskUpdated)="onTaskUpdated($event)"
+        [task]="selectedTask"
+      ></app-task-detail>
+    </div>
   }
 </div>

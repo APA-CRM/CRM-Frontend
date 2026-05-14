@@ -18,8 +18,10 @@ import {TaskCompositeService} from '../../../../core/services/composite/task-com
 import {DetailedTaskModel} from '../../../../models/tasks/detailed-task-model';
 import {TagModule} from 'primeng/tag';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 import {CreateTaskComponent} from '../create-task/create-task.component';
+import {TaskDetailComponent} from '../task-detail/task-detail.component';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-tasks-table',
@@ -36,12 +38,16 @@ import {CreateTaskComponent} from '../create-task/create-task.component';
     Skeleton,
     TableModule,
     DatePipe,
-    CreateTaskComponent
+    CreateTaskComponent,
+    TaskDetailComponent,
+    NgClass
   ],
   templateUrl: './tasks-table.component.html',
   styleUrl: './tasks-table.component.css'
 })
 export class TasksTableComponent implements OnInit {
+
+  selectedTask: DetailedTaskModel | null = null;
 
   tasks: DetailedTaskModel[] = [];
   taskStatuses: TaskStatusModel[] = [];
@@ -62,15 +68,34 @@ export class TasksTableComponent implements OnInit {
     private taskCompositeService: TaskCompositeService,
     private taskStatusesService: TaskStatusesService,
     private taskPrioritiesService: TaskPrioritiesService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private route: ActivatedRoute,
   ) {
     this.filter = this.getDefaultFilter();
   }
 
   ngOnInit(): void {
+    const taskId: string = this.route.snapshot.params['taskId'];
+
+    if (taskId) {
+      this.fetchTask(taskId);
+    }
     this.fetchTasks();
     this.fetchTaskStatuses();
     this.fetchTaskPriorities();
+  }
+
+  fetchTask(id: string): void {
+    this.taskCompositeService.getTask(id).subscribe({
+      next: (task) => {
+        this.openTaskDetail(task);
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
   }
 
   fetchTasks(): void {
@@ -138,7 +163,27 @@ export class TasksTableComponent implements OnInit {
   }
 
   addTaskToArray(task: DetailedTaskModel): void {
-    this.tasks.push(task);
+    this.tasks.unshift(task);
+    this.tasks = [...this.tasks];
+    this.totalElements++;
+  }
+
+  openTaskDetail(task: DetailedTaskModel): void {
+    this.selectedTask = task;
+  }
+
+  onTaskUpdated(updatedTask: DetailedTaskModel): void {
+    const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+    if (index > -1) {
+      this.tasks[index] = updatedTask;
+      this.tasks = [...this.tasks];
+    }
+  }
+
+  onTaskDeleted(taskId: string): void {
+    this.tasks = this.tasks.filter(t => t.id !== taskId);
+    this.selectedTask = null;
+    this.totalElements--;
   }
 
   private getDefaultFilter(): TaskFilterRequest {
