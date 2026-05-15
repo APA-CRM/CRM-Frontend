@@ -22,6 +22,7 @@ import {DatePipe, NgClass} from '@angular/common';
 import {CreateTaskComponent} from '../create-task/create-task.component';
 import {TaskDetailComponent} from '../task-detail/task-detail.component';
 import {ActivatedRoute} from '@angular/router';
+import {PriorityStatusTagComponent} from '../priority-status-tag/priority-status-tag.component';
 
 @Component({
   selector: 'app-tasks-table',
@@ -40,7 +41,8 @@ import {ActivatedRoute} from '@angular/router';
     DatePipe,
     CreateTaskComponent,
     TaskDetailComponent,
-    NgClass
+    NgClass,
+    PriorityStatusTagComponent
   ],
   templateUrl: './tasks-table.component.html',
   styleUrl: './tasks-table.component.css'

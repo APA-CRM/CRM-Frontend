@@ -60,7 +60,14 @@
               optionLabel="name"
               optionValue="id"
               placeholder="Select status"
-            />
+            >
+              <ng-template #selectedItem let-status>
+                <app-priority-status-tag [value]="status"/>
+              </ng-template>
+              <ng-template #item let-status>
+                <app-priority-status-tag [value]="status"/>
+              </ng-template>
+            </p-select>
             @if (taskForm.get('statusId')?.invalid && taskForm.get('statusId')?.touched) {
               <small class="text-red-600">Status is required</small>
             }
@@ -74,7 +81,14 @@
               optionLabel="name"
               optionValue="id"
               placeholder="Select priority"
-            />
+            >
+              <ng-template #selectedItem let-priority>
+                <app-priority-status-tag [value]="priority"/>
+              </ng-template>
+              <ng-template #item let-priority>
+                <app-priority-status-tag [value]="priority"/>
+              </ng-template>
+            </p-select>
             @if (taskForm.get('priorityId')?.invalid && taskForm.get('priorityId')?.touched) {
               <small class="text-red-600">Priority is required</small>
             }

@@ -128,16 +128,10 @@
             <tr [ngClass]="{'bg-blue-50': selectedTask?.id === task.id}" class="hover:bg-gray-50 cursor-pointer">
               <td (click)="openTaskDetail(task)" class="hover:underline font-semibold">{{ task.title }}</td>
               <td>
-                <p-tag
-                  [style]="{'background-color': task.status.color, 'color': '#fff'}"
-                  [value]="task.status.name"
-                />
+                <app-priority-status-tag [value]="task.status"/>
               </td>
               <td>
-                <p-tag
-                  [style]="{'background-color': task.priority.color, 'color': '#fff'}"
-                  [value]="task.priority.name"
-                />
+                <app-priority-status-tag [value]="task.priority"/>
               </td>
               <td>{{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }}
                 )</span></td>

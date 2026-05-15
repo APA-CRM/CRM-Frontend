@@ -19,6 +19,8 @@ import {DialogModule} from 'primeng/dialog';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {DatePickerModule} from 'primeng/datepicker';
+import {TagModule} from 'primeng/tag';
+import {PriorityStatusTagComponent} from '../priority-status-tag/priority-status-tag.component';
 
 @Component({
   selector: 'app-create-task',
@@ -32,7 +34,9 @@ import {DatePickerModule} from 'primeng/datepicker';
     InputTextModule,
     TextareaModule,
     SelectModule,
-    DatePickerModule
+    DatePickerModule,
+    TagModule,
+    PriorityStatusTagComponent
   ],
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.css'
@@ -85,7 +89,6 @@ export class CreateTaskComponent implements OnInit {
 
   closeDialog(): void {
     this.displayDialog = false;
-    this.resetForm();
   }
 
   loadInitialData(): void {
@@ -176,6 +179,7 @@ export class CreateTaskComponent implements OnInit {
           severity: 'success'
         });
         this.closeDialog();
+        this.resetForm();
       },
       error: (err) => {
         this.saveLoading = false;

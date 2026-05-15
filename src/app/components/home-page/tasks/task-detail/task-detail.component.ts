@@ -5,7 +5,6 @@ import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {TextareaModule} from 'primeng/textarea';
 import {SelectFilterEvent, SelectModule} from 'primeng/select';
-import {CalendarModule} from 'primeng/calendar';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {DividerModule} from 'primeng/divider';
@@ -22,6 +21,9 @@ import {TaskStatusesService} from '../../../../core/services/tasks/task-statuses
 import {UserService} from '../../../../core/services/user.service';
 import {ErrorMessageModel} from '../../../../models/error/error-message-model';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {ColorService} from '../../../../core/services/color.service';
+import {PriorityStatusTagComponent} from '../priority-status-tag/priority-status-tag.component';
+import {DatePickerModule} from 'primeng/datepicker';
 
 @Component({
   selector: 'app-task-detail',
@@ -34,12 +36,13 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     InputTextModule,
     TextareaModule,
     SelectModule,
-    CalendarModule,
+    DatePickerModule,
     InputNumberModule,
     DividerModule,
     TagModule,
     CardModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    PriorityStatusTagComponent
   ],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
@@ -73,6 +76,7 @@ export class TaskDetailComponent implements OnInit {
     private taskStatusesService: TaskStatusesService,
     private taskPrioritiesService: TaskPrioritiesService,
     private userService: UserService,
+    private colorService: ColorService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
@@ -305,12 +309,8 @@ export class TaskDetailComponent implements OnInit {
     return this.taskForm.invalid;
   }
 
-  getStatusColor(status: TaskStatusModel): string {
-    return status.color || '#999999';
-  }
-
-  getPriorityColor(priority: TaskPriorityModel): string {
-    return priority.color || '#999999';
+  getContrastColor(color: string): string {
+    return this.colorService.getContrastTextColor(color);
   }
 
   private checkLoadingComplete(): void {
