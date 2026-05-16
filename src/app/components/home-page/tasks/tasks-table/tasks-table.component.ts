@@ -19,10 +19,10 @@ import {DetailedTaskModel} from '../../../../models/tasks/detailed-task-model';
 import {TagModule} from 'primeng/tag';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {DatePipe, NgClass} from '@angular/common';
-import {CreateTaskComponent} from '../create-task/create-task.component';
-import {TaskDetailComponent} from '../task-detail/task-detail.component';
+import {CreateTaskComponent} from './create-task/create-task.component';
+import {TaskDetailComponent} from './task-detail/task-detail.component';
 import {ActivatedRoute} from '@angular/router';
-import {PriorityStatusTagComponent} from '../priority-status-tag/priority-status-tag.component';
+import {PriorityStatusTagComponent} from './priority-status-tag/priority-status-tag.component';
 
 @Component({
   selector: 'app-tasks-table',

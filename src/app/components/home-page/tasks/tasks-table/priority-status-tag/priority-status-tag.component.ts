@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {TagModule} from 'primeng/tag';
-import {ColorService} from '../../../../core/services/color.service';
-import {TaskPriorityModel} from '../../../../models/tasks/priorities/task-priority-model';
-import {TaskStatusModel} from '../../../../models/tasks/statuses/task-status-model';
+import {ColorService} from '../../../../../core/services/color.service';
+import {TaskPriorityModel} from '../../../../../models/tasks/priorities/task-priority-model';
+import {TaskStatusModel} from '../../../../../models/tasks/statuses/task-status-model';
 
 @Component({
   selector: 'app-priority-status-tag',
