@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {TextareaModule} from 'primeng/textarea';
-import {SelectFilterEvent, SelectModule} from 'primeng/select';
+import {SelectModule} from 'primeng/select';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {DividerModule} from 'primeng/divider';
@@ -13,17 +13,16 @@ import {CardModule} from 'primeng/card';
 import {ConfirmPopupModule} from 'primeng/confirmpopup';
 import {TaskStatusModel} from '../../../../../models/tasks/statuses/task-status-model';
 import {TaskPriorityModel} from '../../../../../models/tasks/priorities/task-priority-model';
-import {UserLightModel} from '../../../../../models/users/user-light-model';
 import {DetailedTaskModel} from '../../../../../models/tasks/detailed-task-model';
 import {TaskCompositeService} from '../../../../../core/services/composite/task-composite.service';
 import {TaskPrioritiesService} from '../../../../../core/services/tasks/task-priorities.service';
 import {TaskStatusesService} from '../../../../../core/services/tasks/task-statuses.service';
-import {UserService} from '../../../../../core/services/user.service';
 import {ErrorMessageModel} from '../../../../../models/error/error-message-model';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ColorService} from '../../../../../core/services/color.service';
 import {PriorityStatusTagComponent} from '../priority-status-tag/priority-status-tag.component';
 import {DatePickerModule} from 'primeng/datepicker';
+import {SearchUserComponent} from '../../../user/search-user/search-user.component';
 
 @Component({
   selector: 'app-task-detail',
@@ -42,7 +41,8 @@ import {DatePickerModule} from 'primeng/datepicker';
     TagModule,
     CardModule,
     ConfirmPopupModule,
-    PriorityStatusTagComponent
+    PriorityStatusTagComponent,
+    SearchUserComponent
   ],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.css'
@@ -58,24 +58,18 @@ export class TaskDetailComponent implements OnInit {
 
   taskStatuses: TaskStatusModel[] = [];
   taskPriorities: TaskPriorityModel[] = [];
-  assignedUsers: UserLightModel[] = [];
-  filteredAssignedUsers: UserLightModel[] = [];
 
   editing: boolean = false;
   saveLoading: boolean = false;
   deleteLoading: boolean = false;
   loadingData: boolean = false;
-  loadingUsers: boolean = false;
   copiedToClipboard: boolean = false;
-
-  private timerId: number | undefined;
 
   constructor(
     private fb: FormBuilder,
     private taskCompositeService: TaskCompositeService,
     private taskStatusesService: TaskStatusesService,
     private taskPrioritiesService: TaskPrioritiesService,
-    private userService: UserService,
     private colorService: ColorService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -159,36 +153,6 @@ export class TaskDetailComponent implements OnInit {
     this.editing = false;
     this.taskForm.disable();
     this.populateForm();
-  }
-
-  onFilterUsers($event: SelectFilterEvent): void {
-    if (this.timerId) {
-      clearTimeout(this.timerId);
-    }
-
-    this.timerId = window.setTimeout(() => this.findUsersByFullName($event.filter), 500);
-  }
-
-  findUsersByFullName(value: string): void {
-    if (!value) {
-      this.filteredAssignedUsers = this.assignedUsers;
-      return;
-    }
-
-    this.loadingUsers = true;
-
-    this.userService.getUsersByFullName(value).subscribe({
-      next: (users) => {
-        this.filteredAssignedUsers = users;
-        this.assignedUsers = users;
-        this.loadingUsers = false;
-      },
-      error: (err) => {
-        const error: ErrorMessageModel = err.error;
-        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-        this.loadingUsers = false;
-      }
-    });
   }
 
   copyTaskLinkToClipboard(): void {

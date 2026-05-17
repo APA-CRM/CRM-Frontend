@@ -98,33 +98,7 @@
         <!-- Assigned To -->
         <div>
           <label class="block text-sm font-medium mb-1">Assigned To *</label>
-          <p-select
-            (onFilter)="onFilterUsers($event)"
-            [filter]="true"
-            [loading]="loadingUsers"
-            [options]="filteredAssignedUsers"
-            class="w-full"
-            filterPlaceholder="Find by full name"
-            formControlName="assignedTo"
-            optionLabel="fullName"
-            optionValue="id"
-            placeholder="Search by full name"
-          >
-            <ng-template let-value pTemplate="selectedItem">
-              @if (value) {
-                <div class="flex items-center gap-2">
-                  <span>{{ value.fullName }}</span>
-                  <span class="text-gray-500 text-sm">({{ value.login }})</span>
-                </div>
-              }
-            </ng-template>
-            <ng-template let-option pTemplate="item">
-              <div class="flex items-center gap-2">
-                <span>{{ option.fullName }}</span>
-                <span class="text-gray-500 text-sm">({{ option.login }})</span>
-              </div>
-            </ng-template>
-          </p-select>
+          <app-search-user formControlName="assignedTo"/>
           @if (taskForm.get('assignedTo')?.invalid && taskForm.get('assignedTo')?.touched) {
             <small class="text-red-600">Assigned user is required</small>
           }

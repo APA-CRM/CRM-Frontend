@@ -23,6 +23,7 @@ import {CreateTaskComponent} from './create-task/create-task.component';
 import {TaskDetailComponent} from './task-detail/task-detail.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PriorityStatusTagComponent} from './priority-status-tag/priority-status-tag.component';
+import {SearchUserComponent} from '../../user/search-user/search-user.component';
 
 @Component({
   selector: 'app-tasks-table',
@@ -42,7 +43,8 @@ import {PriorityStatusTagComponent} from './priority-status-tag/priority-status-
     CreateTaskComponent,
     TaskDetailComponent,
     NgClass,
-    PriorityStatusTagComponent
+    PriorityStatusTagComponent,
+    SearchUserComponent
   ],
   templateUrl: './tasks-table.component.html',
   styleUrl: './tasks-table.component.css'

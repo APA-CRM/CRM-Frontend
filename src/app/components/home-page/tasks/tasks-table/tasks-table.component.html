@@ -65,6 +65,16 @@
                 </div>
 
                 <div>
+                  <label class="block text-sm font-medium">Assigned to</label>
+                  <app-search-user [(ngModel)]="filter.assignedTo"/>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Created By</label>
+                  <app-search-user [(ngModel)]="filter.createdBy"/>
+                </div>
+
+                <div>
                   <label class="block text-sm font-medium">Sort By</label>
                   <p-select
                     [(ngModel)]="filter.sortBy"
