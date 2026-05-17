@@ -17,6 +17,9 @@ import {VerifyCodeComponent} from './components/restore-password/verify-code/ver
 import {RestorePasswordComponent} from './components/restore-password/restore-password/restore-password.component';
 import {authenticationGuard} from './core/guards/authentication.guard';
 import {TasksTableComponent} from './components/home-page/tasks/tasks-table/tasks-table.component';
+import {
+  TasksPrioritiesTableComponent
+} from './components/home-page/tasks/tasks-priorities-table/tasks-priorities-table.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -36,8 +39,9 @@ export const routes: Routes = [
       {path: 'organization/:organizationId', component: OrganizationProfileComponent},
       {path: 'files/root', component: FilesComponent},
       {path: 'files/:fileId', component: FilesComponent},
+      {path: 'tasks/priorities', component: TasksPrioritiesTableComponent},
       {path: 'tasks', component: TasksTableComponent},
-      {path: 'tasks/:taskId', component: TasksTableComponent}
+      {path: 'tasks/:taskId', component: TasksTableComponent},
     ]
   }
 ];
