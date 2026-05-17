@@ -52,6 +52,8 @@ export class CreateTaskComponent implements OnInit {
   assignedUsers: UserModel[] = [];
   filteredAssignedUsers: UserModel[] = [];
 
+  dataIsLoaded = false;
+
   displayDialog: boolean = false;
   saveLoading: boolean = false;
   loadingData: boolean = false;
@@ -92,7 +94,7 @@ export class CreateTaskComponent implements OnInit {
   }
 
   loadInitialData(): void {
-    if (this.taskStatuses.length === 0 || this.taskPriorities.length === 0) {
+    if (!this.dataIsLoaded) {
       this.loadingData = true;
       this.getTaskStatuses();
       this.getTaskPriorities();
@@ -194,9 +196,8 @@ export class CreateTaskComponent implements OnInit {
   }
 
   private checkLoadingComplete(): void {
-    if (this.taskStatuses.length > 0 && this.taskPriorities.length > 0) {
-      this.loadingData = false;
-    }
+    this.loadingData = false;
+    this.dataIsLoaded = true;
   }
 
   private resetForm(): void {

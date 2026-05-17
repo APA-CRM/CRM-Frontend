@@ -21,7 +21,7 @@ import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {DatePipe, NgClass} from '@angular/common';
 import {CreateTaskComponent} from './create-task/create-task.component';
 import {TaskDetailComponent} from './task-detail/task-detail.component';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PriorityStatusTagComponent} from './priority-status-tag/priority-status-tag.component';
 
 @Component({
@@ -58,7 +58,7 @@ export class TasksTableComponent implements OnInit {
   filter: TaskFilterRequest;
 
   loading: boolean = true;
-  skeleton: any;
+  skeleton: any = [{}, {}, {}, {}, {}, {}, {}, {}];
 
   totalElements: number = 0;
   size: number = 10
@@ -67,11 +67,12 @@ export class TasksTableComponent implements OnInit {
   @ViewChild('tasksTable') tasksTable!: Table;
 
   constructor(
-    private taskCompositeService: TaskCompositeService,
-    private taskStatusesService: TaskStatusesService,
-    private taskPrioritiesService: TaskPrioritiesService,
-    private messageService: MessageService,
-    private route: ActivatedRoute,
+    private readonly taskCompositeService: TaskCompositeService,
+    private readonly taskStatusesService: TaskStatusesService,
+    private readonly taskPrioritiesService: TaskPrioritiesService,
+    private readonly messageService: MessageService,
+    private readonly route: ActivatedRoute,
+    public readonly router: Router
   ) {
     this.filter = this.getDefaultFilter();
   }
