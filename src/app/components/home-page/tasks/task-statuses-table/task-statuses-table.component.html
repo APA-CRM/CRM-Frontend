@@ -1,0 +1,398 @@
+<div class="min-h-screen ml-62.5 bg-gray-50/40 p-8">
+  <div class="mx-auto max-w-10xl space-y-6">
+
+    <div class="flex items-center justify-between">
+
+      <div class="space-y-1">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+          Task Statuses
+        </h1>
+
+        <p class="text-sm text-gray-500">
+          Manage organization task statuses
+        </p>
+      </div>
+
+      <button
+        (click)="createStatus()"
+        [disabled]="statuses[0]?.id === -1"
+        class="flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+        type="button">
+        <i class="pi pi-plus text-sm"></i>
+        <span>Create Status</span>
+      </button>
+    </div>
+    <div class="overflow-hidden rounded-3xl bg-white shadow-sm">
+      @if (isLoading) {
+        <p-table [value]="skeleton">
+          <ng-template #header>
+            <tr>
+
+              <th class="bg-transparent px-6 py-5 text-sm font-semibold text-gray-700">
+                Name
+              </th>
+
+              <th class="bg-transparent px-6 py-5 text-sm font-semibold text-gray-700">
+                Type
+              </th>
+
+              <th class="bg-transparent px-6 py-5 text-sm font-semibold text-gray-700">
+                Color
+              </th>
+
+              <th class="bg-transparent px-6 py-5 text-sm font-semibold text-gray-700">
+                Created At
+              </th>
+
+              <th class="bg-transparent px-6 py-5 text-sm font-semibold text-gray-700">
+                Updated At
+              </th>
+
+              <th class="bg-transparent px-6 py-5"></th>
+
+            </tr>
+          </ng-template>
+
+          <ng-template #body let-skeleton>
+            <tr class="hover:bg-gray-50/70">
+
+              <td class="px-6 py-5">
+                <p-skeleton height="1rem" width="70%"></p-skeleton>
+              </td>
+
+              <td class="px-6 py-5">
+                <p-skeleton height="2rem" width="5rem"></p-skeleton>
+              </td>
+
+              <td class="px-6 py-5">
+                <p-skeleton height="2rem" shape="circle" width="2rem"></p-skeleton>
+              </td>
+
+              <td class="px-6 py-5">
+                <p-skeleton height="1rem" width="80%"></p-skeleton>
+              </td>
+
+              <td class="px-6 py-5">
+                <p-skeleton height="1rem" width="40%"></p-skeleton>
+              </td>
+
+              <td class="px-6 py-5">
+                <p-skeleton height="1rem" width="40%"></p-skeleton>
+              </td>
+
+            </tr>
+          </ng-template>
+
+        </p-table>
+
+      } @else {
+        <p-table [value]="statuses">
+          <ng-template #header>
+            <tr>
+
+              <th
+                class="bg-transparent px-6 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Name
+              </th>
+
+              <th
+                class="bg-transparent px-6 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Type
+              </th>
+
+              <th
+                class="bg-transparent px-6 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Color
+              </th>
+
+              <th
+                class="bg-transparent px-6 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Created At
+              </th>
+
+              <th
+                class="bg-transparent px-6 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Updated At
+              </th>
+
+              <th class="bg-transparent px-6 py-5"></th>
+
+            </tr>
+          </ng-template>
+
+          <ng-template #body let-status>
+            @if (status === editStatusModel) {
+
+              <tr [formGroup]="editingForm" class="bg-blue-50/70 hover:bg-blue-100/70">
+
+                <td class="px-6 py-5">
+                  <input
+                    class="w-full rounded-xl"
+                    formControlName="name"
+                    pInputText
+                    placeholder="Status name"
+                    type="text"/>
+                </td>
+
+                <td class="px-6 py-5">
+                  <p-dropdown
+                    [appendTo]="'body'"
+                    [options]="statusTypes"
+                    formControlName="type"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Select type"
+                    styleClass="w-full">
+                  </p-dropdown>
+                </td>
+
+                <td class="px-6 py-5">
+                  <div class="flex items-center gap-4">
+
+                    <div
+                      [style.background-color]="editingForm.get('color')?.value"
+                      class="h-8 w-8 rounded-full shadow-sm">
+                    </div>
+
+                    <p-color-picker
+                      [appendTo]="'body'"
+                      formControlName="color"
+                      format="hex">
+                    </p-color-picker>
+
+                  </div>
+                </td>
+
+                <td class="px-6 py-5 text-gray-500">
+                  {{ status.createdAt | date:'dd MMM yyyy • HH:mm' }}
+                </td>
+
+                <td class="px-6 py-5 text-gray-500">
+                  {{ status.updatedAt | date:'dd MMM yyyy • HH:mm' }}
+                </td>
+
+                <td class="px-6 py-5">
+
+                  <div class="flex items-center justify-end gap-2">
+
+                    <button
+                      (click)="confirmEditing()"
+                      [disabled]="isUpdateLoading || editingForm.invalid"
+                      class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-600 text-white hover:bg-green-700"
+                      type="button">
+
+                      <i class="pi pi-check"></i>
+
+                    </button>
+
+                    <button
+                      (click)="cancelEditing()"
+                      [disabled]="isUpdateLoading"
+                      class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500 text-white hover:bg-red-600"
+                      type="button">
+
+                      <i class="pi pi-times"></i>
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            } @else if (status.id === -1) {
+
+              <tr [formGroup]="createForm" class="bg-green-50/70 hover:bg-green-100/70">
+
+                <td class="px-6 py-5">
+                  <input
+                    class="w-full rounded-xl"
+                    formControlName="name"
+                    pInputText
+                    placeholder="Status name"
+                    type="text"/>
+                </td>
+
+                <td class="px-6 py-5">
+                  <p-dropdown
+                    [appendTo]="'body'"
+                    [options]="statusTypes"
+                    formControlName="type"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Select type"
+                    styleClass="w-full">
+                  </p-dropdown>
+                </td>
+
+                <td class="px-6 py-5">
+
+                  <div class="flex items-center gap-4">
+
+                    <div
+                      [style.background-color]="createForm.get('color')?.value"
+                      class="h-8 w-8 rounded-full shadow-sm">
+                    </div>
+
+                    <p-color-picker
+                      [appendTo]="'body'"
+                      formControlName="color"
+                      format="hex">
+                    </p-color-picker>
+
+                  </div>
+
+                </td>
+
+                <td class="px-6 py-5 text-gray-400">
+                  —
+                </td>
+
+                <td class="px-6 py-5 text-gray-400">
+                  —
+                </td>
+
+                <td class="px-6 py-5">
+
+                  <div class="flex items-center justify-end gap-2">
+
+                    <button
+                      (click)="confirmCreating()"
+                      [disabled]="createForm.invalid || isCreateLoading"
+                      class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-600 text-white hover:bg-green-700"
+                      type="button">
+
+                      <i class="pi pi-check"></i>
+
+                    </button>
+
+                    <button
+                      (click)="cancelCreating()"
+                      [disabled]="isCreateLoading"
+                      class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500 text-white hover:bg-red-600"
+                      type="button">
+
+                      <i class="pi pi-times"></i>
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            } @else {
+
+              <tr class="group hover:bg-gray-50">
+
+                <td class="px-6 py-5 font-medium text-gray-900">
+                  {{ status.name }}
+                </td>
+
+                <td class="px-6 py-5">
+
+                  <span
+                    [class]="getTypeSeverity(status.type)"
+                    class="rounded-full px-3 py-1 text-xs font-semibold">
+
+                    {{ getTypeLabel(status.type) }}
+
+                  </span>
+
+                </td>
+
+                <td class="px-6 py-5">
+
+                  <div class="flex items-center gap-3">
+
+                    <div
+                      [style.background-color]="status.color"
+                      class="h-8 w-8 rounded-full shadow-sm ring-2 ring-white">
+                    </div>
+
+                    <span class="text-sm font-medium text-gray-500">
+                      {{ status.color }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+                <td class="px-6 py-5 text-gray-500">
+                  {{ status.createdAt | date:'dd MMM yyyy • HH:mm' }}
+                </td>
+
+                <td class="px-6 py-5 text-gray-500">
+                  {{ status.updatedAt | date:'dd MMM yyyy • HH:mm' }}
+                </td>
+
+                <td class="px-6 py-5">
+
+                  <div
+                    class="flex items-center justify-end gap-2 opacity-70 transition-opacity group-hover:opacity-100">
+
+                    <button
+                      (click)="editStatus(status)"
+                      class="flex h-10 w-10 items-center justify-center rounded-xl text-blue-600 hover:bg-blue-100"
+                      type="button">
+
+                      <i class="pi pi-pencil"></i>
+
+                    </button>
+
+                    <button
+                      (click)="confirmDeletionOfStatus(status)"
+                      class="flex h-10 w-10 items-center justify-center rounded-xl text-red-600 hover:bg-red-100"
+                      type="button">
+
+                      <i class="pi pi-trash"></i>
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </ng-template>
+
+          <!-- Empty -->
+          <ng-template #emptymessage>
+            <tr>
+              <td class="px-6 py-16 text-center" colspan="5">
+
+                <div class="mx-auto flex max-w-sm flex-col items-center space-y-3">
+
+                  <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
+                    <i class="pi pi-list-check text-2xl text-gray-400"></i>
+                  </div>
+
+                  <div class="space-y-1">
+
+                    <h3 class="text-lg font-semibold text-gray-900">
+                      No statuses yet
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                      Create task statuses to define your workflow process.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </td>
+            </tr>
+          </ng-template>
+
+        </p-table>
+
+      }
+    </div>
+  </div>
+</div>

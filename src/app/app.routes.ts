@@ -18,8 +18,11 @@ import {RestorePasswordComponent} from './components/restore-password/restore-pa
 import {authenticationGuard} from './core/guards/authentication.guard';
 import {TasksTableComponent} from './components/home-page/tasks/tasks-table/tasks-table.component';
 import {
-  TasksPrioritiesTableComponent
-} from './components/home-page/tasks/tasks-priorities-table/tasks-priorities-table.component';
+  TaskPrioritiesTableComponent
+} from './components/home-page/tasks/task-priorities-table/task-priorities-table.component';
+import {
+  TasksStatusesTableComponent
+} from './components/home-page/tasks/task-statuses-table/task-statuses-table.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -39,7 +42,8 @@ export const routes: Routes = [
       {path: 'organization/:organizationId', component: OrganizationProfileComponent},
       {path: 'files/root', component: FilesComponent},
       {path: 'files/:fileId', component: FilesComponent},
-      {path: 'tasks/priorities', component: TasksPrioritiesTableComponent},
+      {path: 'tasks/priorities', component: TaskPrioritiesTableComponent},
+      {path: 'tasks/statuses', component: TasksStatusesTableComponent},
       {path: 'tasks', component: TasksTableComponent},
       {path: 'tasks/:taskId', component: TasksTableComponent},
     ]
