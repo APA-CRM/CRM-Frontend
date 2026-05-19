@@ -59,7 +59,8 @@ export class HomeComponent implements OnInit {
 
   isCustomNotification(messageCode: NotificationType): boolean {
     return messageCode === NotificationType.USER_HAS_BEEN_INVITED_TO_ORGANIZATION ||
-      messageCode === NotificationType.USER_HAS_BEEN_ADDED_TO_THE_ORGANIZATION;
+      messageCode === NotificationType.USER_HAS_BEEN_ADDED_TO_THE_ORGANIZATION ||
+      messageCode === NotificationType.TASK_HAS_BEEN_ASSIGNED;
   }
 
   closeMessage(): void {

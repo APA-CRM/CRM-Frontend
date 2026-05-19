@@ -1,0 +1,202 @@
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {TaskStatusesService} from '../../../../core/services/tasks/task-statuses.service';
+import {TaskPrioritiesService} from '../../../../core/services/tasks/task-priorities.service';
+import {TaskFilterRequest} from '../../../../models/tasks/task-filter-request';
+import {SortDirection} from '../../../../core/enums/sort-direction';
+import {Table, TableModule} from 'primeng/table';
+import {MessageService} from 'primeng/api';
+import {ErrorMessageModel} from '../../../../models/error/error-message-model';
+import {ButtonDirective, ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {PopoverModule} from 'primeng/popover';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SelectModule} from 'primeng/select';
+import {TaskStatusModel} from '../../../../models/tasks/statuses/task-status-model';
+import {TaskPriorityModel} from '../../../../models/tasks/priorities/task-priority-model';
+import {Skeleton} from 'primeng/skeleton';
+import {TaskCompositeService} from '../../../../core/services/composite/task-composite.service';
+import {DetailedTaskModel} from '../../../../models/tasks/detailed-task-model';
+import {TagModule} from 'primeng/tag';
+import {PaginatorModule, PaginatorState} from 'primeng/paginator';
+import {DatePipe, NgClass} from '@angular/common';
+import {CreateTaskComponent} from './create-task/create-task.component';
+import {TaskDetailComponent} from './task-detail/task-detail.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PriorityStatusTagComponent} from './priority-status-tag/priority-status-tag.component';
+import {SearchUserComponent} from '../../user/search-user/search-user.component';
+
+@Component({
+  selector: 'app-tasks-table',
+  imports: [
+    ButtonDirective,
+    InputTextModule,
+    ButtonModule,
+    PopoverModule,
+    ReactiveFormsModule,
+    SelectModule,
+    FormsModule,
+    TagModule,
+    PaginatorModule,
+    Skeleton,
+    TableModule,
+    DatePipe,
+    CreateTaskComponent,
+    TaskDetailComponent,
+    NgClass,
+    PriorityStatusTagComponent,
+    SearchUserComponent
+  ],
+  templateUrl: './tasks-table.component.html',
+  styleUrl: './tasks-table.component.css'
+})
+export class TasksTableComponent implements OnInit {
+
+  selectedTask: DetailedTaskModel | null = null;
+
+  tasks: DetailedTaskModel[] = [];
+  taskStatuses: TaskStatusModel[] = [];
+  taskPriorities: TaskPriorityModel[] = [];
+
+  filter: TaskFilterRequest;
+
+  loading: boolean = true;
+  skeleton: any = [{}, {}, {}, {}, {}, {}, {}, {}];
+
+  totalElements: number = 0;
+  size: number = 10
+  first: number = 0;
+
+  @ViewChild('tasksTable') tasksTable!: Table;
+
+  constructor(
+    private readonly taskCompositeService: TaskCompositeService,
+    private readonly taskStatusesService: TaskStatusesService,
+    private readonly taskPrioritiesService: TaskPrioritiesService,
+    private readonly messageService: MessageService,
+    private readonly route: ActivatedRoute,
+    public readonly router: Router
+  ) {
+    this.filter = this.getDefaultFilter();
+  }
+
+  ngOnInit(): void {
+    const taskId: string = this.route.snapshot.params['taskId'];
+
+    if (taskId) {
+      this.fetchTask(taskId);
+    }
+    this.fetchTasks();
+    this.fetchTaskStatuses();
+    this.fetchTaskPriorities();
+  }
+
+  fetchTask(id: string): void {
+    this.taskCompositeService.getTask(id).subscribe({
+      next: (task) => {
+        this.openTaskDetail(task);
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+  }
+
+  fetchTasks(): void {
+    this.loading = true;
+
+    this.taskCompositeService.filterTasks(this.filter).subscribe({
+      next: value => {
+        this.tasks = value.content;
+
+        this.totalElements = value.page.totalElements;
+        this.size = value.page.size;
+        this.first = value.page.number;
+
+        this.loading = false;
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+  }
+
+  fetchTaskStatuses(): void {
+    this.taskStatusesService.getOrganizationTaskStatuses().subscribe({
+      next: value => {
+        this.taskStatuses = value;
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+  }
+
+  fetchTaskPriorities(): void {
+    this.taskPrioritiesService.getOrganizationTaskPriorities().subscribe({
+      next: value => {
+        this.taskPriorities = value;
+      },
+      error: (err) => {
+        const error: ErrorMessageModel = err.error;
+
+        this.messageService.add({closable: true, summary: error.message, severity: 'error'});
+      }
+    })
+  }
+
+  onPageChanged(event: PaginatorState) {
+    this.filter.page = event.page!;
+
+    this.fetchTasks();
+  }
+
+  applyFilter() {
+    this.filter.page = 0;
+    this.fetchTasks();
+  }
+
+  resetFilter(): void {
+    this.filter = this.getDefaultFilter();
+    this.tasksTable.reset();
+    this.fetchTasks();
+  }
+
+  addTaskToArray(task: DetailedTaskModel): void {
+    this.tasks.unshift(task);
+    this.tasks = [...this.tasks];
+    this.totalElements++;
+  }
+
+  openTaskDetail(task: DetailedTaskModel): void {
+    this.selectedTask = task;
+  }
+
+  onTaskUpdated(updatedTask: DetailedTaskModel): void {
+    const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+    if (index > -1) {
+      this.tasks[index] = updatedTask;
+      this.tasks = [...this.tasks];
+    }
+  }
+
+  onTaskDeleted(taskId: string): void {
+    this.tasks = this.tasks.filter(t => t.id !== taskId);
+    this.selectedTask = null;
+    this.totalElements--;
+  }
+
+  private getDefaultFilter(): TaskFilterRequest {
+    return {
+      page: 0,
+      size: 10,
+      sortDirection: SortDirection.ASC,
+      sortBy: 'id'
+    }
+  }
+}

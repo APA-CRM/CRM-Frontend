@@ -7,11 +7,11 @@ import {CommonModule} from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {OrganizationRequest} from '../../models/organizations/organization-request';
-import {OrganizationService as OrganizationService} from '../../core/services/organization.service';
+import {OrganizationService as OrganizationService} from '../../core/services/organizations/organization.service';
 import {Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../models/error/error-message-model';
-import {OrganizationHolderService} from '../../core/services/organization-holder.service';
+import {OrganizationHolderService} from '../../core/services/organizations/organization-holder.service';
 
 @Component({
   selector: 'app-create-organization',

@@ -5,25 +5,24 @@ import {UserWithRolesModel} from '../../../models/users/user-with-roles-model';
 import {CommonModule} from '@angular/common';
 import {UsersFilterRequest} from '../../../models/users/users-filter-request';
 import {SortDirection} from '../../../core/enums/sort-direction';
-import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
+import {OrganizationHolderService} from '../../../core/services/organizations/organization-holder.service';
 import {TagModule} from 'primeng/tag';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ErrorMessageModel} from '../../../models/error/error-message-model';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
-import {SelectFilterEvent, SelectModule} from 'primeng/select';
+import {SelectModule} from 'primeng/select';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {PopoverModule} from 'primeng/popover';
-import {OrganizationUsersService} from '../../../core/services/organization-users.service';
-import {OrganizationRolesService} from '../../../core/services/organization-roles.service';
+import {OrganizationUsersService} from '../../../core/services/organizations/organization-users.service';
+import {OrganizationRolesService} from '../../../core/services/organizations/organization-roles.service';
 import {RoleModel} from '../../../models/roles/role-model';
-import {UserModel} from '../../../models/users/user-model';
-import {UserService} from '../../../core/services/user.service';
-import {OrganizationUsersRolesService} from '../../../core/services/organization-users-roles.service';
-import {OrganizationInvitationService} from '../../../core/services/organization-invitation.service';
+import {OrganizationUsersRolesService} from '../../../core/services/organizations/organization-users-roles.service';
+import {OrganizationInvitationService} from '../../../core/services/organizations/organization-invitation.service';
 import {Router} from '@angular/router';
 import {SkeletonModule} from 'primeng/skeleton';
+import {SearchUserComponent} from '../user/search-user/search-user.component';
 
 @Component({
   selector: 'app-users-table',
@@ -38,7 +37,8 @@ import {SkeletonModule} from 'primeng/skeleton';
     SelectModule,
     CommonModule,
     FormsModule,
-    SkeletonModule
+    SkeletonModule,
+    SearchUserComponent
   ],
   templateUrl: './users-table.component.html',
   styleUrl: './users-table.component.css'
@@ -52,11 +52,7 @@ export class UsersTableComponent implements OnInit {
 
   loading: boolean = true;
 
-  loadingSelect: boolean = false;
-
-  usersToAdd: UserModel[] = [];
-
-  selectedUser: UserModel | null = null;
+  selectedUserId: number | null = null;
 
   selectedRole: RoleModel | null = null;
 
@@ -68,14 +64,12 @@ export class UsersTableComponent implements OnInit {
 
   filter!: UsersFilterRequest;
   @ViewChild('userTable') userTable!: Table;
-  private timerId: number | undefined;
 
   constructor(
     private organizationHolder: OrganizationHolderService,
     private organizationUserService: OrganizationUsersService,
     private organizationRolesService: OrganizationRolesService,
     private organizationUsersRolesService: OrganizationUsersRolesService,
-    private userService: UserService,
     private invitationService: OrganizationInvitationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -104,37 +98,11 @@ export class UsersTableComponent implements OnInit {
     this.fetchUsers();
   }
 
-  onFilterUsers($event: SelectFilterEvent): void {
-    if (this.timerId) {
-      clearTimeout(this.timerId);
-    }
-
-    // @ts-ignore
-    this.timerId = setTimeout(() => this.findUsersToAddToOrganization($event.filter), 1000);
-  }
-
-  findUsersToAddToOrganization(value: string) {
-    this.loadingSelect = true;
-
-    this.userService.getUsersByFullName(value)
-      .subscribe({
-        next: (data) => {
-          this.usersToAdd = data;
-          this.loadingSelect = false;
-        },
-        error: (err) => {
-          const error: ErrorMessageModel = err.error;
-
-          this.messageService.add({closable: true, summary: error.message, severity: 'error'});
-        }
-      });
-  }
-
   addRoleToUser(userId: number, roleId: number): void {
     this.organizationUsersRolesService.addRoleForOrganizationUser(
       this.organizationHolder.getOrganizationId(), userId, roleId
     ).subscribe({
-      next: value => {
+      next: () => {
         this.messageService.add({closable: true, summary: `Role has been assign to user`, severity: 'success'});
         this.fetchUsers();
       },
@@ -150,7 +118,7 @@ export class UsersTableComponent implements OnInit {
     this.organizationUsersRolesService.removeRoleForUserOrganization(
       this.organizationHolder.getOrganizationId(), userId, roleId
     ).subscribe({
-      next: value => {
+      next: () => {
         this.messageService.add({closable: true, summary: `Role has been unassign for user`, severity: 'success'});
         this.fetchUsers();
       },
@@ -167,10 +135,10 @@ export class UsersTableComponent implements OnInit {
 
     this.invitationService.createInvitation(
       this.organizationHolder.getOrganizationId(),
-      this.selectedUser!.id,
+      this.selectedUserId!,
       roleId
     ).subscribe({
-      next: (data) => {
+      next: () => {
         this.messageService.add({
           closable: true,
           summary: `User has been invited to the organization`,

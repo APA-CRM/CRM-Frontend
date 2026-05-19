@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {UserWithRolesModel} from '../../models/users/user-with-roles-model';
+import {UserWithRolesModel} from '../../../models/users/user-with-roles-model';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PageModel} from '../../models/page/page-model';
-import {UsersFilterRequest} from '../../models/users/users-filter-request';
-import {FilterRequestMapperService} from '../mapper/filter-request-mapper.service';
-import {environment} from '../../../environments/environment';
+import {PageModel} from '../../../models/page/page-model';
+import {UsersFilterRequest} from '../../../models/users/users-filter-request';
+import {FilterRequestToHttpParamsAdapter} from '../../adapter/filter-request-to-http-params-adapter.service';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +16,12 @@ export class OrganizationUsersService {
 
   constructor(
     private http: HttpClient,
-    private filterRequestMapperService: FilterRequestMapperService
+    private requestToHttpParamsAdapter: FilterRequestToHttpParamsAdapter
   ) {
   }
 
   public getFilterUsers(filter: UsersFilterRequest, organizationId: number): Observable<PageModel<UserWithRolesModel>> {
-    let params: HttpParams = this.filterRequestMapperService.mapUserFilterRequestToHttpParams(filter);
+    let params: HttpParams = this.requestToHttpParamsAdapter.toHttpParams(filter);
 
     return this.http.get<PageModel<UserWithRolesModel>>(
       environment.apiUrl + this.BASE_URI + `/${organizationId}/users/filter`, {params: params}

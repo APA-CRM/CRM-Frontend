@@ -1,12 +1,13 @@
 <app-side-bar/>
 <p-toast [baseZIndex]="10000" key="notifications" position="top-right">
+  <!-- Remove duplicate code /-->
   <ng-template #message let-message>
     <div *ngIf="message.data?.messageCode === notificationType.USER_HAS_BEEN_INVITED_TO_ORGANIZATION"
          aria-live="polite"
          class="flex flex-col p-2"
          role="alert">
       <div class="flex gap-2 items-start">
-        <div class="flex items-center justify-center w-8 h-8 text-lg flex-shrink-0">
+        <div class="flex items-center justify-center w-8 h-8 text-lg shrink-0">
           <i class="pi pi-envelope"></i>
         </div>
         <h3 class="m-0 text-base font-semibold text-blue-500 leading-tight">{{ message.detail }}</h3>
@@ -30,7 +31,7 @@
          class="flex flex-col p-2"
          role="alert">
       <div class="flex gap-2 items-start">
-        <div class="flex items-center justify-center w-8 h-8 text-lg flex-shrink-0">
+        <div class="flex items-center justify-center w-8 h-8 text-lg shrink-0">
           <i class="pi pi-envelope"></i>
         </div>
         <h3 class="m-0 text-base font-semibold text-blue-500 leading-tight">{{ message.detail }}</h3>
@@ -42,6 +43,30 @@
           icon="pi pi-arrow-right"
           iconPos="right"
           label="See user's profile"
+          severity="success"
+          size="small"
+          text>
+        </p-button>
+      </div>
+    </div>
+
+    <div *ngIf="message.data?.messageCode === notificationType.TASK_HAS_BEEN_ASSIGNED"
+         aria-live="polite"
+         class="flex flex-col p-2"
+         role="alert">
+      <div class="flex gap-2 items-start">
+        <div class="flex items-center justify-center w-8 h-8 text-lg shrink-0">
+          <i class="pi pi-envelope"></i>
+        </div>
+        <h3 class="m-0 text-base font-semibold text-blue-500 leading-tight">{{ message.detail }}</h3>
+      </div>
+      <div class="flex text-sm items-center ml-6 mt-2">
+        <p-button
+          (onClick)="closeMessage()"
+          [routerLink]="['/tasks', message.data?.details?.taskId]"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          label="See the task"
           severity="success"
           size="small"
           text>

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {OrganizationFilesService} from '../organization-files.service';
+import {OrganizationFilesService} from '../organizations/organization-files.service';
 import {FilesService} from '../files.service';
 import {Observable, switchMap, tap} from 'rxjs';
 import {environment} from '../../../../environments/environment';

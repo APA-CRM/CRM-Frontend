@@ -1,0 +1,278 @@
+<div class="h-full flex flex-col bg-white">
+  <!-- Header -->
+  <div class="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-start">
+    <div class="flex-1">
+      <h2 class="text-xl font-bold text-gray-800 break-words">{{ task.title }}</h2>
+      <p class="text-sm text-gray-500 mt-1">ID: {{ task.id }}</p>
+    </div>
+    <div class="flex gap-2">
+      <button
+        (click)="copyTaskLinkToClipboard()"
+        [icon]="copiedToClipboard ? 'pi pi-check' : 'pi pi-link'"
+        [label]="copiedToClipboard ? 'Copied' : 'Share'"
+        pButton
+        severity="secondary"
+        text
+        type="button"
+      ></button>
+      <button
+        (click)="closePanel()"
+        icon="pi pi-times"
+        pButton
+        severity="secondary"
+        text
+        type="button"
+      ></button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 overflow-y-auto p-4 space-y-6">
+
+    @if (loadingData) {
+      <div class="flex items-center justify-center h-96">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+    } @else {
+      <form [formGroup]="taskForm">
+
+        <!-- Title -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">TITLE</label>
+          @if (!editing) {
+            <p class="text-gray-800 font-semibold">{{ task.title }}</p>
+          } @else {
+            <input
+              class="w-full"
+              formControlName="title"
+              pInputText
+              type="text"
+            />
+            @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+              <small class="text-red-600">Title is required and must be at least 3 characters</small>
+            }
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Description -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">DESCRIPTION</label>
+          @if (!editing) {
+            <p class="text-gray-700 whitespace-pre-wrap">{{ task.description || 'Not specified' }}</p>
+          } @else {
+            <textarea
+              class="w-full"
+              formControlName="description"
+              pTextarea
+              rows="4"
+            ></textarea>
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Status -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">STATUS</label>
+          @if (!editing) {
+            <p-tag
+              [style]="{'background-color': task.status.color, 'color': getContrastColor(task.status.color)}"
+              [value]="task.status.name"
+            />
+          } @else {
+            <p-select
+              [options]="taskStatuses"
+              class="w-full"
+              formControlName="statusId"
+              optionLabel="name"
+              optionValue="id"
+            >
+              <ng-template #selectedItem let-status>
+                <app-priority-status-tag [value]="status"/>
+              </ng-template>
+              <ng-template #item let-status>
+                <app-priority-status-tag [value]="status"/>
+              </ng-template>
+            </p-select>
+            @if (taskForm.get('statusId')?.invalid && taskForm.get('statusId')?.touched) {
+              <small class="text-red-600">Status is required</small>
+            }
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Priority -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">PRIORITY</label>
+          @if (!editing) {
+            <p-tag
+              [style]="{'background-color': task.priority.color, 'color': getContrastColor(task.priority.color)}"
+              [value]="task.priority.name"
+            />
+          } @else {
+            <p-select
+              [options]="taskPriorities"
+              class="w-full"
+              formControlName="priorityId"
+              optionLabel="name"
+              optionValue="id"
+            >
+              <ng-template #selectedItem let-priority>
+                <app-priority-status-tag [value]="priority"/>
+              </ng-template>
+              <ng-template #item let-priority>
+                <app-priority-status-tag [value]="priority"/>
+              </ng-template>
+            </p-select>
+            @if (taskForm.get('priorityId')?.invalid && taskForm.get('priorityId')?.touched) {
+              <small class="text-red-600">Priority is required</small>
+            }
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Assigned To -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">ASSIGNED TO</label>
+          @if (!editing) {
+            <div class="flex items-center gap-3">
+              @if (task.assignedTo) {
+                <div>
+                  <p class="text-gray-800 font-semibold text-sm">{{ task.assignedTo.fullName }}</p>
+                  <p class="text-gray-500 text-xs">{{ task.assignedTo.login }}</p>
+                </div>
+              } @else {
+                <div>
+                  <p class="text-gray-800 font-semibold text-sm">Unassigned</p>
+                </div>
+              }
+
+            </div>
+          } @else {
+            <app-search-user formControlName="assignedTo"/>
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Created By -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">CREATED BY</label>
+          <div class="flex items-center gap-3">
+            <div>
+              <p class="text-gray-800 font-semibold text-sm">{{ task.createdBy.fullName }}</p>
+              <p class="text-gray-500 text-xs">{{ task.createdBy.login }}</p>
+            </div>
+          </div>
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Estimated Time -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">ESTIMATED TIME</label>
+          @if (!editing) {
+            <p class="text-gray-800">{{ task.estimatedTime ? task.estimatedTime + ' hours' : 'Not estimated' }}</p>
+          } @else {
+            <p-inputNumber
+              [min]="0"
+              class="w-full"
+              formControlName="estimatedTime"
+            />
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Due Date  -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">DUE DATE</label>
+          @if (!editing) {
+            <p class="text-gray-800">{{ task.dueDate ? (task.dueDate | date:'dd MMM yyyy') : 'Not set' }}</p>
+          } @else {
+            <p-date-picker
+              [showIcon]="true"
+              class="w-full"
+              dateFormat="dd/mm/yy"
+              formControlName="dueDate"
+            />
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Timestamps -->
+        <div class="bg-gray-50 rounded p-3 space-y-2">
+          <div>
+            <p class="text-xs text-gray-600">Created at</p>
+            <p class="text-sm text-gray-800">{{ task.createdAt | date:'medium' }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600">Last updated</p>
+            <p class="text-sm text-gray-800">{{ task.updatedAt | date:'medium' }}</p>
+          </div>
+          @if (task.completedAt) {
+            <div>
+              <p class="text-xs text-gray-600">Completed at</p>
+              <p class="text-sm text-gray-800">{{ task.completedAt | date:'medium' }}</p>
+            </div>
+          }
+        </div>
+
+      </form>
+    }
+
+  </div>
+
+  <!-- Footer with Actions -->
+  <div class="sticky bottom-0 border-t border-gray-200 bg-white p-4 space-y-3">
+    @if (!editing) {
+      <div class="flex gap-2">
+        <button
+          (click)="enableEdit()"
+          class="flex-1"
+          icon="pi pi-pencil"
+          label="Edit"
+          pButton
+          type="button"
+        ></button>
+        <button
+          (click)="confirmDelete($event)"
+          class="text-red-600 border-red-600 hover:bg-red-50"
+          icon="pi pi-trash"
+          label="Delete"
+          outlined
+          pButton
+          severity="danger"
+          type="button"
+        ></button>
+      </div>
+    } @else {
+      <div class="flex gap-2">
+        <button
+          (click)="cancelEdit()"
+          class="flex-1"
+          icon="pi pi-times"
+          label="Cancel"
+          pButton
+          severity="secondary"
+          type="button"
+        ></button>
+        <button
+          (click)="saveTask()"
+          [disabled]="isInvalidForm()"
+          [loading]="saveLoading"
+          class="flex-1"
+          icon="pi pi-check"
+          label="Save"
+          pButton
+          type="button"
+        ></button>
+      </div>
+    }
+  </div>
+</div>

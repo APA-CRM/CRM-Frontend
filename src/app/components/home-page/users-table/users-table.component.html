@@ -1,19 +1,18 @@
 <div class="main-content ml-[250px] p-6">
   <div class="flex justify-between items-center mb-4">
-    <div>
-      <p-select (onFilter)="onFilterUsers($event)" [(ngModel)]="selectedUser" [filter]="true" [loading]="loadingSelect"
-                [options]="usersToAdd"
-                [showClear]="true" class="w-full md:w-56" filterPlaceholder="Find by full name"
-                optionLabel="fullName" placeholder="Select an User"/>
-      @if (selectedUser) {
-        <p-select [options]="roles" [(ngModel)]="selectedRole"
-                  optionLabel="name" placeholder="Select a role for the user" [showClear]="true" class="ml-2"/>
+    <div class="flex gap-2">
+      <app-search-user [(ngModel)]="selectedUserId" class="w-full md:w-56" placeholder="Search User"/>
+      @if (selectedUserId) {
+        <p-select [(ngModel)]="selectedRole" [options]="roles"
+                  [showClear]="true" class="ml-2" optionLabel="name" placeholder="Select a role for the user"/>
       }
-      <button (click)="inviteUserToOrganization()" [disabled]="selectedUser === null" class="ml-3 p-2" icon="pi pi-plus"
+      <button (click)="inviteUserToOrganization()" [disabled]="selectedUserId === null" class="ml-3 p-2"
+              icon="pi pi-plus"
               pButton
               type="button">Invite User
       </button>
     </div>
+    <!-- TODO: Create a generic component -->
     <div class="flex items-center">
 
       <p-popover #filterPopover>
@@ -123,7 +122,7 @@
       </ng-template>
     </p-table>
   } @else {
-    <p-table #userTable class="h-56" [value]="users">
+    <p-table #userTable [value]="users" class="h-56">
       <ng-template #header>
         <tr>
           <th>Login</th>

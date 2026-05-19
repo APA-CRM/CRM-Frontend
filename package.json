@@ -40,5 +40,19 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "tslib": "^2.8.1",
     "typescript": "~5.7.2"
-  }
+  },
+  "description": "CRM-Frontend is the front-end application for the APA-CRM platform, built with Angular and TypeScript. The project provides a user interface for interacting with APA-CRM services, following a modern component-based architecture.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/APA-CRM/CRM-Frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/APA-CRM/CRM-Frontend/issues"
+  },
+  "homepage": "https://github.com/APA-CRM/CRM-Frontend#readme"
 }

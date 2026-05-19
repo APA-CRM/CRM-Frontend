@@ -1,0 +1,251 @@
+<div class="flex h-screen">
+  <!-- Left: Tasks Table with margin for sidebar -->
+  <div class="flex-1 overflow-auto border-r border-gray-200 ml-[250px]">
+    <div class="main-content p-6">
+      <div class="flex justify-between items-center mb-4">
+
+        <div class="flex items-center gap-2">
+
+          <app-create-task
+            (onTaskCreated)="addTaskToArray($event)">
+          </app-create-task>
+
+          <button
+            (click)="filterPopover.toggle($event)"
+            class="p-button-outlined"
+            icon="pi pi-filter"
+            label="Filter"
+            pButton
+            type="button">
+          </button>
+
+          <p-popover #filterPopover>
+            <div class="p-4 w-96">
+
+              <h3 class="font-semibold text-lg mb-4 text-gray-800">
+                Filter Tasks
+              </h3>
+
+              <div class="space-y-4">
+
+                <div>
+                  <label class="block text-sm font-medium">Title</label>
+                  <input
+                    [(ngModel)]="filter.title"
+                    class="w-full"
+                    pInputText
+                    placeholder="Search by title"
+                    type="text"/>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Status</label>
+                  <p-select
+                    [(ngModel)]="filter.statusId"
+                    [options]="taskStatuses"
+                    [showClear]="true"
+                    class="w-full"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Select status">
+                  </p-select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Priority</label>
+                  <p-select
+                    [(ngModel)]="filter.priorityId"
+                    [options]="taskPriorities"
+                    [showClear]="true"
+                    class="w-full"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Select priority">
+                  </p-select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Assigned to</label>
+                  <app-search-user [(ngModel)]="filter.assignedTo"/>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Created By</label>
+                  <app-search-user [(ngModel)]="filter.createdBy"/>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Sort By</label>
+                  <p-select
+                    [(ngModel)]="filter.sortBy"
+                    [options]="[
+                {label: 'Title', value: 'title'},
+                {label: 'Created At', value: 'createdAt'},
+                {label: 'Due Date', value: 'dueDate'},
+                {label: 'Priority', value: 'priority'},
+                {label: 'Status', value: 'status'}
+              ]"
+                    class="w-full"
+                    placeholder="Choose field">
+                  </p-select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium">Sort Direction</label>
+                  <p-select
+                    [(ngModel)]="filter.sortDirection"
+                    [options]="[
+                {label: 'Ascending', value: 'ASC'},
+                {label: 'Descending', value: 'DESC'}
+              ]"
+                    class="w-full"
+                    placeholder="Choose direction">
+                  </p-select>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+
+                  <button
+                    (click)="resetFilter(); filterPopover.hide()"
+                    icon="pi pi-filter-slash"
+                    label="Reset"
+                    pButton
+                    severity="secondary"
+                    type="button">
+                  </button>
+
+                  <button
+                    (click)="applyFilter(); filterPopover.hide()"
+                    icon="pi pi-check"
+                    label="Apply"
+                    pButton
+                    type="button">
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+          </p-popover>
+
+        </div>
+
+        <div class="flex items-center gap-2">
+
+          <button
+            (click)="router.navigate(['/tasks/statuses'])"
+            class="p-button-secondary"
+            icon="pi pi-sitemap"
+            label="Statuses"
+            pButton
+            type="button">
+          </button>
+
+          <button
+            (click)="router.navigate(['/tasks/priorities'])"
+            class="p-button-secondary"
+            icon="pi pi-flag"
+            label="Priorities"
+            pButton
+            type="button">
+          </button>
+
+        </div>
+
+      </div>
+
+      @if (loading) {
+        <p-table #skeletonTable [value]="skeleton">
+          <ng-template #header>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Assigned To</th>
+              <th>Created By</th>
+              <th>Due Date</th>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+            </tr>
+          </ng-template>
+          <ng-template #body let-skeleton>
+            <tr>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+              <td>
+                <p-skeleton/>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      } @else {
+        <p-table #tasksTable [value]="tasks">
+          <ng-template #header>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Assigned To</th>
+              <th>Created By</th>
+              <th>Due Date</th>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+            </tr>
+          </ng-template>
+          <ng-template #body let-task>
+            <tr [ngClass]="{'bg-blue-50': selectedTask?.id === task.id}" class="hover:bg-gray-50 cursor-pointer">
+              <td (click)="openTaskDetail(task)" class="hover:underline font-semibold">{{ task.title }}</td>
+              <td>
+                <app-priority-status-tag [value]="task.status"/>
+              </td>
+              <td>
+                <app-priority-status-tag [value]="task.priority"/>
+              </td>
+              <td>
+                @if (task.assignedTo) {
+                  {{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }}
+                    )</span>
+                } @else {
+                  Unassigned
+                }
+              </td>
+              <td>{{ task.createdBy.fullName }} <span class="text-gray-500 text-sm">({{ task.createdBy.login }})</span>
+              </td>
+              <td>{{ task.dueDate ? (task.dueDate | date: 'dd MMM yyyy h:mm:ss a') : 'Not set' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChanged($event)" [first]="first" [rows]="size"
+                     [totalRecords]="totalElements"/>
+      }
+    </div>
+  </div>
+
+  <!-- Right: Task Detail Panel -->
+  @if (selectedTask) {
+    <div class="w-114 overflow-auto border-l border-gray-200 bg-white">
+      <app-task-detail
+        (close)="selectedTask = null"
+        (taskDeleted)="onTaskDeleted($event)"
+        (taskUpdated)="onTaskUpdated($event)"
+        [task]="selectedTask"
+      ></app-task-detail>
+    </div>
+  }
+</div>

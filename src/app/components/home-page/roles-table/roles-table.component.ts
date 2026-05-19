@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {OrganizationHolderService} from '../../../core/services/organization-holder.service';
-import {OrganizationRolesService} from '../../../core/services/organization-roles.service';
+import {OrganizationHolderService} from '../../../core/services/organizations/organization-holder.service';
+import {OrganizationRolesService} from '../../../core/services/organizations/organization-roles.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';

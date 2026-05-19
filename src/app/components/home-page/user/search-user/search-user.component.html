@@ -1,0 +1,29 @@
+<p-select
+  (onChange)="onUserSelectedChange($event)"
+  (onFilter)="onFilterUsers($event)"
+  [(ngModel)]="value"
+  [disabled]="disabled"
+  [filter]="true"
+  [loading]="loading"
+  [options]="users"
+  [placeholder]="placeholder"
+  [showClear]="true"
+  class="w-full"
+  optionLabel="fullName"
+  optionValue="id"
+>
+  <ng-template let-value pTemplate="selectedItem">
+    @if (value) {
+      <div class="flex items-center gap-2">
+        <span>{{ value.fullName }}</span>
+        <span class="text-gray-500 text-sm">({{ value.login }})</span>
+      </div>
+    }
+  </ng-template>
+  <ng-template let-option pTemplate="item">
+    <div class="flex items-center gap-2">
+      <span>{{ option.fullName }}</span>
+      <span class="text-gray-500 text-sm">({{ option.login }})</span>
+    </div>
+  </ng-template>
+</p-select>

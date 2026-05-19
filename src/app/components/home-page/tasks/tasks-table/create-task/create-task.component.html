@@ -1,0 +1,148 @@
+<button
+  (click)="openDialog()"
+  class="p-2"
+  icon="pi pi-plus"
+  label="Create Task"
+  pButton
+  type="button">
+</button>
+
+<p-dialog
+  (onHide)="closeDialog()"
+  [(visible)]="displayDialog"
+  [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
+  [modal]="true"
+  [style]="{width: '50vw'}"
+  header="Create New Task"
+>
+  @if (loadingData) {
+    <div class="flex items-center justify-center h-96">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  } @else {
+    <form (ngSubmit)="createTask()" [formGroup]="taskForm">
+      <div class="space-y-4">
+        <!-- Title -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Title *</label>
+          <input
+            class="w-full"
+            formControlName="title"
+            pInputText
+            placeholder="Enter task title"
+            type="text"
+          />
+          @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+            <small class="text-red-600">Title is required</small>
+          }
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Description</label>
+          <textarea
+            class="w-full"
+            formControlName="description"
+            pTextarea
+            placeholder="Enter task description"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- Status and Priority -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Status *</label>
+            <p-select
+              [options]="taskStatuses"
+              class="w-full"
+              formControlName="statusId"
+              optionLabel="name"
+              optionValue="id"
+              placeholder="Select status"
+            >
+              <ng-template #selectedItem let-status>
+                <app-priority-status-tag [value]="status"/>
+              </ng-template>
+              <ng-template #item let-status>
+                <app-priority-status-tag [value]="status"/>
+              </ng-template>
+            </p-select>
+            @if (taskForm.get('statusId')?.invalid && taskForm.get('statusId')?.touched) {
+              <small class="text-red-600">Status is required</small>
+            }
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Priority *</label>
+            <p-select
+              [options]="taskPriorities"
+              class="w-full"
+              formControlName="priorityId"
+              optionLabel="name"
+              optionValue="id"
+              placeholder="Select priority"
+            >
+              <ng-template #selectedItem let-priority>
+                <app-priority-status-tag [value]="priority"/>
+              </ng-template>
+              <ng-template #item let-priority>
+                <app-priority-status-tag [value]="priority"/>
+              </ng-template>
+            </p-select>
+            @if (taskForm.get('priorityId')?.invalid && taskForm.get('priorityId')?.touched) {
+              <small class="text-red-600">Priority is required</small>
+            }
+          </div>
+        </div>
+
+        <!-- Assigned To -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Assigned To</label>
+          <app-search-user formControlName="assignedTo"/>
+        </div>
+
+        <!-- Estimated Time and Due Date -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Estimated Time (hours)</label>
+            <p-inputNumber
+              [min]="0"
+              class="w-full"
+              formControlName="estimatedTime"
+              placeholder="0"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Due Date</label>
+            <p-date-picker
+              [showIcon]="true"
+              class="w-full"
+              dateFormat="dd/mm/yy"
+              formControlName="dueDate"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <button
+          (click)="closeDialog()"
+          class="mr-5"
+          icon="pi pi-times"
+          label="Cancel"
+          pButton
+          severity="secondary"
+          type="button"
+        ></button>
+        <button
+          [disabled]="isInvalidForm()"
+          [loading]="saveLoading"
+          icon="pi pi-check"
+          label="Create"
+          pButton
+          type="submit"
+        ></button>
+      </div>
+    </form>
+  }
+</p-dialog>

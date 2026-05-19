@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Client} from '@stomp/stompjs';
 import {AuthStorageService} from './auth-storage.service';
 import {environment} from '../../../environments/environment';
-import {OrganizationHolderService} from './organization-holder.service';
+import {OrganizationHolderService} from './organizations/organization-holder.service';
 import {NotificationResponse} from '../../models/notifications/notification-response';
 import {Subject} from 'rxjs';
 

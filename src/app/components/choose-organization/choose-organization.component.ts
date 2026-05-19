@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {OrganizationService} from '../../core/services/organization.service';
+import {OrganizationService} from '../../core/services/organizations/organization.service';
 import {MessageService} from 'primeng/api';
 import {OrganizationPreviewModel} from '../../models/organizations/organization-preview-model';
 import {ErrorMessageModel} from '../../models/error/error-message-model';
@@ -9,7 +9,7 @@ import {CardModule} from 'primeng/card';
 import {CommonModule} from '@angular/common';
 import {MessageModule} from 'primeng/message';
 import {ButtonModule} from 'primeng/button';
-import {OrganizationHolderService} from '../../core/services/organization-holder.service';
+import {OrganizationHolderService} from '../../core/services/organizations/organization-holder.service';
 
 @Component({
   selector: 'app-choose-organization',
