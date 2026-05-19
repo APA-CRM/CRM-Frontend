@@ -1,6 +1,7 @@
 <p-select
   (onChange)="onUserSelectedChange($event)"
   (onFilter)="onFilterUsers($event)"
+  [(ngModel)]="value"
   [disabled]="disabled"
   [filter]="true"
   [loading]="loading"

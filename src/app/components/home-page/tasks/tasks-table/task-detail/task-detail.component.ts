@@ -88,7 +88,7 @@ export class TaskDetailComponent implements OnInit {
       description: [''],
       statusId: [null, Validators.required],
       priorityId: [null, Validators.required],
-      assignedTo: [null, Validators.required],
+      assignedTo: [null],
       estimatedTime: [null],
       dueDate: [null]
     });
@@ -110,7 +110,7 @@ export class TaskDetailComponent implements OnInit {
       description: this.task.description,
       statusId: this.task.status.id,
       priorityId: this.task.priority.id,
-      assignedTo: this.task.assignedTo.id,
+      assignedTo: this.task.assignedTo ? this.task.assignedTo.id : null,
       estimatedTime: this.task.estimatedTime,
       dueDate: this.task.dueDate ? new Date(this.task.dueDate) : null
     });
@@ -198,7 +198,7 @@ export class TaskDetailComponent implements OnInit {
       description: this.taskForm.get('description')?.value || null,
       statusId: this.taskForm.get('statusId')?.value,
       priorityId: this.taskForm.get('priorityId')?.value,
-      assignedTo: this.taskForm.get('assignedTo')?.value,
+      assignedTo: this.taskForm.get('assignedTo')?.value || null,
       estimatedTime: this.taskForm.get('estimatedTime')?.value || null,
       dueDate: this.taskForm.get('dueDate')?.value || null
     };

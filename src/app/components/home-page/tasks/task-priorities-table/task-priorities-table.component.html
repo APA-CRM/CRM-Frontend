@@ -15,7 +15,7 @@
 
       <button
         (click)="createPriority()"
-        [disabled]="priorities[0]?.id === -1"
+        [disabled]="priorities[0] && priorities[0].id === -1"
         aria-label="Create new priority"
         class="flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
         type="button">

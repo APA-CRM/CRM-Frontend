@@ -140,16 +140,20 @@
           <label class="block text-xs font-semibold text-gray-600">ASSIGNED TO</label>
           @if (!editing) {
             <div class="flex items-center gap-3">
-              <div>
-                <p class="text-gray-800 font-semibold text-sm">{{ task.assignedTo.fullName }}</p>
-                <p class="text-gray-500 text-xs">{{ task.assignedTo.login }}</p>
-              </div>
+              @if (task.assignedTo) {
+                <div>
+                  <p class="text-gray-800 font-semibold text-sm">{{ task.assignedTo.fullName }}</p>
+                  <p class="text-gray-500 text-xs">{{ task.assignedTo.login }}</p>
+                </div>
+              } @else {
+                <div>
+                  <p class="text-gray-800 font-semibold text-sm">Unassigned</p>
+                </div>
+              }
+
             </div>
           } @else {
             <app-search-user formControlName="assignedTo"/>
-            @if (taskForm.get('assignedTo')?.invalid && taskForm.get('assignedTo')?.touched) {
-              <small class="text-red-600">Assigned user is required</small>
-            }
           }
         </div>
 

@@ -4,11 +4,11 @@ import {UserService} from '../../../../core/services/user.service';
 import {MessageService} from 'primeng/api';
 import {UserModel} from '../../../../models/users/user-model';
 import {SelectModule} from 'primeng/select';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'app-search-user',
-  imports: [SelectModule],
+  imports: [SelectModule, FormsModule],
   templateUrl: './search-user.component.html',
   styleUrl: './search-user.component.css',
   providers: [
@@ -39,8 +39,23 @@ export class SearchUserComponent implements ControlValueAccessor {
   ) {
   }
 
+  // TODO: Performance issue. The component fetches a user by ID. Consider caching the response.
   writeValue(userId: number | null): void {
+    if (!userId || this.value === userId) return;
+
     this.value = userId;
+
+    this.loading = true;
+
+    this.userService.getUserById(userId).subscribe({
+      next: user => {
+        this.users = [user, ...this.users.filter(u => u.id !== user.id)];
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+      }
+    });
   }
 
   registerOnChange(fn: any): void {
@@ -57,6 +72,10 @@ export class SearchUserComponent implements ControlValueAccessor {
 
   onUserSelectedChange(event: any): void {
     const userId = event?.value ?? null;
+
+    if (userId === this.value) {
+      return;
+    }
 
     this.value = userId
 

@@ -15,7 +15,7 @@
 
       <button
         (click)="createStatus()"
-        [disabled]="statuses[0]?.id === -1"
+        [disabled]="statuses[0] && statuses[0].id === -1"
         class="flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
         type="button">
         <i class="pi pi-plus text-sm"></i>

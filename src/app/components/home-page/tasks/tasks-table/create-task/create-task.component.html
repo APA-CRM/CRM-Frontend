@@ -97,11 +97,8 @@
 
         <!-- Assigned To -->
         <div>
-          <label class="block text-sm font-medium mb-1">Assigned To *</label>
+          <label class="block text-sm font-medium mb-1">Assigned To</label>
           <app-search-user formControlName="assignedTo"/>
-          @if (taskForm.get('assignedTo')?.invalid && taskForm.get('assignedTo')?.touched) {
-            <small class="text-red-600">Assigned user is required</small>
-          }
         </div>
 
         <!-- Estimated Time and Due Date -->

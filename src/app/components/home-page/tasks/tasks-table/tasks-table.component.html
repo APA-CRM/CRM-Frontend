@@ -217,8 +217,14 @@
               <td>
                 <app-priority-status-tag [value]="task.priority"/>
               </td>
-              <td>{{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }}
-                )</span></td>
+              <td>
+                @if (task.assignedTo) {
+                  {{ task.assignedTo.fullName }} <span class="text-gray-500 text-sm">({{ task.assignedTo.login }}
+                    )</span>
+                } @else {
+                  Unassigned
+                }
+              </td>
               <td>{{ task.createdBy.fullName }} <span class="text-gray-500 text-sm">({{ task.createdBy.login }})</span>
               </td>
               <td>{{ task.dueDate ? (task.dueDate | date: 'dd MMM yyyy h:mm:ss a') : 'Not set' }}</td>
