@@ -70,7 +70,8 @@ export class CreateTaskComponent implements OnInit {
       "statusId": [null, Validators.required],
       "priorityId": [null, Validators.required],
       "assignedTo": null,
-      "dueDate": null
+      "dueDate": null,
+      "reminderAt": null
     })
   }
 

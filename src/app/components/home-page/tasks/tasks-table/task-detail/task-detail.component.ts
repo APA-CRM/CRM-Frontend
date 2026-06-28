@@ -84,13 +84,14 @@ export class TaskDetailComponent implements OnInit {
 
   initializeForm(): void {
     this.taskForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(3)]],
-      description: [''],
-      statusId: [null, Validators.required],
-      priorityId: [null, Validators.required],
-      assignedTo: [null],
-      estimatedTime: [null],
-      dueDate: [null]
+      "title": ['', [Validators.required, Validators.minLength(3)]],
+      "description": [''],
+      "statusId": [null, Validators.required],
+      "priorityId": [null, Validators.required],
+      "assignedTo": [null],
+      "estimatedTime": [null],
+      "dueDate": [null],
+      "reminderAt": [null]
     });
 
     this.taskForm.disable();
@@ -200,7 +201,8 @@ export class TaskDetailComponent implements OnInit {
       priorityId: this.taskForm.get('priorityId')?.value,
       assignedTo: this.taskForm.get('assignedTo')?.value || null,
       estimatedTime: this.taskForm.get('estimatedTime')?.value || null,
-      dueDate: this.taskForm.get('dueDate')?.value || null
+      dueDate: this.taskForm.get('dueDate')?.value || null,
+      reminderAt: this.taskForm.get('reminderAt')?.value || null
     };
 
     this.taskCompositeService.updateTask(this.task.id, request).subscribe({

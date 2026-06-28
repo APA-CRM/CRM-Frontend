@@ -5,5 +5,6 @@ export interface TaskRequest {
   statusId: number;
   priorityId: number;
   assignedTo: number;
+  reminderAt?: Date;
   dueDate?: Date;
 }
