@@ -1,16 +1,17 @@
-<p-select
-  (onChange)="onUserSelectedChange($event)"
-  (onFilter)="onFilterUsers($event)"
-  [(ngModel)]="value"
-  [disabled]="disabled"
-  [filter]="true"
-  [loading]="loading"
-  [options]="users"
-  [placeholder]="placeholder"
-  [showClear]="true"
-  class="w-full"
-  optionLabel="fullName"
-  optionValue="id"
+<p-select #userSelect
+          (onChange)="onUserSelectedChange($event)"
+          (onClear)="onClear()"
+          (onFilter)="onFilterUsers($event)"
+          [(ngModel)]="value"
+          [disabled]="disabled"
+          [filter]="true"
+          [loading]="loading"
+          [options]="users"
+          [placeholder]="placeholder"
+          [showClear]="true"
+          class="w-full"
+          optionLabel="fullName"
+          optionValue="id"
 >
   <ng-template let-value pTemplate="selectedItem">
     @if (value) {
