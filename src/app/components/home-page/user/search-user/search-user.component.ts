@@ -41,9 +41,11 @@ export class SearchUserComponent implements ControlValueAccessor {
 
   // TODO: Performance issue. The component fetches a user by ID. Consider caching the response.
   writeValue(userId: number | null): void {
-    if (!userId || this.value === userId) return;
+    if (this.value === userId) return;
 
     this.value = userId;
+
+    if (!userId) return;
 
     this.loading = true;
 
@@ -73,10 +75,6 @@ export class SearchUserComponent implements ControlValueAccessor {
   onUserSelectedChange(event: any): void {
     const userId = event?.value ?? null;
 
-    if (userId === this.value) {
-      return;
-    }
-
     this.value = userId
 
     this.onUserSelected.emit(userId);
@@ -94,7 +92,15 @@ export class SearchUserComponent implements ControlValueAccessor {
     }, 500);
   }
 
-  private onChange: (value: number) => void = () => {
+  protected onClear() {
+    this.value = null;
+
+    this.onUserSelected.emit(this.value);
+    this.onChange(this.value);
+    this.onTouched();
+  }
+
+  private onChange: (value: number | null) => void = () => {
   };
 
   private onTouched: () => void = () => {
