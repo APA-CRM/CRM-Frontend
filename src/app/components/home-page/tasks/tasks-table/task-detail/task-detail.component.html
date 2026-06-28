@@ -192,13 +192,30 @@
         <div class="space-y-2">
           <label class="block text-xs font-semibold text-gray-600">DUE DATE</label>
           @if (!editing) {
-            <p class="text-gray-800">{{ task.dueDate ? (task.dueDate | date:'dd MMM yyyy') : 'Not set' }}</p>
+            <p class="text-gray-800">{{ task.dueDate ? (task.dueDate | date:'medium') : 'Not set' }}</p>
           } @else {
             <p-date-picker
+              [hourFormat]="'24'"
               [showIcon]="true"
-              class="w-full"
-              dateFormat="dd/mm/yy"
+              [showTime]="true" class="w-full"
               formControlName="dueDate"
+            />
+          }
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Remind Date  -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold text-gray-600">REMIND DATE</label>
+          @if (!editing) {
+            <p class="text-gray-800">{{ task.reminderAt ? (task.reminderAt | date:'medium') : 'Not set' }}</p>
+          } @else {
+            <p-date-picker
+              [hourFormat]="'24'"
+              [showIcon]="true"
+              [showTime]="true" class="w-full"
+              formControlName="reminderAt"
             />
           }
         </div>

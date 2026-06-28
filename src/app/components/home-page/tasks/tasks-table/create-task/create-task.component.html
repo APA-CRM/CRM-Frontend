@@ -115,14 +115,27 @@
           <div>
             <label class="block text-sm font-medium mb-1">Due Date</label>
             <p-date-picker
+              [hourFormat]="'24'"
               [showIcon]="true"
-              class="w-full"
-              dateFormat="dd/mm/yy"
+              [showTime]="true" class="w-full"
               formControlName="dueDate"
             />
           </div>
         </div>
+
+        <div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Remind At</label>
+            <p-date-picker
+              [hourFormat]="'24'"
+              [showIcon]="true"
+              [showTime]="true" class="w-full"
+              formControlName="reminderAt"
+            />
+          </div>
+        </div>
       </div>
+
 
       <div class="mt-5">
         <button

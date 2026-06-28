@@ -13,6 +13,7 @@ export interface DetailedTaskModel {
   createdBy: UserLightModel;
   dueDate?: Date;
   completedAt?: Date;
+  reminderAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
